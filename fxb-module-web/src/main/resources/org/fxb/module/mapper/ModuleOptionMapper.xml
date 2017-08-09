@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fxb.module.mapper.ModuleOptionMapper">
+
+  <resultMap id="moduleOption" type="org.fxb.module.domain.ModuleOptionEntity">
+    <result property="moduleId" column="module_id" />
+    <result property="name" column="option_name" />
+    <result property="value" column="option_value" />
+    <result property="title" column="option_title" />
+    <result property="order" column="option_order" />
+  </resultMap>
+
+  <select id="findByModuleId" resultMap="moduleOption">
+    SELECT * FROM module_option
+    WHERE module_id = #{moduleId}
+  </select>
+
+  <insert id="insert">
+    INSERT INTO module_option (
+      module_id,
+      option_name,
+      option_value,
+      option_title,
+      option_order
+    ) VALUES (
+      #{moduleId},
+      #{name},
+      #{value},
+      #{title},
+      #{order}
+    )
+  </insert>
+
+  <update id="updateByModuleIdAndOptionName">
+    UPDATE module_option SET
+      option_name = #{name},
+      option_value = #{value},
+      option_title = #{title},
+      option_order = #{order}
+    WHERE module_id = #{moduleId}
+    AND option_name = #{optionName}
+  </update>
+
+  <delete id="deleteByModuleIdAndOptionName">
+    DELETE FROM module_option
+    WHERE module_id = #{moduleId}
+    AND option_name = #{optionName}
+  </delete>
+
+  <delete id="deleteByModuleId">
+    DELETE FROM module_option WHERE module_id = #{moduleId}
+  </delete>
+
+</mapper>
