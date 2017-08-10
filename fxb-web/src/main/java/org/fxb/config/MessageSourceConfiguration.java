@@ -29,8 +29,8 @@ public class MessageSourceConfiguration {
 
 	private String parentBasename =
 			"classpath*:org/hibernate/validator/message.properties," +
-			"classpath*:org/saltframework/i18n/message.properties," +
-			"classpath*:org/saltframework/**/i18n/message.properties";
+			"classpath*:org/fxb/i18n/message.properties," +
+			"classpath*:org/fxb/**/i18n/message.properties";
 
 	private Fxb fxb;
 	public void setSalt(@Autowired Fxb fxb) {
