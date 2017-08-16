@@ -16,8 +16,13 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 public class ConfigurePropertiesConfigurer implements BeanDefinitionRegistryPostProcessor {
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(ConfigurePropertiesFactoryBean.class);
-		registry.registerBeanDefinition("salt", beanDefinitionBuilder.getBeanDefinition());
+		BeanDefinitionBuilder beanDefinitionBuilder =
+				BeanDefinitionBuilder.genericBeanDefinition(ConfigurePropertiesFactoryBean.class);
+		registry.registerBeanDefinition("fxb", beanDefinitionBuilder.getBeanDefinition());
+
+//		RootBeanDefinition beanDefinition = new RootBeanDefinition(ConfigurePropertiesFactoryBean.class);
+//		beanDefinition.setRole(BeanDefinition.ROLE_APPLICATION);
+//		registry.registerBeanDefinition("fxb", beanDefinition);
 	}
 
 	@Override
