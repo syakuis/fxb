@@ -1,8 +1,6 @@
 package org.fxb.boot;
 
 import org.fxb.boot.servlet.ServletApplicationContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -19,25 +17,8 @@ import java.util.EnumSet;
  */
 
 public class FxbWebApplicationInitializer implements WebApplicationInitializer {
-	private static final Logger logger = LoggerFactory.getLogger(FxbWebApplicationInitializer.class);
-
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-
-		servletContext.setInitParameter("spring.profiles.default", "default");
-
-		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-		rootContext.register(Bootstrapping.class);
-
-		servletContext.addListener(new ContextLoaderListener(rootContext));
-
-		AnnotationConfigWebApplicationContext dispatcherServletContext = new AnnotationConfigWebApplicationContext();
-		dispatcherServletContext.register(ServletApplicationContext.class);
-
-		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("fxb-web", new DispatcherServlet(dispatcherServletContext));
-		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("/");
-
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
@@ -46,6 +27,18 @@ public class FxbWebApplicationInitializer implements WebApplicationInitializer {
 		FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("characterEncoding", characterEncodingFilter);
 		characterEncoding.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 
-		servletContext.addListener(new ContextLoaderListener(rootContext));
+		servletContext.setInitParameter("spring.profiles.default", "default");
+
+		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+		context.register(Bootstrapping.class);
+
+		servletContext.addListener(new ContextLoaderListener(context));
+
+		AnnotationConfigWebApplicationContext dispatcherServletContext = new AnnotationConfigWebApplicationContext();
+		dispatcherServletContext.register(ServletApplicationContext.class);
+
+		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("fxb-web", new DispatcherServlet(dispatcherServletContext));
+		dispatcher.setLoadOnStartup(1);
+		dispatcher.addMapping("/");
 	}
 }

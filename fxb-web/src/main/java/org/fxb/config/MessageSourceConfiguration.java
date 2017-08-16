@@ -33,8 +33,21 @@ public class MessageSourceConfiguration {
 			"classpath*:org/fxb/**/i18n/message.properties";
 
 	private Fxb fxb;
-	public void setSalt(@Autowired Fxb fxb) {
+	@Autowired
+	public void setFxb(Fxb fxb) {
 		this.fxb = fxb;
+	}
+
+	private String[] getProperties(String basenames) {
+		try {
+			String[] properties = messageSourceMatchingPattern.getResources(basenames);
+			logger.debug(">< >< {}", Arrays.asList(properties));
+			return properties;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return null;
 	}
 
 	private ResourceBundleMessageSource getResourceBundleMessageSource(String basename, MessageSource parentMessageSource) {
@@ -46,15 +59,8 @@ public class MessageSourceConfiguration {
 		if (parentMessageSource != null) {
 			messageSource.setParentMessageSource(parentMessageSource);
 		}
-		try {
-			String[] properties = messageSourceMatchingPattern.getResources(basenames);
-			messageSource.setBasenames(properties);
-			if (logger.isDebugEnabled()) {
-				logger.debug(">< >< {}", Arrays.asList(properties));
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
+
+		messageSource.setBasenames(getProperties(basename));
 
 		return messageSource;
 	}
@@ -69,20 +75,14 @@ public class MessageSourceConfiguration {
 		if (parentMessageSource != null) {
 			messageSource.setParentMessageSource(parentMessageSource);
 		}
-		try {
-			String[] properties = messageSourceMatchingPattern.getResources(basenames);
-			messageSource.setBasenames(properties);
-			if (logger.isDebugEnabled()) {
-				logger.debug(">< >< {}", Arrays.asList(properties));
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
+
+		messageSource.setBasenames(getProperties(basename));
 
 		return messageSource;
 	}
 
 	private MessageSource getMessageSource() {
+		logger.debug(fxb.toString());
 		if (fxb.getBoolean("messageSourceReloadable")) {
 			return getReloadableResourceBundleMessageSource(parentBasename,
 					getReloadableResourceBundleMessageSource(fxb.getString("messageSourceBasename"), null));
