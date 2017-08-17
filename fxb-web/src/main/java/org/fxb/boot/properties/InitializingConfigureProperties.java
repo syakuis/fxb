@@ -10,12 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * salt.properties to instance.
@@ -129,18 +133,24 @@ public class InitializingConfigureProperties {
 	private void intro(Properties properties) {
 		StringBuilder print = new StringBuilder();
 
-		print.append("\n_________________________________________________________________________\n")
-				.append("                                                                         \n")
-				.append("   ____       __ __   ____                                          __\n")
-				.append("  / __/___ _ / // /_ / __/____ ___ _ __ _  ___  _    __ ___   ____ / /__\n")
-				.append(" _\\ \\ / _ `// // __// _/ / __// _ `//  ' \\/ -_)| |/|/ // _ \\ / __//  '_/\n")
-				.append("/___/ \\_,_//_/ \\__//_/  /_/   \\_,_//_/_/_/\\__/ |__,__/ \\___//_/  /_/\\_\\\n")
-				.append("                                                  version " + fxb.getVersion())
-				.append("\n                                                                         \n")
-				.append("                                                                         \n")
-				.append("                           Salt Framework by 52572 49437 44512   \n")
-				.append("                                                                         \n")
-				.append("_________________________________________________________________________\n\n")
+		print.append("\n_________________________________________________________________________________\n");
+
+		try (Stream<String> stream = Files.lines(
+				Paths.get(new ClassPathResource("org/fxb/config/intro").getURI()))
+		) {
+			stream.forEach(intro -> print.append(intro).append("\n"));
+		} catch (IOException ioe) {
+			logger.debug("file not found.");
+		}
+
+		print.append("                                                                  version ")
+				.append(fxb.getVersion())
+				.append("  \n")
+				.append("                                                                                 \n")
+				.append("                                                                                 \n")
+				.append("                           Frontend X Backend (Fxb) by 52572 49437 44512         \n")
+				.append("                                                                                 \n")
+				.append("_________________________________________________________________________________\n\n")
 				.append("* Locale: ").append(fxb.getLocale().getLanguage()).append("\n")
 				.append("* TimeZone: ").append(fxb.getTimeZone().getID()).append("\n")
 				.append("* Date: ").append(new Date()).append("\n")
@@ -148,7 +158,7 @@ public class InitializingConfigureProperties {
 				.append("* Profile: ").append(fxb.getProfile()).append("\n")
 				.append("* profiles: ").append(properties.getProperty("profiles")).append("\n")
 				.append("* rootAbsolutePath: ").append(properties.getProperty("rootAbsolutePath")).append("\n")
-				.append("_________________________________________________________________________\n\n");
+				.append("_________________________________________________________________________________\n\n");
 
 		logger.warn(print.toString());
 
