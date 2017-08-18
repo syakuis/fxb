@@ -28,3 +28,5 @@ bower_components/
 node_modules/
 .tmp/
 /bin/
+
+/**/test/java/java8/

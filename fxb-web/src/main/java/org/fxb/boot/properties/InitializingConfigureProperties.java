@@ -12,6 +12,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -51,34 +52,66 @@ public class InitializingConfigureProperties {
 	 * 프레임워크에서 사용될 언어셋을 최종 선정한다.
 	 * default = utf-8 , properties , system properties 순으로 최종적으로 설정된다.
 	 */
-	private void setFileEncoding() {
-		if (fileEncoding == null && !"".equals(fileEncoding)) {
-			fileEncoding = "UTF-8";
+	public String getFileEncoding() {
+		Assert.notNull(environment, "The class must not be null");
+
+		String encoding = StringUtils.defaultString(
+				environment.getProperty(CHARSET_NAME),
+				StringUtils.defaultString(new String(this.fileEncoding), "UTF-8")
+		);
+
+		return encoding;
+	}
+
+	/**
+	 * 운영환경을 가져온다. 운영환경 기본값은 4가지로 정의한다.
+	 * DEFAULT , DEV , TEST , PROD
+	 * @return
+	 */
+	public String getProfile() {
+		Assert.notNull(environment, "The class must not be null");
+
+		if (environment.acceptsProfiles(Profile.DEV.getValue())) {
+			return Profile.DEV.getValue();
+		} else if (environment.acceptsProfiles(Profile.TEST.getValue())) {
+			return Profile.TEST.getValue();
+		} else if (environment.acceptsProfiles(Profile.PROD.getValue())) {
+			return Profile.PROD.getValue();
+		} else {
+			return Profile.DEFAULT.getValue();
+		}
+	}
+
+	/**
+	 * environment profiles 정보를 가져온다.
+	 * @return
+	 */
+	public String[] getProfiles() {
+		Assert.notNull(environment, "The class must not be null");
+
+		String[] profiles = environment.getActiveProfiles();
+		if (profiles != null && profiles.length == 0) {
+			return environment.getDefaultProfiles();
 		}
 
-		String charset = environment.getProperty(CHARSET_NAME);
-		if (charset != null && !"".equals(charset)) {
-			fileEncoding = charset;
-		}
+		return profiles;
+	}
+
+	/**
+	 * locations 값에 String.format 형식인 경우 profile 대입한다.
+	 * @return
+	 */
+	public String[] getLocationProfileFormat() {
+		Assert.notNull(locations, "The class must not be null");
+		return Arrays.stream(locations).map(location -> String.format(location, this.getProfile())).toArray(String[]::new);
 	}
 
 	public void afterPostProcessor() {
 
-		setFileEncoding();
-
-		String[] profiles = environment.getActiveProfiles();
-		if (profiles != null && profiles.length == 0) {
-			profiles = environment.getDefaultProfiles();
-		}
-
-		String profile = getProfile();
-
-		String[] configLocations = new String[locations.length];
-
-		for(int i = 0; i < locations.length; i++) {
-			String location = String.format(locations[i], profile);
-			configLocations[i] = location;
-		}
+		String fileEncoding = this.getFileEncoding();
+		String[] profiles = this.getProfiles();
+		String profile = this.getProfile();
+		String[] configLocations = this.getLocationProfileFormat();
 
 		try {
 			ResourcesMatchingPattern resourcesMatchingPattern = new ResourcesMatchingPattern();
@@ -112,18 +145,6 @@ public class InitializingConfigureProperties {
 
 	public Fxb getConfig() {
 		return fxb;
-	}
-
-	private String getProfile() {
-		if (environment.acceptsProfiles(Profile.DEV.getValue())) {
-			return Profile.DEV.getValue();
-		} else if (environment.acceptsProfiles(Profile.TEST.getValue())) {
-			return Profile.TEST.getValue();
-		} else if (environment.acceptsProfiles(Profile.PROD.getValue())) {
-			return Profile.PROD.getValue();
-		} else {
-			return Profile.DEFAULT.getValue();
-		}
 	}
 
 	/**
