@@ -1,7 +1,10 @@
 package org.fxb.boot;
 
-import org.apache.commons.configuration2.CompositeConfiguration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.BuilderParameters;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.fxb.boot.properties.InitializingConfigureProperties;
 import org.junit.Assert;
@@ -17,10 +20,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.hamcrest.core.Is.is;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -51,9 +57,9 @@ public class InitializingConfigurePropertiesTest {
 		Assert.assertNotNull("is null", environment);
 
 		String[] locations = new String[]{
-				"classpath:fxb-%s.properties",
-				"classpath:fxb.properties",
 				"classpath:org/fxb/config/fxb.properties",
+				"classpath:fxb.properties",
+				"classpath:fxb-%s.properties"
 		};
 
 		this.configureProperties =
@@ -83,26 +89,56 @@ public class InitializingConfigurePropertiesTest {
 	}
 
 	@Test
-	public void 아파치_설정_테스트() {
-		this.configureProperties.setFileEncoding("UTF-8");
+	public void 아파치_설정_테스트() throws ConfigurationException {
+		this.configureProperties.setFileEncoding("EUC-KR");
 
 		Resource[] resources =
 				this.configureProperties.getLocationResources(this.configureProperties.getLocationProfileFormat());
 
-		Configurations configurations = new Configurations();
-		CompositeConfiguration configuration = new CompositeConfiguration();
+		Parameters params = new Parameters();
 
-		Arrays.stream(resources).forEach(resource -> {
+		BuilderParameters[] builders = Arrays.stream(resources).map(resource -> {
+			logger.debug("><>< Properties Loaded : {}", resource);
 			try {
-				configuration.addConfiguration(configurations.properties(resource.getFile()));
-				logger.debug("><>< Properties Loaded : {}", resource);
+				return params.properties()
+						.setEncoding(this.configureProperties.getFileEncoding())
+//						.setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+//						.setListDelimiterHandler(new DisabledListDelimiterHandler())
+						.setFile(resource.getFile());
 			} catch (IOException e) {
 				logger.debug("><>< Properties Loaded : {}", e.getMessage());
-			} catch (ConfigurationException e) {
-				logger.debug("><>< Properties Loaded : {}", e.getMessage());
 			}
-		});
+
+			return null;
+		}).filter(s -> s != null).toArray(s -> new BuilderParameters[s]);
+
+		FileBasedConfigurationBuilder<FileBasedConfiguration> builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+				.configure(builders);
+
+		org.apache.commons.configuration2.Configuration configuration = builder.getConfiguration();
+		configuration.getKeys().forEachRemaining(key -> logger.debug("><>< {} = {}", key, configuration.getString(key)));
 
 		Assert.assertEquals(1000, configuration.getInt("cacheSeconds"));
+
+		String changeTestKey = "title";
+		String changeTestValue = "It`s good!!!";
+
+		logger.debug("><>< {} = {}", changeTestKey, configuration.getString(changeTestKey));
+
+		configuration.setProperty(changeTestKey, changeTestValue);
+
+		logger.debug("><>< {} = {}", changeTestKey, configuration.getString(changeTestKey));
+
+		Assert.assertEquals(configuration.getString(changeTestKey), changeTestValue);
+
+//		ImmutableConfiguration immutableConfiguration = ConfigurationUtils.unmodifiableConfiguration(configuration);
+
+		// 리스트는 같은 키의 줄이 모여서 만들어 진다.
+		Assert.assertThat(
+				Arrays.asList(
+						StringUtils.delimitedListToStringArray(configuration.getString("stringArray"), ",")
+				),
+				is(configuration.getList("string.array"))
+		);
 	}
 }
