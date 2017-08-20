@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.fxb.boot.enums.Profile;
 import org.fxb.config.Fxb;
-import org.fxb.util.io.ResourcesMatchingPattern;
+import org.fxb.util.io.MultiplePathMatchingResourcePatternResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -38,6 +38,12 @@ public class InitializingConfigureProperties {
 	private String fileEncoding = Charset.defaultCharset().name();
 	private Fxb fxb;
 
+	/**
+	 *
+	 * @param servletContext
+	 * @param environment
+	 * @param locations
+	 */
 	public InitializingConfigureProperties(ServletContext servletContext, Environment environment, String[] locations) {
 		this.servletContext = servletContext;
 		this.environment = environment;
@@ -106,6 +112,21 @@ public class InitializingConfigureProperties {
 		return Arrays.stream(locations).map(location -> String.format(location, this.getProfile())).toArray(String[]::new);
 	}
 
+	/**
+	 * Locations 의 프로퍼티를 읽어 Resouece 반환한다.
+	 * @return
+	 */
+	public Resource[] getLocationResources(String[] configLocations) {
+		try {
+			MultiplePathMatchingResourcePatternResolver matchingPattern = new MultiplePathMatchingResourcePatternResolver();
+			return matchingPattern.getResources(configLocations);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return null;
+	}
+
 	public void afterPostProcessor() {
 
 		String fileEncoding = this.getFileEncoding();
@@ -113,10 +134,11 @@ public class InitializingConfigureProperties {
 		String profile = this.getProfile();
 		String[] configLocations = this.getLocationProfileFormat();
 
-		try {
-			ResourcesMatchingPattern resourcesMatchingPattern = new ResourcesMatchingPattern();
-			Resource[] resources = resourcesMatchingPattern.getResources(configLocations);
 
+		Resource[] resources = this.getLocationResources(configLocations);
+		Assert.notNull(resources, "The class must not be null");
+
+		try {
 			PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
 			propertiesFactoryBean.setLocations(resources);
 			propertiesFactoryBean.setIgnoreResourceNotFound(true); // 프로퍼티 파일이 없는 경우 무시한다.

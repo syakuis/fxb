@@ -1,6 +1,8 @@
 package org.fxb.boot;
 
 import org.fxb.boot.servlet.ServletApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -17,8 +19,11 @@ import java.util.EnumSet;
  */
 
 public class FxbWebApplicationInitializer implements WebApplicationInitializer {
+	private static final Logger logger = LoggerFactory.getLogger(FxbWebApplicationInitializer.class);
+
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
+		logger.debug("><>< Web Application Initializer ...");
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
