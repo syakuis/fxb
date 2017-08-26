@@ -1,6 +1,6 @@
 package org.fxb.core.properties;
 
-import org.fxb.core.properties.beans.CommonsConfigurationPostProcessor;
+import org.fxb.core.properties.beans.PropertiesBeanFactoryPostProcessor;
 import org.fxb.core.properties.beans.factory.CommonsConfigurationFactoryBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,22 +19,16 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class CommonsConfigurationPostProcessorTest {
-	private final Logger logger = LoggerFactory.getLogger(CommonsConfigurationPostProcessorTest.class);
+public class PropertiesBeanFactoryPostProcessorTest {
+	private final Logger logger = LoggerFactory.getLogger(PropertiesBeanFactoryPostProcessorTest.class);
 
 
 	@Configuration
-	static class Bootstrap {
-
-		static String[] locations = new String[]{
-				"classpath:org/fxb/config/fxb.properties",
-				"classpath:fxb.properties",
-				"classpath:fxb-%s.properties"
-		};
+	static class PropertiesConfiguration extends PropertiesConfigurationConstant {
 
 		@Bean
-		static CommonsConfigurationPostProcessor commonsConfigurationPostProcessor() {
-			return new CommonsConfigurationPostProcessor(
+		static PropertiesBeanFactoryPostProcessor commonsConfigurationPostProcessor() {
+			return new PropertiesBeanFactoryPostProcessor(
 					"properties",
 					CommonsConfigurationFactoryBean.class,
 					locations

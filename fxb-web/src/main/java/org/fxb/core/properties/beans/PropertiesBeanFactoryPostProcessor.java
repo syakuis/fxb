@@ -13,13 +13,13 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
  * @site http://syaku.tistory.com
  * @since 2017. 8. 24.
  */
-public class CommonsConfigurationPostProcessor implements BeanDefinitionRegistryPostProcessor {
+public class PropertiesBeanFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 	private final String beanName;
 	private final String[] locations;
 	private final Class<?> clazz;
 	private String fileEncoding;
 
-	public CommonsConfigurationPostProcessor(String beanName, Class<?> clazz, String[] locations) {
+	public PropertiesBeanFactoryPostProcessor(String beanName, Class<?> clazz, String[] locations) {
 		this.beanName = beanName;
 		this.clazz = clazz;
 		this.locations = locations;
