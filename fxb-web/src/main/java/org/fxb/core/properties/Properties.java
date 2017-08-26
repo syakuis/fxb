@@ -1,5 +1,6 @@
 package org.fxb.core.properties;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -8,6 +9,8 @@ import java.util.List;
  * @since 2017. 8. 22.
  */
 public interface Properties {
+	Iterator<String> getKeys();
+
 	String getString(String key);
 	String getString(String key, String defaultValue);
 

@@ -55,7 +55,7 @@ public abstract class AbstractPropertiesLoader implements PropertiesLoader {
 	 * default = utf-8 , properties , system properties 순으로 최종적으로 설정된다.
 	 */
 	protected String getFileEncoding() {
-		Assert.notNull(environment, "The class must not be null");
+		Assert.notNull(environment, "The class must not be null. (environment)");
 
 		String encoding = StringUtils.defaultString(
 				environment.getProperty(CHARSET_NAME),
@@ -71,7 +71,7 @@ public abstract class AbstractPropertiesLoader implements PropertiesLoader {
 	 * @return
 	 */
 	protected String getProfile() {
-		Assert.notNull(environment, "The class must not be null");
+		Assert.notNull(environment, "The class must not be null. (environment)");
 
 		if (environment.acceptsProfiles(Profile.DEV.getValue())) {
 			return Profile.DEV.getValue();
@@ -89,7 +89,7 @@ public abstract class AbstractPropertiesLoader implements PropertiesLoader {
 	 * @return
 	 */
 	protected String[] getProfiles() {
-		Assert.notNull(environment, "The class must not be null");
+		Assert.notNull(environment, "The class must not be null. (environment)");
 
 		String[] profiles = environment.getActiveProfiles();
 		if (profiles != null && profiles.length == 0) {
@@ -104,15 +104,21 @@ public abstract class AbstractPropertiesLoader implements PropertiesLoader {
 	 * @return
 	 */
 	protected String[] getLocationProfileFormat() {
-		Assert.notNull(locations, "The class must not be null");
+		Assert.notNull(locations, "The class must not be null. (locations)");
 		return Arrays.stream(locations).map(location -> String.format(location, this.getProfile())).toArray(String[]::new);
 	}
 
 	/**
 	 * Locations 의 프로퍼티를 읽어 Resouece 반환한다.
+	 *
+	 * "classpath:org/fxb/config/fxb.properties",
+	 * "classpath:fxb.properties",
+	 * "classpath:fxb-%s.properties"
 	 * @return
 	 */
 	protected Resource[] getLocationResources(String[] configLocations) {
+		Assert.notEmpty(configLocations, "The array must contain elements. (configLocations)");
+
 		try {
 			MultiplePathMatchingResourcePatternResolver matchingPattern = new MultiplePathMatchingResourcePatternResolver();
 			return matchingPattern.getResources(configLocations);

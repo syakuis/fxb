@@ -1,11 +1,11 @@
 package org.fxb.core.properties;
 
-import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.BuilderParameters;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.builder.fluent.PropertiesBuilderParameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.fxb.core.properties.exceptions.PropertiesException;
 import org.slf4j.Logger;
@@ -36,28 +36,29 @@ public class CommonsConfigurationLoader extends AbstractPropertiesLoader {
 				this.getLocationResources(this.getLocationProfileFormat());
 
 		Parameters params = new Parameters();
+		CompositeConfiguration configuration = new CompositeConfiguration();
 
-		BuilderParameters[] builders = Arrays.stream(resources).map(resource -> {
-			logger.debug("><>< Properties Loaded : {}", resource);
+		Arrays.stream(resources).forEach(resource -> {
 			try {
-				return params.properties()
+				PropertiesBuilderParameters parameter = params.properties()
 						.setEncoding(this.getFileEncoding())
+//						.setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+//						.setListDelimiterHandler(new DisabledListDelimiterHandler())
 						.setFile(resource.getFile());
+				FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+						new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+								.configure(parameter);
+
+				configuration.addConfiguration(builder.getConfiguration());
+				logger.debug("><>< Properties Loaded : {}", resource);
 			} catch (IOException e) {
 				logger.debug("><>< Properties Loaded : {}", e.getMessage());
+			} catch (ConfigurationException e) {
+				logger.debug("><>< Properties Loaded : {}", e.getMessage());
 			}
+		});
 
-			return null;
-		}).filter(s -> s != null).toArray(s -> new BuilderParameters[s]);
-
-		try {
-			Configuration configuration = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-					.configure(builders).getConfiguration();
-
-			return new CommonsConfigurationProperties(configuration, this.delimiter);
-		} catch (ConfigurationException e) {
-			throw new PropertiesException(e);
-		}
+		return new CommonsConfigurationProperties(configuration, this.delimiter);
 	}
 
 

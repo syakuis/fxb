@@ -4,6 +4,7 @@ import org.apache.commons.configuration2.Configuration;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,6 +19,11 @@ public class CommonsConfigurationProperties implements Properties {
 	public CommonsConfigurationProperties(Configuration configuration, String delimiter) {
 		this.configuration = configuration;
 		this.delimiter = delimiter;
+	}
+
+	@Override
+	public Iterator<String> getKeys() {
+		return configuration.getKeys();
 	}
 
 	@Override

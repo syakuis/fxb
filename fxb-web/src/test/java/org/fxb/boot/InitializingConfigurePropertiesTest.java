@@ -1,10 +1,11 @@
 package org.fxb.boot;
 
+import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.BuilderParameters;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.builder.fluent.PropertiesBuilderParameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.fxb.boot.properties.InitializingConfigureProperties;
 import org.junit.Assert;
@@ -56,10 +57,10 @@ public class InitializingConfigurePropertiesTest {
 		Assert.assertNotNull("is null", servletContext);
 		Assert.assertNotNull("is null", environment);
 
-		String[] locations = new String[]{
-				"classpath:org/fxb/config/fxb.properties",
+		String[] locations = new String[] {
+				"classpath:fxb-%s.properties",
 				"classpath:fxb.properties",
-				"classpath:fxb-%s.properties"
+				"classpath:org/fxb/config/fxb.properties",
 		};
 
 		this.configureProperties =
@@ -96,26 +97,28 @@ public class InitializingConfigurePropertiesTest {
 				this.configureProperties.getLocationResources(this.configureProperties.getLocationProfileFormat());
 
 		Parameters params = new Parameters();
+		CompositeConfiguration configuration = new CompositeConfiguration();
 
-		BuilderParameters[] builders = Arrays.stream(resources).map(resource -> {
+		Arrays.stream(resources).forEach(resource -> {
 			logger.debug("><>< Properties Loaded : {}", resource);
 			try {
-				return params.properties()
+				PropertiesBuilderParameters parameter = params.properties()
 						.setEncoding(this.configureProperties.getFileEncoding())
 //						.setListDelimiterHandler(new DefaultListDelimiterHandler(','))
 //						.setListDelimiterHandler(new DisabledListDelimiterHandler())
 						.setFile(resource.getFile());
+				FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+						new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+						.configure(parameter);
+
+				configuration.addConfiguration(builder.getConfiguration());
 			} catch (IOException e) {
 				logger.debug("><>< Properties Loaded : {}", e.getMessage());
+			} catch (ConfigurationException e) {
+				logger.debug("><>< Properties Loaded : {}", e.getMessage());
 			}
+		});
 
-			return null;
-		}).filter(s -> s != null).toArray(s -> new BuilderParameters[s]);
-
-		FileBasedConfigurationBuilder<FileBasedConfiguration> builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-				.configure(builders);
-
-		org.apache.commons.configuration2.Configuration configuration = builder.getConfiguration();
 		configuration.getKeys().forEachRemaining(key -> logger.debug("><>< {} = {}", key, configuration.getString(key)));
 
 		Assert.assertEquals(1000, configuration.getInt("cacheSeconds"));

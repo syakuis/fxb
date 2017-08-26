@@ -8,5 +8,7 @@ import org.fxb.core.properties.exceptions.PropertiesException;
  * @since 2017. 8. 22.
  */
 public interface PropertiesLoader {
+	void setFileEncoding(String fileEncoding);
+	void setDelimiter(String delimiter);
 	Properties getProperties() throws PropertiesException;
 }

@@ -1,7 +1,9 @@
 package org.fxb.core.properties.beans.factory;
 
-import org.fxb.core.properties.Fxb;
+import org.fxb.core.properties.CommonsConfigurationLoader;
+import org.fxb.core.properties.Properties;
 import org.fxb.core.properties.PropertiesLoader;
+import org.fxb.core.properties.exceptions.PropertiesException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
@@ -15,7 +17,7 @@ import javax.servlet.ServletContext;
  * @site http://syaku.tistory.com
  * @since 2017. 3. 29.
  */
-public class PropertiesFactoryBean implements FactoryBean<Fxb>, EnvironmentAware, ServletContextAware {
+public class CommonsConfigurationFactoryBean implements FactoryBean<Properties>, EnvironmentAware, ServletContextAware {
 	/**
 	 * rootAbsolutePath 를 구한기 위함.
 	 */
@@ -28,16 +30,8 @@ public class PropertiesFactoryBean implements FactoryBean<Fxb>, EnvironmentAware
 	 * The File encoding.
 	 */
 	private String fileEncoding;
-	
-	private final PropertiesLoader propertiesLoader;
 
-	public PropertiesFactoryBean(PropertiesLoader propertiesLoader) {
-		this.propertiesLoader = propertiesLoader;
-	}
-
-	public void setFileEncoding(String fileEncoding) {
-		this.fileEncoding = fileEncoding;
-	}
+	private String[] locations;
 
 	@Override
 	public void setEnvironment(Environment environment) {
@@ -49,6 +43,14 @@ public class PropertiesFactoryBean implements FactoryBean<Fxb>, EnvironmentAware
 		this.servletContext = servletContext;
 	}
 
+	public void setFileEncoding(String fileEncoding) {
+		this.fileEncoding = fileEncoding;
+	}
+
+	public void setLocations(String[] locations) {
+		this.locations = locations;
+	}
+
 	/**
 	 * Config properties. 순차적으로 overwrite 된다.
 	 * Java OPT -Dspring.profiles.active=test
@@ -56,20 +58,17 @@ public class PropertiesFactoryBean implements FactoryBean<Fxb>, EnvironmentAware
 	 * @return the properties
 	 */
 	@Override
-	public Fxb getObject() {
-
-		String[] locations = new String[]{
-				"classpath:org/fxb/config/fxb.properties",
-				"classpath:fxb.properties",
-				"classpath:fxb-%s.properties"
-		};
-
-		return null;
+	public Properties getObject() throws PropertiesException {
+		PropertiesLoader propertiesLoader = new CommonsConfigurationLoader(servletContext, environment, locations);
+		if (this.fileEncoding != null) {
+			propertiesLoader.setFileEncoding(this.fileEncoding);
+		}
+		return propertiesLoader.getProperties();
 	}
 
 	@Override
-	public Class<Fxb> getObjectType() {
-		return Fxb.class;
+	public Class<Properties> getObjectType() {
+		return Properties.class;
 	}
 
 	@Override
