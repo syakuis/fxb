@@ -1,8 +1,8 @@
 package org.fxb.core.properties.beans.factory;
 
-import org.fxb.core.properties.CommonsConfigurationLoader;
 import org.fxb.core.properties.Properties;
 import org.fxb.core.properties.PropertiesLoader;
+import org.fxb.core.properties.SpringPropertiesLoader;
 import org.fxb.core.properties.exceptions.PropertiesException;
 
 /**
@@ -11,10 +11,10 @@ import org.fxb.core.properties.exceptions.PropertiesException;
  * @site http://syaku.tistory.com
  * @since 2017. 3. 29.
  */
-public class CommonsConfigurationFactoryBean extends AbstractPropertiesFactoryBean {
+public class SpringPropertiesFactoryBean extends AbstractPropertiesFactoryBean {
 	@Override
 	public Properties getObject() throws PropertiesException {
-		PropertiesLoader propertiesLoader = new CommonsConfigurationLoader(servletContext, environment, locations);
+		PropertiesLoader propertiesLoader = new SpringPropertiesLoader(servletContext, environment, locations);
 		if (this.fileEncoding != null) {
 			propertiesLoader.setFileEncoding(this.fileEncoding);
 		}

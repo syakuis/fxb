@@ -2,6 +2,7 @@ package org.fxb.core.properties;
 
 import org.fxb.core.properties.beans.PropertiesBeanFactoryPostProcessor;
 import org.fxb.core.properties.beans.factory.CommonsConfigurationFactoryBean;
+import org.fxb.core.properties.beans.factory.SpringPropertiesFactoryBean;
 import org.fxb.core.properties.exceptions.PropertiesException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,8 +30,16 @@ import javax.servlet.ServletContext;
 public class PropertiesFactoryBeanTest {
 	private final Logger logger = LoggerFactory.getLogger(PropertiesFactoryBeanTest.class);
 
+	static final String[] locations = new String[]{
+			"classpath:org/fxb/config/fxb.properties",
+			"classpath:fxb.properties",
+			"classpath:fxb-%s.properties"
+	};
+
+	static final String fileEcoding = null;
+
 	@Configuration
-	static class PropertiesConfiguration extends PropertiesConfigurationConstant {
+	static class PropertiesConfiguration {
 		@Autowired
 		ServletContext servletContext;
 
@@ -39,7 +48,8 @@ public class PropertiesFactoryBeanTest {
 
 		@Bean
 		public Properties properties() throws PropertiesException {
-			CommonsConfigurationFactoryBean factoryBean = new CommonsConfigurationFactoryBean();
+			System.out.printf(locations.toString());
+			SpringPropertiesFactoryBean factoryBean = new SpringPropertiesFactoryBean();
 			factoryBean.setServletContext(servletContext);
 			factoryBean.setEnvironment(environment);
 			factoryBean.setLocations(locations);
@@ -48,7 +58,7 @@ public class PropertiesFactoryBeanTest {
 	}
 
 	@Configuration
-	static class PropetiesPostProcessorConfiguraion extends PropertiesConfigurationConstant {
+	static class PropetiesPostProcessorConfiguraion {
 		@Bean
 		static PropertiesBeanFactoryPostProcessor commonsConfigurationPostProcessor() {
 			return new PropertiesBeanFactoryPostProcessor(
