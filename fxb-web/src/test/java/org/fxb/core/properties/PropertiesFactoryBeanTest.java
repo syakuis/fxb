@@ -48,7 +48,6 @@ public class PropertiesFactoryBeanTest {
 
 		@Bean
 		public Properties properties() throws PropertiesException {
-			System.out.printf(locations.toString());
 			SpringPropertiesFactoryBean factoryBean = new SpringPropertiesFactoryBean();
 			factoryBean.setServletContext(servletContext);
 			factoryBean.setEnvironment(environment);
@@ -80,7 +79,7 @@ public class PropertiesFactoryBeanTest {
 		Assert.assertNotNull(properties);
 		Assert.assertNotNull(properties2);
 
-		properties.getKeys().forEachRemaining(key -> {
+		properties.getKeys().stream().forEach(key -> {
 			Assert.assertEquals(properties.getString(key), properties2.getString(key));
 			logger.debug("{} = {}", key, properties.getString(key));
 		});

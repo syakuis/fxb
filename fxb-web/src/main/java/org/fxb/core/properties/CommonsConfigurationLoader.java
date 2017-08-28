@@ -1,9 +1,11 @@
 package org.fxb.core.properties;
 
 import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.builder.fluent.PropertiesBuilderParameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -49,7 +51,7 @@ public class CommonsConfigurationLoader extends AbstractPropertiesLoader {
 						new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
 								.configure(parameter);
 
-				configuration.addConfiguration(builder.getConfiguration());
+				configuration.append(builder.getConfiguration());
 				logger.debug("><>< Properties Loaded : {}", resource);
 			} catch (IOException e) {
 				logger.debug("><>< Properties Loaded : {}", e.getMessage());

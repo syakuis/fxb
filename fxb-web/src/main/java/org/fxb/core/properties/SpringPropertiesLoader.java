@@ -38,6 +38,8 @@ public class SpringPropertiesLoader extends AbstractPropertiesLoader {
 			propertiesFactoryBean.setSingleton(true); // 싱글톤 여부 기본값 true
 
 			propertiesFactoryBean.afterPropertiesSet();
+
+			return new SpringPropertiesProperties(propertiesFactoryBean.getObject(), delimiter);
 		} catch (IOException e) {
 			logger.debug("><>< Properties Loaded : {}", e.getMessage());
 		}

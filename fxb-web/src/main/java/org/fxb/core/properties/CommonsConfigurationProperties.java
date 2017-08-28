@@ -3,9 +3,7 @@ package org.fxb.core.properties;
 import org.apache.commons.configuration2.Configuration;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -22,8 +20,10 @@ public class CommonsConfigurationProperties implements Properties {
 	}
 
 	@Override
-	public Iterator<String> getKeys() {
-		return configuration.getKeys();
+	public List<String> getKeys() {
+		List<String> result = new ArrayList<>();
+		configuration.getKeys().forEachRemaining(result::add);
+		return result;
 	}
 
 	@Override
