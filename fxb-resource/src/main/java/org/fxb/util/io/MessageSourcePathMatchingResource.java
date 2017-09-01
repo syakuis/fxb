@@ -15,22 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 모든 message source 찾는 다.
+ * {@link PathMatchingResourcePatternResolver} 를 이용하여 여러개의 경로 패턴을 이용하여 메세지 프로퍼티의 경로를 구한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 16. 6. 7.
+ *
+ * @see PathMatchingResourcePatternResolver
  */
 public class MessageSourcePathMatchingResource {
 	private static final Logger logger = LoggerFactory.getLogger(MessageSourcePathMatchingResource.class);
+	private final String extension = ".properties";
 
-	private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
+	private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver
+			= new PathMatchingResourcePatternResolver();
 
-	public String getResource(String location) throws IOException {
-		return getBaseName(pathMatchingResourcePatternResolver.getResource(location));
+	public String getResource(String basenamePattern) throws IOException {
+		return getBaseName(pathMatchingResourcePatternResolver.getResource(basenamePattern));
 	}
 
-	public String[] getResources(String locationPattern) throws IOException {
-		return getResources(new String[]{locationPattern});
+	public String[] getResources(String basenamePatterns) throws IOException {
+		return getResources(
+				org.springframework.util.StringUtils.delimitedListToStringArray(basenamePatterns, ","));
 	}
 
 	/**
@@ -39,43 +44,50 @@ public class MessageSourcePathMatchingResource {
 	 * locationPattern = {
 	 *     "classpath:org/saltframework/{@code **}/i18n/message.properties"
 	 * }
-	 *
-	 * @param locationPattern the location pattern
-	 * @return the string [ ]
-	 * @throws IOException the io exception
+	 * @param basenamesPattern
+	 * @return
+	 * @throws IOException
 	 */
-	public String[] getResources(String[] locationPattern) throws IOException {
+	public String[] getResources(String[] basenamesPattern) throws IOException {
 
-		List<String> strings = new ArrayList();
+		List<String> basenames = new ArrayList();
 
-		for (String path : locationPattern) {
-			Resource[] resources = pathMatchingResourcePatternResolver.getResources(path);
+		for (String basenamePattern : basenamesPattern) {
+			logger.debug("><>< {}", basenamePattern.trim());
+			Resource[] resources = pathMatchingResourcePatternResolver.getResources(basenamePattern.trim());
 			for (Resource resource : resources) {
-				//strings.add(resource.createRelative(MESSAGE_NAME));
-				String baseName = getBaseName(resource);
-				if (baseName != null) strings.add(baseName);
+				logger.debug("><>< {}", resource.getURL());
+				String basename = getBaseName(resource);
+				if (basename != null) {
+					basenames.add(basename);
+					logger.debug("><>< found messageSource : {}", basename);
+				}
 			}
 		}
 
-		return strings.toArray(new String[strings.size()]);
+		return basenames.toArray(new String[basenames.size()]);
 	}
 
 	private String getBaseName(Resource resource) throws IOException {
 		try {
 			String uri = resource.getURI().toString();
-			String baseName = null;
+			String basename = null;
 
 			if (resource instanceof FileSystemResource) {
-				// baseName = "classpath:" + substringBetween(uri, "/classes/", ".properties");
-				baseName = StringUtils.substringBefore(uri, ".properties");
+				basename = StringUtils.substringBefore(uri, extension);
 			} else if (resource instanceof ClassPathResource) {
-				baseName = StringUtils.substringBefore(uri, ".properties");
+				basename = StringUtils.substringBefore(uri, extension);
 			} else if (resource instanceof UrlResource) {
-				baseName = "classpath:" + StringUtils.substringBetween(uri, ".jar!/", ".properties");
+				String path = StringUtils.substringBetween(uri, ".jar!/", extension);
+				if (path == null) {
+					basename = StringUtils.substringBefore(uri, extension);
+				} else {
+					basename = "classpath:" + StringUtils.substringBetween(uri, ".jar!/", extension);
+				}
 			}
 
-			if (baseName != null) {
-				return processBasename(baseName);
+			if (basename != null) {
+				return processBasename(basename);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -85,9 +97,9 @@ public class MessageSourcePathMatchingResource {
 		return null;
 	}
 
-	private String processBasename(String baseName) {
-		String prefix = StringUtils.substringBeforeLast(baseName, "/");
-		String name = StringUtils.substringAfterLast(baseName, "/");
+	private String processBasename(String basename) {
+		String prefix = StringUtils.substringBeforeLast(basename, "/");
+		String name = StringUtils.substringAfterLast(basename, "/");
 		do {
 			name = StringUtils.substringBeforeLast(name, "_");
 		} while (name.contains("_"));

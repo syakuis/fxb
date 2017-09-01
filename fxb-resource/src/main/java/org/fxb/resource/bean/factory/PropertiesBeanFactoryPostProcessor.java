@@ -23,7 +23,6 @@ public class PropertiesBeanFactoryPostProcessor implements BeanDefinitionRegistr
 		this.beanName = beanName;
 		this.clazz = clazz;
 		this.locations = locations;
-		this.fileEncoding = fileEncoding;
 	}
 
 	public void setFileEncoding(String fileEncoding) {
@@ -32,12 +31,6 @@ public class PropertiesBeanFactoryPostProcessor implements BeanDefinitionRegistr
 
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-//		BeanDefinitionBuilder beanDefinitionBuilder =
-//				BeanDefinitionBuilder.genericBeanDefinition(ConfigurePropertiesFactoryBean.class);
-//		registry.registerBeanDefinition("fxb", beanDefinitionBuilder.getBeanDefinition());
-
-//		ConstructorArgumentValues values = new ConstructorArgumentValues();
-
 		MutablePropertyValues property = new MutablePropertyValues();
 		property.add("locations", locations);
 		if (fileEncoding != null) {

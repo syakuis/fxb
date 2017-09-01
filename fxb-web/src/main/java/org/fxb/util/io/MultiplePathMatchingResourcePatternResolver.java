@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PathMatchingResourcePatternResolver 를 이용하여 여러개의 패턴을 처리한다.
+ * PathMatchingResourcePatternResolver 를 이용하여 여러개의 경로 패턴을 이용하여 메세지 프로퍼티의 경로를 구한다.
  *
  * @see PathMatchingResourcePatternResolver
  * @date 2015. 10. 1.

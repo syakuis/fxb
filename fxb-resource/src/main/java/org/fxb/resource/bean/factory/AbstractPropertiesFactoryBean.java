@@ -7,6 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
@@ -26,7 +27,7 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
 	/**
 	 * The File encoding.
 	 */
-	String fileEncoding;
+	String fileEncoding = Charset.defaultCharset().name();
 
 	String[] locations;
 
