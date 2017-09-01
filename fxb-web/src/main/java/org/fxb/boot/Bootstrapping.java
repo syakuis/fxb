@@ -17,7 +17,7 @@ import org.springframework.context.annotation.*;
 )
 public class Bootstrapping {
 	@Bean
-	public static ConfigurePropertiesConfigurer configurePropertiesConfigurer() {
-		return new ConfigurePropertiesConfigurer();
+	public static PropertiesBeanFactoryPostProcessor configurePropertiesConfigurer() {
+		return new PropertiesBeanFactoryPostProcessor();
 	}
 }
