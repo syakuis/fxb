@@ -11,7 +11,7 @@ public class FreemarkerSupport {
 	private final Configuration cfg;
 
 	public FreemarkerSupport(FreeMarkerConfigurer freemarkerConfig) {
-		cfg = freemarkerConfig.getConfiguration();
+		this.cfg = freemarkerConfig.getConfiguration();
 	}
 
 	public void variable(String name, Object object) {

@@ -21,7 +21,8 @@ public class MessageSourceConfiguration {
 	private MessageSource messageSource;
 	private Config config;
 
-	public void setConfig(@Autowired Config config) {
+	@Autowired
+	public void setConfig(Config config) {
 		this.config = config;
 	}
 

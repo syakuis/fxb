@@ -64,7 +64,7 @@ public class PropertiesConfigurationTest {
 	@Configuration
 	static class PropetiesPostProcessorConfiguraion {
 		@Bean
-		static PropertiesBeanFactoryPostProcessor commonsConfigurationPostProcessor() {
+		static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
 			return new PropertiesBeanFactoryPostProcessor(
 					"properties2",
 					PropertiesFactoryBean.class,

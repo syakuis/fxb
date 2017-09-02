@@ -1,7 +1,7 @@
 package org.fxb.config.web;
 
-import org.fxb.config.web.support.FreemarkerSupport;
 import org.fxb.config.Config;
+import org.fxb.config.web.support.FreemarkerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -43,21 +43,16 @@ import javax.annotation.PostConstruct;
 public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
 	private Validator validator;
 
+	@Autowired
 	private Config config;
+
+	@Autowired
 	private FreeMarkerConfigurer freeMarkerConfigurer;
-
-	public void setConfig(@Autowired Config config) {
-		this.config = config;
-	}
-
-	public void setFreeMarkerConfigurer(@Autowired FreeMarkerConfigurer freeMarkerConfigurer) {
-		this.freeMarkerConfigurer = freeMarkerConfigurer;
-	}
 
 	@PostConstruct
 	public void freeMarkerGlobalVariable() {
 		FreemarkerSupport freemarkerSupport = new FreemarkerSupport(freeMarkerConfigurer);
-		freemarkerSupport.variable("fxb", config);
+		freemarkerSupport.variable("config", config);
 	}
 
 	@Autowired

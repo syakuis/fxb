@@ -3,6 +3,7 @@ package org.fxb.resource.properties;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public abstract class AbstractProperties {
 	private String delimiter = ",";
 
 	public AbstractProperties(Properties properties) {
+		Assert.notNull(properties, "The class must not be null");
 		this.properties = properties;
 	}
 

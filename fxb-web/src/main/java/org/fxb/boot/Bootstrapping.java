@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.core.annotation.Order;
+
+import java.util.Properties;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -21,12 +24,17 @@ import org.springframework.context.annotation.FilterType;
 public class Bootstrapping {
 
 	@Bean
-	public static PropertiesBeanFactoryPostProcessor configurePropertiesConfigurer() {
+	static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
 		String[] locations = new String[]{
 				"classpath:org/fxb/config/config.properties",
 				"classpath:config-%s.properties"
 		};
 
 		return new PropertiesBeanFactoryPostProcessor("properties", PropertiesFactoryBean.class, locations);
+	}
+
+	@Bean
+	static ConfigBeanFactoryPostProcessor configBeanFactoryPostProcessor() {
+		return new ConfigBeanFactoryPostProcessor();
 	}
 }

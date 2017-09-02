@@ -44,7 +44,7 @@ public class PropertiesLoader extends AbstractPropertiesLoader {
 
 			Properties properties = propertiesFactoryBean.getObject();
 
-			properties.setProperty("profiles", StringUtils.join(this.getProperties(), ","));
+			properties.setProperty("profiles", StringUtils.join(this.getProfiles(), ","));
 			properties.setProperty("profile", this.getProfile());
 			properties.setProperty("charset", this.getFileEncoding());
 			properties.setProperty("rootAbsolutePath", servletContext.getRealPath("/"));

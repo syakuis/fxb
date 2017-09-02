@@ -119,10 +119,6 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>, Env
 	public MessageSource getObject() throws IOException {
 		Assert.notEmpty(basenames, "The array must contain elements");
 
-		String[] basenames = messageSourceMatchingPattern.getResources(this.basenames);
-
-		Assert.isNull(basenames, "The class must not be null");
-
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setCacheSeconds(this.cacheSeconds);
 		messageSource.setDefaultEncoding(this.fileEncoding);
@@ -136,8 +132,15 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>, Env
 		messageSource.setCommonMessages(this.commonMessages);
 		messageSource.setFallbackToSystemLocale(this.fallbackToSystemLocale);
 		messageSource.setUseCodeAsDefaultMessage(this.useCodeAsDefaultMessage);
+
 		if (parentMessageSource != null) {
 			messageSource.setParentMessageSource(parentMessageSource);
+		}
+
+		String[] basenames = messageSourceMatchingPattern.getResources(this.basenames);
+
+		if (basenames == null) {
+			return messageSource;
 		}
 
 		messageSource.setBasenames(basenames);
