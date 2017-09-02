@@ -1,6 +1,6 @@
 package org.fxb.boot;
 
-import org.fxb.boot.servlet.ServletApplicationContext;
+import org.fxb.config.web.ApplicationContextConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.WebApplicationInitializer;
@@ -18,8 +18,8 @@ import java.util.EnumSet;
  * @since 2017. 8. 10.
  */
 
-public class FxbWebApplicationInitializer implements WebApplicationInitializer {
-	private static final Logger logger = LoggerFactory.getLogger(FxbWebApplicationInitializer.class);
+public class BootWebApplicationInitializer implements WebApplicationInitializer {
+	private static final Logger logger = LoggerFactory.getLogger(BootWebApplicationInitializer.class);
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
@@ -40,7 +40,7 @@ public class FxbWebApplicationInitializer implements WebApplicationInitializer {
 		servletContext.addListener(new ContextLoaderListener(context));
 
 		AnnotationConfigWebApplicationContext dispatcherServletContext = new AnnotationConfigWebApplicationContext();
-		dispatcherServletContext.register(ServletApplicationContext.class);
+		dispatcherServletContext.register(ApplicationContextConfiguration.class);
 
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("fxb-web", new DispatcherServlet(dispatcherServletContext));
 		dispatcher.setLoadOnStartup(1);

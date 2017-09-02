@@ -1,4 +1,4 @@
-package org.fxb.boot.servlet.support;
+package org.fxb.config.web.support;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModelException;

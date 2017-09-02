@@ -12,6 +12,7 @@ import org.springframework.util.PropertiesPersister;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -115,7 +116,7 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>, Env
 	}
 
 	@Override
-	public MessageSource getObject() throws Exception {
+	public MessageSource getObject() throws IOException {
 		Assert.notEmpty(basenames, "The array must contain elements");
 
 		String[] basenames = messageSourceMatchingPattern.getResources(this.basenames);

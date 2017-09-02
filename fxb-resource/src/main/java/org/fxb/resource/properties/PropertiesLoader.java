@@ -1,6 +1,7 @@
 package org.fxb.resource.properties;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.fxb.resource.exception.PropertiesException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,14 @@ public class PropertiesLoader extends AbstractPropertiesLoader {
 
 			propertiesFactoryBean.afterPropertiesSet();
 
-			return propertiesFactoryBean.getObject();
+			Properties properties = propertiesFactoryBean.getObject();
+
+			properties.setProperty("profiles", StringUtils.join(this.getProperties(), ","));
+			properties.setProperty("profile", this.getProfile());
+			properties.setProperty("charset", this.getFileEncoding());
+			properties.setProperty("rootAbsolutePath", servletContext.getRealPath("/"));
+
+			return properties;
 		} catch (IOException e) {
 			logger.debug("><>< Properties Loaded : {}", e.getMessage());
 		}

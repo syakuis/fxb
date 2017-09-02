@@ -20,6 +20,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.fxb</groupId>
+			<artifactId>fxb-resource</artifactId>
+			<version>${fxb.version}</version>
+		</dependency>
 		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

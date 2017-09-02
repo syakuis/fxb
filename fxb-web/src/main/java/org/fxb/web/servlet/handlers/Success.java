@@ -14,7 +14,7 @@ import java.util.Date;
  * @since 2016. 12. 16.
  */
 @AllArgsConstructor
-public class SuccessHandler<T> {
+public class Success<T> {
 	@Getter
 	private final String message;
 	@Getter
@@ -26,27 +26,27 @@ public class SuccessHandler<T> {
 	@Getter @Setter
 	private T content;
 
-	public SuccessHandler() {
+	public Success() {
 		this(null, false, StatusCode.OK);
 	}
 
-	public SuccessHandler(String message) {
+	public Success(String message) {
 		this(message, false, StatusCode.OK);
 	}
 
-	public SuccessHandler(boolean error) {
+	public Success(boolean error) {
 		this(null, error, StatusCode.OK);
 	}
 
-	public SuccessHandler(String message, boolean error) {
+	public Success(String message, boolean error) {
 		this(message, error, StatusCode.OK);
 	}
 
-	public SuccessHandler(String message, boolean error, StatusCode statusCode) {
+	public Success(String message, boolean error, StatusCode statusCode) {
 		this(message, error, statusCode, null);
 	}
 
-	public SuccessHandler(String message, boolean error, StatusCode statusCode, T content) {
+	public Success(String message, boolean error, StatusCode statusCode, T content) {
 		this.message = message;
 		this.error = error;
 		this.statusCode = statusCode;

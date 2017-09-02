@@ -37,7 +37,6 @@ public class PropertiesBeanFactoryPostProcessor implements BeanDefinitionRegistr
 			property.add("fileEncoding", fileEncoding);
 		}
 
-
 		RootBeanDefinition rootBean = new RootBeanDefinition(clazz, null, property);
 		registry.registerBeanDefinition(this.beanName, rootBean);
 	}

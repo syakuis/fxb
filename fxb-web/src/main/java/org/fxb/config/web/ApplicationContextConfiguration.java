@@ -1,7 +1,7 @@
-package org.fxb.boot.servlet;
+package org.fxb.config.web;
 
-import org.fxb.boot.servlet.support.FreemarkerSupport;
-import org.fxb.config.Fxb;
+import org.fxb.config.web.support.FreemarkerSupport;
+import org.fxb.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,14 +40,14 @@ import javax.annotation.PostConstruct;
 				}
 		)
 )
-public class ServletApplicationContext extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
+public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
 	private Validator validator;
 
-	private Fxb fxb;
+	private Config config;
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
-	public void setFxb(@Autowired Fxb fxb) {
-		this.fxb = fxb;
+	public void setConfig(@Autowired Config config) {
+		this.config = config;
 	}
 
 	public void setFreeMarkerConfigurer(@Autowired FreeMarkerConfigurer freeMarkerConfigurer) {
@@ -57,7 +57,7 @@ public class ServletApplicationContext extends WebMvcConfigurerAdapter implement
 	@PostConstruct
 	public void freeMarkerGlobalVariable() {
 		FreemarkerSupport freemarkerSupport = new FreemarkerSupport(freeMarkerConfigurer);
-		freemarkerSupport.variable("fxb", fxb);
+		freemarkerSupport.variable("fxb", config);
 	}
 
 	@Autowired
@@ -76,8 +76,8 @@ public class ServletApplicationContext extends WebMvcConfigurerAdapter implement
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		String[] resourceHandlers = fxb.getResourceHandlers();
-		String[] resourceLocations = fxb.getResourceLocations();
+		String[] resourceHandlers = config.getResourceHandlers();
+		String[] resourceLocations = config.getResourceLocations();
 		int size = resourceHandlers.length;
 
 		for (int i = 0; i < size; i++) {
@@ -97,7 +97,7 @@ public class ServletApplicationContext extends WebMvcConfigurerAdapter implement
 		FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
 		viewResolver.setExposeSpringMacroHelpers(true);
 
-		viewResolver.setContentType("text/html; charset=" + fxb.getCharset() +";");
+		viewResolver.setContentType("text/html; charset=" + config.getCharset() +";");
 		viewResolver.setCache(true);
 		viewResolver.setPrefix("");
 		viewResolver.setSuffix(".ftl");

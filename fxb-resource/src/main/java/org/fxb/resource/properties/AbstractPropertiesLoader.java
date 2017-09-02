@@ -26,8 +26,8 @@ public abstract class AbstractPropertiesLoader {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractPropertiesLoader.class);
 	private static final String CHARSET_NAME = "charset";
 
-	private final ServletContext servletContext;
-	private final Environment environment;
+	protected final ServletContext servletContext;
+	protected final Environment environment;
 	private final String[] locations;
 	private String fileEncoding = Charset.defaultCharset().name();
 	protected String delimiter = ",";
