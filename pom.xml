@@ -12,7 +12,8 @@
     <modules>
         <module>fxb-resource</module>
         <module>fxb-web</module>
-    </modules>
+		<module>fxb-context</module>
+	</modules>
 
     <properties>
         <encoding>UTF-8</encoding>
