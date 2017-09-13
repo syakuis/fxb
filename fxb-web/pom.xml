@@ -22,6 +22,11 @@
 			<artifactId>fxb-resource</artifactId>
 			<version>${fxb.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.fxb</groupId>
+			<artifactId>fxb-context</artifactId>
+			<version>${fxb.version}</version>
+		</dependency>
 		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
