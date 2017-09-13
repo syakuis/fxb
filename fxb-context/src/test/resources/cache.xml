@@ -1,4 +1,13 @@
 <caches>
+	<cache name="test"
+		   maxEntriesLocalHeap="10000"
+		   timeToIdleSeconds="0"
+		   timeToLiveSeconds="0"
+		   eternal="false"
+		   memoryStoreEvictionPolicy="LFU">
+		<persistence strategy="localTempSwap" />
+	</cache>
+
 	<cache name="good"
 		   maxEntriesLocalHeap="10000"
 		   timeToIdleSeconds="0"
@@ -8,16 +17,7 @@
 		<persistence strategy="localTempSwap" />
 	</cache>
 
-	<cache name="good2"
-		   maxEntriesLocalHeap="10000"
-		   timeToIdleSeconds="0"
-		   timeToLiveSeconds="0"
-		   eternal="false"
-		   memoryStoreEvictionPolicy="LFU">
-		<persistence strategy="localTempSwap" />
-	</cache>
-
-	<cache name="good3"
+	<cache name="sample"
 		   maxEntriesLocalHeap="10000"
 		   timeToIdleSeconds="0"
 		   timeToLiveSeconds="0"

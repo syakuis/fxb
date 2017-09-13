@@ -1,8 +1,9 @@
 package org.fxb.context.cache.config;
 
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.PersistenceConfiguration;
 import org.fxb.context.cache.bean.factory.EhcacheFactoryBean;
+import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -31,50 +32,24 @@ import org.springframework.stereotype.Service;
 		}
 )
 public class EhcacheConfiguration implements CachingConfigurer {
-
-	private net.sf.ehcache.config.Configuration getConfiguration() {
-
-
-		CacheConfiguration cacheConfiguration = new CacheConfiguration();
-		cacheConfiguration.setName("test");
-		cacheConfiguration.setMemoryStoreEvictionPolicy("LRU");
-		cacheConfiguration.setMaxEntriesLocalHeap(0);
-		cacheConfiguration.setEternal(false);
-		cacheConfiguration.setTimeToIdleSeconds(0);
-		cacheConfiguration.setTimeToLiveSeconds(0);
-		cacheConfiguration.setLogging(false);
-		cacheConfiguration.persistence(
-				new PersistenceConfiguration()
-						.strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
-		);
-
-		net.sf.ehcache.config.Configuration configuration = new net.sf.ehcache.config.Configuration();
-		configuration.setDynamicConfig(true);
-		configuration.setUpdateCheck(true);
-		configuration.setMonitoring("autodetect");
-
-		configuration.addCache(cacheConfiguration);
-
-		return configuration;
-	}
+	private final Logger logger = LoggerFactory.getLogger(EhcacheConfiguration.class);
 
 	@Bean(destroyMethod="shutdown")
 	public net.sf.ehcache.CacheManager ehCacheManager() {
-		/*
-		CacheConfiguration cacheConfiguration = new CacheConfiguration();
-		cacheConfiguration.setName("default");
-		cacheConfiguration.setMemoryStoreEvictionPolicy("LRU");
-		cacheConfiguration.setMaxEntriesLocalHeap(1000);
-		net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
-		config.addCache(cacheConfiguration);
-		return net.sf.ehcache.CacheManager.newInstance(config);
-		*/
 
-		EhcacheFactoryBean factoryBean = new EhcacheFactoryBean();
-		factoryBean.setConfiguration(this.getConfiguration());
-		factoryBean.afterPropertiesSet();
+		try {
+			EhcacheFactoryBean factoryBean = new EhcacheFactoryBean(
+					"ehcache.xml",
+					"cache.xml"
+			);
+			factoryBean.afterPropertiesSet();
 
-		return factoryBean.getObject();
+			return factoryBean.getObject();
+		} catch (EhcacheConfigurationException e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return null;
 	}
 
 	@Bean

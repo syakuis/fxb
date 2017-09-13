@@ -3,11 +3,15 @@ package org.fxb.context.cache.bean.factory;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.Configuration;
+import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
+import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -16,9 +20,14 @@ import org.springframework.beans.factory.InitializingBean;
  * @see org.springframework.cache.ehcache.EhCacheManagerFactoryBean
  */
 public class EhcacheFactoryBean implements FactoryBean<CacheManager>, InitializingBean, DisposableBean {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private CacheManager cacheManager;
+
+	private final String ehcacheLocation;
+	private final String[] cacheLocations;
+
+	private String charset = "UTF-8";
 
 	private String cacheManagerName = "cacheManager";
 
@@ -28,10 +37,8 @@ public class EhcacheFactoryBean implements FactoryBean<CacheManager>, Initializi
 
 	private boolean locallyManaged = true;
 
-	private Configuration configuration;
-
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 
 	public void setCacheManagerName(String cacheManagerName) {
@@ -50,13 +57,24 @@ public class EhcacheFactoryBean implements FactoryBean<CacheManager>, Initializi
 		this.locallyManaged = locallyManaged;
 	}
 
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
+	public EhcacheFactoryBean(String ehcacheLocation, String cacheLocation) {
+		this(ehcacheLocation, StringUtils.delimitedListToStringArray(cacheLocation, ","));
+	}
+
+	public EhcacheFactoryBean(String ehcacheLocation, String[] cacheLocations) {
+		this.ehcacheLocation = ehcacheLocation;
+		this.cacheLocations = cacheLocations;
 	}
 
 	@Override
-	public void afterPropertiesSet() throws CacheException {
+	public void afterPropertiesSet() throws CacheException, EhcacheConfigurationException {
 		logger.info("Initializing EhCache CacheManager");
+
+		EhcacheConfigurationLoader loader = new EhcacheConfigurationLoader(ehcacheLocation, cacheLocations);
+		loader.setCharset(charset);
+		Configuration configuration = loader.create();
+
+		Assert.notNull(configuration, "The class must not be null");
 
 		if (this.cacheManagerName != null) {
 			configuration.setName(this.cacheManagerName);
@@ -112,5 +130,4 @@ public class EhcacheFactoryBean implements FactoryBean<CacheManager>, Initializi
 			this.cacheManager.shutdown();
 		}
 	}
-
 }
