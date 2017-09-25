@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(
-		basePackages = "org.fxb",
+		basePackages = "org.fxb.app",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(
 				type = FilterType.ANNOTATION,
@@ -25,5 +25,5 @@ import org.springframework.stereotype.Service;
 				}
 		)
 )
-public class ContextConfiguration {
+public class AppConfiguration {
 }

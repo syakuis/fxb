@@ -1,14 +1,18 @@
 package org.fxb.boot;
 
-import org.fxb.resource.bean.factory.PropertiesBeanFactoryPostProcessor;
-import org.fxb.resource.bean.factory.PropertiesFactoryBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.core.annotation.Order;
+import org.fxb.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.core.io.ClassPathResource;
 
-import java.util.Properties;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.stream.Stream;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -21,20 +25,42 @@ import java.util.Properties;
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
+@Import(PropertiesConfiguration.class)
 public class Bootstrapping {
+	private final Logger logger = LoggerFactory.getLogger(Bootstrapping.class);
 
-	@Bean
-	static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
-		String[] locations = new String[]{
-				"classpath:org/fxb/config/config.properties",
-				"classpath:config-%s.properties"
-		};
+	@Autowired
+	private Config config;
 
-		return new PropertiesBeanFactoryPostProcessor("properties", PropertiesFactoryBean.class, locations);
-	}
 
-	@Bean
-	static ConfigBeanFactoryPostProcessor configBeanFactoryPostProcessor() {
-		return new ConfigBeanFactoryPostProcessor();
+	@PostConstruct
+	public void intro() throws IOException {
+		StringBuilder print = new StringBuilder();
+		print.append("\n_________________________________________________________________________________\n");
+
+		logger.debug("{}", new ClassPathResource("org/fxb/config/intro").getFile().exists());
+		try (Stream<String> stream = Files.lines(
+				Paths.get(new ClassPathResource("org/fxb/config/intro").getURI()))
+		) {
+			stream.forEach(intro -> print.append(intro).append("\n"));
+		} catch (IOException ioe) {
+			logger.debug("file not found.");
+		}
+
+		print.append("                                                                  version ")
+				.append(config.getVersion())
+				.append("  \n")
+				.append("                                                                                 \n")
+				.append("                                                                                 \n")
+				.append("                           Frontend X Backend (Fxb) by 52572 49437 44512         \n")
+				.append("                                                                                 \n")
+				.append("_________________________________________________________________________________\n\n")
+				.append("* Locale: ").append(config.getLocale().getLanguage()).append("\n")
+				.append("* TimeZone: ").append(config.getTimeZone().getID()).append("\n")
+				.append("* Date: ").append(new Date()).append("\n")
+				.append("* Profile: ").append(config.getProfile()).append("\n")
+				.append("* profiles: ").append(config.getString("profiles")).append("\n")
+				.append("* rootAbsolutePath: ").append(config.getRootAbsolutePath()).append("\n")
+				.append("_________________________________________________________________________________\n\n");
 	}
 }

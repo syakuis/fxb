@@ -118,17 +118,11 @@ public abstract class AbstractPropertiesLoader {
 	 * "classpath:fxb-%s.properties"
 	 * @return
 	 */
-	protected Resource[] getLocationResources(String[] configLocations) {
+	protected Resource[] getLocationResources(String[] configLocations) throws IOException {
 		Assert.notEmpty(configLocations, "The array must contain elements. (configLocations)");
 
-		try {
-			MultiplePathMatchingResourcePatternResolver matchingPattern = new MultiplePathMatchingResourcePatternResolver();
-			return matchingPattern.getResources(configLocations);
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-
-		return null;
+		MultiplePathMatchingResourcePatternResolver matchingPattern = new MultiplePathMatchingResourcePatternResolver();
+		return matchingPattern.getResources(configLocations);
 	}
 
 	public abstract Properties getProperties() throws PropertiesException;

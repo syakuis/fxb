@@ -13,7 +13,8 @@
         <module>fxb-resource</module>
         <module>fxb-web</module>
 		<module>fxb-context</module>
-	</modules>
+        <module>fxb-example</module>
+    </modules>
 
     <properties>
         <encoding>UTF-8</encoding>

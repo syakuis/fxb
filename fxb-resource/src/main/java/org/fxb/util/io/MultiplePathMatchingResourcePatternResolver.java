@@ -1,5 +1,7 @@
 package org.fxb.util.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -17,6 +19,8 @@ import java.util.List;
  * @site http://syaku.tistory.com
  */
 public class MultiplePathMatchingResourcePatternResolver implements ResourcePatternResolver {
+	private final Logger logger = LoggerFactory.getLogger(MultiplePathMatchingResourcePatternResolver.class);
+
 	private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 	@Override
@@ -40,7 +44,10 @@ public class MultiplePathMatchingResourcePatternResolver implements ResourcePatt
 		for (String path : locationPattern) {
 			Resource[] resources = pathMatchingResourcePatternResolver.getResources(path);
 			for (Resource resource : resources) {
-				listResource.add(resource);
+				if (resource.exists()) {
+					listResource.add(resource);
+					logger.debug("><>< {}", resource.getURL());
+				}
 			}
 		}
 

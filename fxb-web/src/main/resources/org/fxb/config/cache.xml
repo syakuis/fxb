@@ -1,0 +1,10 @@
+<caches>
+	<cache name="module"
+		   maxEntriesLocalHeap="10000"
+		   timeToIdleSeconds="0"
+		   timeToLiveSeconds="0"
+		   eternal="false"
+		   memoryStoreEvictionPolicy="LFU">
+		<persistence strategy="localTempSwap" />
+	</cache>
+</caches>

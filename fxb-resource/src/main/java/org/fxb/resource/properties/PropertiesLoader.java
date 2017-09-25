@@ -28,12 +28,11 @@ public class PropertiesLoader extends AbstractPropertiesLoader {
 
 	@Override
 	public Properties getProperties() throws PropertiesException {
-		Resource[] resources =
-				this.getLocationResources(this.getLocationProfileFormat());
-
-		PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-
 		try {
+			Resource[] resources =
+					this.getLocationResources(this.getLocationProfileFormat());
+
+			PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
 			propertiesFactoryBean.setLocations(resources);
 			propertiesFactoryBean.setIgnoreResourceNotFound(true); // 프로퍼티 파일이 없는 경우 무시한다.
 			propertiesFactoryBean.setFileEncoding(this.getFileEncoding());
@@ -52,9 +51,7 @@ public class PropertiesLoader extends AbstractPropertiesLoader {
 			return properties;
 		} catch (IOException e) {
 			logger.debug("><>< Properties Loaded : {}", e.getMessage());
+			throw new PropertiesException(e);
 		}
-
-
-		return null;
 	}
 }
