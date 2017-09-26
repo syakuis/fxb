@@ -38,7 +38,7 @@ public class Bootstrapping {
 		print.append("\n_________________________________________________________________________________\n");
 
 		try (Stream<String> stream = Files.lines(
-				Paths.get(new ClassPathResource("org/fxb/config/intro").getURI()))
+				Paths.get(new ClassPathResource("classpath*:org/fxb/config/intro").getURI()))
 		) {
 			stream.forEach(intro -> print.append(intro).append("\n"));
 		} catch (IOException ioe) {
