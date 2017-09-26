@@ -32,13 +32,11 @@ public class Bootstrapping {
 	@Autowired
 	private Config config;
 
-
 	@PostConstruct
 	public void intro() throws IOException {
 		StringBuilder print = new StringBuilder();
 		print.append("\n_________________________________________________________________________________\n");
 
-		logger.debug("{}", new ClassPathResource("org/fxb/config/intro").getFile().exists());
 		try (Stream<String> stream = Files.lines(
 				Paths.get(new ClassPathResource("org/fxb/config/intro").getURI()))
 		) {
@@ -60,5 +58,7 @@ public class Bootstrapping {
 				.append("* profiles: ").append(config.getString("profiles")).append("\n")
 				.append("* rootAbsolutePath: ").append(config.getRootAbsolutePath()).append("\n")
 				.append("_________________________________________________________________________________\n\n");
+
+		System.out.println(print.toString());
 	}
 }
