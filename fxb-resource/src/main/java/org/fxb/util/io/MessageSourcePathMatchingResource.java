@@ -53,15 +53,13 @@ public class MessageSourcePathMatchingResource {
 		List<String> basenames = new ArrayList();
 
 		for (String basenamePattern : basenamesPattern) {
-			logger.debug("><>< {}", basenamePattern.trim());
 			Resource[] resources = pathMatchingResourcePatternResolver.getResources(basenamePattern.trim());
 			for (Resource resource : resources) {
 				if (resource.exists()) {
-					logger.debug("><>< {}", resource.getURL());
 					String basename = getBaseName(resource);
 					if (basename != null) {
 						basenames.add(basename);
-						logger.debug("><>< found messageSource : {}", basename);
+						logger.debug("><>< MessageSource add basename : {}", basename);
 					}
 				}
 			}

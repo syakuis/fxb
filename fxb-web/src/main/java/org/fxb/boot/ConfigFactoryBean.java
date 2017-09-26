@@ -2,11 +2,8 @@ package org.fxb.boot;
 
 import org.fxb.config.Config;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.util.Assert;
 
-import java.util.Locale;
 import java.util.Properties;
-import java.util.TimeZone;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -21,8 +18,8 @@ public class ConfigFactoryBean implements FactoryBean<Config> {
 	}
 
 	@Override
-	public Config getObject() throws Exception {
-		return new Config(this.properties, TimeZone.getDefault(), Locale.getDefault());
+	public Config getObject() {
+		return new Config(this.properties);
 	}
 
 	@Override

@@ -43,13 +43,13 @@ public class MessageSourceConfiguration {
 		parentFactoryBean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
 		parentFactoryBean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
 
-		// 설정에 의한 필요한 메세지 로드
-		String[] basenames = config.getStringArray("messageSource.basename");
+		// Config 에 의한 필요한 메세지 로드 : ParentMessageSource 를 Overwrite 할 수 있다.
+		String[] basenames = config.getStringArray("messageSource.basenames");
 		if (basenames != null && basenames.length > 0) {
 			MessageSourceFactoryBean factoryBean = new MessageSourceFactoryBean();
 			factoryBean.setParentMessageSource(parentFactoryBean.getObject());
 			factoryBean.setFileEncoding(config.getCharset());
-			factoryBean.setBasenames(config.getStringArray("messageSource.basename"));
+			factoryBean.setBasenames(basenames);
 			factoryBean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
 			factoryBean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
 

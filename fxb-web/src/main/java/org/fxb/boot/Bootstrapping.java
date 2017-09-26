@@ -55,8 +55,6 @@ public class Bootstrapping {
 				.append("                           Frontend X Backend (Fxb) by 52572 49437 44512         \n")
 				.append("                                                                                 \n")
 				.append("_________________________________________________________________________________\n\n")
-				.append("* Locale: ").append(config.getLocale().getLanguage()).append("\n")
-				.append("* TimeZone: ").append(config.getTimeZone().getID()).append("\n")
 				.append("* Date: ").append(new Date()).append("\n")
 				.append("* Profile: ").append(config.getProfile()).append("\n")
 				.append("* profiles: ").append(config.getString("profiles")).append("\n")

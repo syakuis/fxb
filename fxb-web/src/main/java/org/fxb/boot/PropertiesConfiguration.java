@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 /**
+ * Config Bean 과 Properties Bean 을 생성한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 9. 19.
@@ -16,7 +17,7 @@ public class PropertiesConfiguration {
 	@Bean
 	static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
 		String[] locations = new String[]{
-				"classpath*:org/fxb/config/config.properties",
+				"classpath:org/fxb/config/config.properties",
 				"classpath:config.properties",
 				"classpath:config-%s.properties"
 		};

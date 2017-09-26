@@ -46,7 +46,7 @@ public class MultiplePathMatchingResourcePatternResolver implements ResourcePatt
 			for (Resource resource : resources) {
 				if (resource.exists()) {
 					listResource.add(resource);
-					logger.debug("><>< {}", resource.getURL());
+					logger.debug("><>< add resource = {}", resource.getURL());
 				}
 			}
 		}

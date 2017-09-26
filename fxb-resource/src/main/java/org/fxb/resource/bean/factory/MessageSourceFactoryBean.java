@@ -117,7 +117,7 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>, Env
 
 	@Override
 	public MessageSource getObject() throws IOException {
-		Assert.notEmpty(basenames, "The array must contain elements");
+		Assert.notEmpty(basenames, "The array must contain elements : basenames");
 
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setCacheSeconds(this.cacheSeconds);

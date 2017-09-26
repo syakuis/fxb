@@ -1,5 +1,6 @@
 package org.fxb.resource.properties;
 
+import lombok.Getter;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.Assert;
@@ -12,13 +13,37 @@ import java.util.*;
  * @site http://syaku.tistory.com
  * @since 2017. 8. 26.
  */
+@Getter
 public abstract class AbstractProperties {
-	protected final String delimiter = ",";
-	protected final Properties properties;
+	private final String delimiter = ",";
+
+	private final Properties properties;
+
+	private final String version = "1.0.0";
+	private String profile;
+	private String[] profiles;
+	private String charset;
+
+	private String rootAbsolutePath;
+
+	private int cacheSeconds;
+	private String[] resourceHandlers;
+	private String[] resourceLocations;
 
 	public AbstractProperties(Properties properties) {
 		Assert.notNull(properties, "The class must not be null");
 		this.properties = properties;
+
+		profile = getString("profile");
+		profiles = getArray("profiles");
+
+		charset = getString("charset");
+		cacheSeconds = getInt("cacheSeconds");
+
+		rootAbsolutePath = getString("rootAbsolutePath");
+
+		resourceHandlers = getArray("resourceHandlers");
+		resourceLocations = getArray("resourceLocations");
 	}
 
 	public List<String> getKeys() {

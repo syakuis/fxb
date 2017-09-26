@@ -8,9 +8,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,11 +18,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 import static org.hamcrest.core.Is.is;
 
 /**
+ * test 환경으로 구동하여 Properties 로드하고 Config 클래스를 테스트한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 9. 19.
@@ -35,8 +32,8 @@ import static org.hamcrest.core.Is.is;
 @WebAppConfiguration
 @ActiveProfiles("test")
 @TestPropertySource("/config-test.properties")
-public class ConfigTest {
-	private final Logger logger = LoggerFactory.getLogger(ConfigTest.class);
+public class PropertiesConfigurationAndConfigTest {
+	private final Logger logger = LoggerFactory.getLogger(PropertiesConfigurationAndConfigTest.class);
 
 	@Autowired
 	Config config;
@@ -52,8 +49,11 @@ public class ConfigTest {
 		return Arrays.asList(getStringArray(key));
 	}
 
+	/**
+	 * Config 메서드들을 테스트한다.
+	 */
 	@Test
-	public void test() {
+	public void configMethodTest() {
 		/*
 		 test.string=abc
 		 test.stringArray=a,b,c

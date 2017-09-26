@@ -25,5 +25,5 @@ import org.springframework.stereotype.Service;
 				}
 		)
 )
-public class AppConfiguration {
+public class ApplicationConfiguration {
 }
