@@ -5,7 +5,6 @@ import org.fxb.config.web.support.FreemarkerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
@@ -25,7 +24,6 @@ import javax.annotation.PostConstruct;
  * @since 2017. 4. 13.
  */
 @Configuration
-@EnableAspectJAutoProxy
 @EnableWebMvc
 @ComponentScan(
 		basePackages = "org.fxb",

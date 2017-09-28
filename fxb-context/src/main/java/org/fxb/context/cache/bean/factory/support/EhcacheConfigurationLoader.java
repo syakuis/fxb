@@ -52,6 +52,7 @@ public class EhcacheConfigurationLoader {
 		try {
 			Resource resource = pathMatching.getResource(ehcacheLocation);
 			Assert.isTrue(resource.exists(), "ehcache xml not found.");
+			logger.debug("><>< Ehcache Loader: {}", resource.getDescription());
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(resource.getFile());
 		} catch (ParserConfigurationException e) {
 			throw new EhcacheConfigurationException(e);
@@ -69,6 +70,7 @@ public class EhcacheConfigurationLoader {
 
 			for (Resource resource : resources) {
 				if (resource.exists()) {
+					logger.debug("><>< Ehcache Loader: {}", resource.getDescription());
 					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 					Document document = dbf.newDocumentBuilder().parse(resource.getFile());
 

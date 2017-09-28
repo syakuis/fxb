@@ -1,9 +1,11 @@
 package org.fxb.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fxb.context.cache.bean.factory.EhcacheFactoryBean;
 import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,18 +23,31 @@ import org.springframework.context.annotation.Configuration;
  * @site http://syaku.tistory.com
  * @since 16. 7. 22.
  */
+@Configuration
 @EnableCaching
 public class EhcacheConfiguration implements CachingConfigurer {
 	private final Logger logger = LoggerFactory.getLogger(EhcacheConfiguration.class);
 
+	@Autowired
+	private Config config;
+
 	@Bean(destroyMethod="shutdown")
 	public net.sf.ehcache.CacheManager ehCacheManager() {
 
+		StringBuilder builder = new StringBuilder("org/fxb/config/cache.xml");
+		String cacheLocation = config.getString("ehcache.cacheLocation");
+		if (StringUtils.isNotEmpty(cacheLocation)) {
+			builder.append(",").append(cacheLocation);
+		}
+
+		cacheLocation = builder.toString();
+
 		try {
 			EhcacheFactoryBean factoryBean = new EhcacheFactoryBean(
-					"classpath*:org/fxb/config/ehcache.xml",
-					"classpath*:org/fxb/config/cache.xml"
+					"org/fxb/config/ehcache.xml",
+					cacheLocation
 			);
+			logger.debug("><>< cacheLocation: {}", cacheLocation);
 			factoryBean.setCacheManagerName("fxbCacheManager");
 			factoryBean.afterPropertiesSet();
 
@@ -44,7 +59,7 @@ public class EhcacheConfiguration implements CachingConfigurer {
 		return null;
 	}
 
-	@Bean(name = "fxbCacheManager")
+	@Bean("fxbCacheManager")
 	@Override
 	public CacheManager cacheManager() {
 		return new EhCacheCacheManager(ehCacheManager());

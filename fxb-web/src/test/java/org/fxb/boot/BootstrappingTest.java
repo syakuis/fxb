@@ -23,9 +23,6 @@ public class BootstrappingTest {
 
 	@Test
 	public void test() {
-		config.getKeys().stream().forEach(key -> {
-			System.out.println(key + "/" + config.getString(key));
-		});
 	}
 
 	// todo Properties Test
