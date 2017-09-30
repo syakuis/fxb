@@ -18,8 +18,8 @@ public class PropertiesConfiguration {
 	static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
 		String[] locations = new String[]{
 				"classpath:org/fxb/config/config.properties",
-				"classpath:config.properties",
-				"classpath:config-%s.properties"
+				"config.properties",
+				"config-%s.properties"
 		};
 
 		return new PropertiesBeanFactoryPostProcessor("properties", PropertiesFactoryBean.class, locations);
