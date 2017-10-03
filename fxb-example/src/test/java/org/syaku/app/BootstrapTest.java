@@ -1,10 +1,11 @@
 package org.syaku.app;
 
-import org.fxb.boot.Bootstrapping;
+import org.fxb.boot.annotation.FxbWebBoot;
 import org.fxb.config.Config;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -16,8 +17,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = Bootstrapping.class)
+@ContextConfiguration
 public class BootstrapTest {
+
+	@Configuration
+	@FxbWebBoot
+	static class Configuation {
+	}
 
 	@Autowired
 	Config config;

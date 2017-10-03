@@ -92,7 +92,6 @@ public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter imp
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		System.out.println("wejorjoewirieowjr---------------------> erew");
 		FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
 		viewResolver.setExposeSpringMacroHelpers(true);
 
