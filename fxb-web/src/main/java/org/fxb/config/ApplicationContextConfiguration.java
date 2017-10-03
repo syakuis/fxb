@@ -1,12 +1,14 @@
-package org.fxb.config.web;
+package org.fxb.config;
 
-import org.fxb.config.Config;
 import org.fxb.config.web.support.FreemarkerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,11 +28,14 @@ import javax.annotation.PostConstruct;
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-		basePackages = "org.fxb",
+		basePackages = "org.fxb.app",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(
 				type = FilterType.ANNOTATION,
 				classes = {
+						Component.class,
+						Service.class,
+						Repository.class,
 						Controller.class,
 						ControllerAdvice.class,
 						RestController.class,
@@ -87,6 +92,7 @@ public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter imp
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
+		System.out.println("wejorjoewirieowjr---------------------> erew");
 		FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
 		viewResolver.setExposeSpringMacroHelpers(true);
 

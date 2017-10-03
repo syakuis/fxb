@@ -5,9 +5,13 @@ import net.sf.ehcache.config.ConfigurationFactory;
 import org.fxb.util.io.MultiplePathMatchingResourcePatternResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +57,12 @@ public class EhcacheConfigurationLoader {
 		try {
 			Resource resource = pathMatching.getResource(ehcacheLocation);
 			Assert.isTrue(resource.exists(), "ehcache xml not found.");
-			logger.debug("><>< Ehcache Loader: {}", resource.getDescription());
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(resource.getFile());
+			logger.debug("><>< Ehcache Loader: {}", resource.getURI());
+			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(resource.getURI().toString());
 		} catch (ParserConfigurationException e) {
 			throw new EhcacheConfigurationException(e);
 		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
 			throw new EhcacheConfigurationException(e);
 		} catch (SAXException e) {
 			throw new EhcacheConfigurationException(e);
@@ -70,9 +76,9 @@ public class EhcacheConfigurationLoader {
 
 			for (Resource resource : resources) {
 				if (resource.exists()) {
-					logger.debug("><>< Ehcache Loader: {}", resource.getDescription());
+					logger.debug("><>< Ehcache Loader: {}", resource.getURI());
 					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-					Document document = dbf.newDocumentBuilder().parse(resource.getFile());
+					Document document = dbf.newDocumentBuilder().parse(resource.getURI().toString());
 
 					Element rootElement = document.getDocumentElement();
 
@@ -102,7 +108,7 @@ public class EhcacheConfigurationLoader {
 	}
 
 	public Configuration create() throws EhcacheConfigurationException {
-
+		logger.info("><>< Ehcache Setting Create XML");
 		try {
 			Document document = this.getEhcacheXmlLoader();
 			Element rootElement = document.getDocumentElement();

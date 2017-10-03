@@ -1,4 +1,4 @@
-package org.syaku.app.demo.web;
+package org.syaku.app.example.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 2017. 9. 20.
  */
 @Controller
-@RequestMapping("/demo")
-public class DemoController {
+@RequestMapping("/example")
+public class ExampleController {
 
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public ModelAndView dispDemoView() {
-		ModelAndView mav = new ModelAndView("app/demo/demo.view");
+	public ModelAndView dispView() {
+		ModelAndView mav = new ModelAndView("app/example/example");
 		return mav;
 	}
 }

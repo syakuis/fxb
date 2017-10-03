@@ -8,7 +8,11 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -37,12 +41,16 @@ public class Bootstrapping {
 		StringBuilder print = new StringBuilder();
 		print.append("\n_________________________________________________________________________________\n");
 
-		try (Stream<String> stream = Files.lines(
-				Paths.get(new ClassPathResource("org/fxb/config/intro").getURI()))
-		) {
-			stream.forEach(intro -> print.append(intro).append("\n"));
-		} catch (IOException ioe) {
-			logger.debug("file not found.");
+		try {
+			InputStream input = getClass().getResourceAsStream("/org/fxb/config/intro.txt");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				print.append(line).append("\n");
+			}
+		} catch (IOException e) {
+			logger.warn(e.getMessage(), e);
 		}
 
 		print.append("                                                                  version ")

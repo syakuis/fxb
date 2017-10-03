@@ -11,6 +11,7 @@
 
 	<artifactId>fxb-resource</artifactId>
 	<packaging>jar</packaging>
+	<version>${fxb.resource.version}</version>
 
 	<dependencies>
 		<dependency>

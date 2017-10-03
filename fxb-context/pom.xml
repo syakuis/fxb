@@ -11,12 +11,13 @@
 
 	<artifactId>fxb-context</artifactId>
 	<packaging>jar</packaging>
+	<version>${fxb.context.version}</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.fxb</groupId>
 			<artifactId>fxb-resource</artifactId>
-			<type>jar</type>
+			<version>${fxb.resource.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>

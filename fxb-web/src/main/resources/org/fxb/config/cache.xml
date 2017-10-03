@@ -1,5 +1,5 @@
 <caches>
-	<cache name="test2"
+	<cache name="test"
 		   maxEntriesLocalHeap="10000"
 		   timeToIdleSeconds="10"
 		   timeToLiveSeconds="20"

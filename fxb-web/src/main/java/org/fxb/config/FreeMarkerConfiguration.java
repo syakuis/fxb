@@ -26,7 +26,7 @@ public class FreeMarkerConfiguration {
 	private Config config;
 
 	@Bean
-	public FreeMarkerConfigurer freeMarkerConfigurer() {
+	public FreeMarkerConfigurer freemarkerConfig() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 
 		StringBuilder builder = new StringBuilder("classpath:/META-INF/resources/WEB-INF/views/");
@@ -47,7 +47,7 @@ public class FreeMarkerConfiguration {
 
 			for (String key : keys) {
 				String name = StringUtils.replace(key,prefix, "");
-				logger.debug("{} to {}", key, name);
+				logger.debug("><>< {} to {}", key, name);
 				properties.setProperty(
 						name,
 						config.getString(key)

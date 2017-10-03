@@ -11,8 +11,8 @@
 
     <modules>
         <module>fxb-resource</module>
+        <module>fxb-context</module>
         <module>fxb-web</module>
-		<module>fxb-context</module>
         <module>fxb-example</module>
     </modules>
 
@@ -23,6 +23,7 @@
 
         <fxb.version>1.0.0</fxb.version>
         <fxb.resource.version>1.0.0</fxb.resource.version>
+        <fxb.context.version>1.0.0</fxb.context.version>
         <fxb.web.version>1.0.0</fxb.web.version>
 
         <spring.version>4.3.7.RELEASE</spring.version>

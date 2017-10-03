@@ -68,7 +68,7 @@ public class EhcacheFactoryBean implements FactoryBean<CacheManager>, Initializi
 
 	@Override
 	public void afterPropertiesSet() throws CacheException, EhcacheConfigurationException {
-		logger.info("Initializing EhCache CacheManager");
+		logger.info("><>< Initializing EhCache CacheManager");
 
 		EhcacheConfigurationLoader loader = new EhcacheConfigurationLoader(ehcacheLocation, cacheLocations);
 		loader.setCharset(charset);

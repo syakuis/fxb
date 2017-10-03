@@ -1,16 +1,7 @@
 package org.fxb.boot;
 
-import org.fxb.config.web.ApplicationContextConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.DispatcherServlet;
-
-import javax.servlet.*;
-import java.util.EnumSet;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

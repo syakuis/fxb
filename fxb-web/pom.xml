@@ -10,7 +10,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>fxb-web</artifactId>
-	<packaging>war</packaging>
+	<version>${fxb.web.version}</version>
+	<packaging>jar</packaging>
 
 	<properties>
 		<jackson.version>2.8.7</jackson.version>
@@ -20,12 +21,12 @@
 		<dependency>
 			<groupId>org.fxb</groupId>
 			<artifactId>fxb-resource</artifactId>
-			<version>${fxb.version}</version>
+			<version>${fxb.resource.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.fxb</groupId>
 			<artifactId>fxb-context</artifactId>
-			<version>${fxb.version}</version>
+			<version>${fxb.context.version}</version>
 		</dependency>
 		<!-- logger -->
 		<dependency>

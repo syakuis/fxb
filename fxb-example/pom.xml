@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.fxb</groupId>
 			<artifactId>fxb-web</artifactId>
-			<version>${fxb.version}</version>
+			<version>${fxb.web.version}</version>
 		</dependency>
 	</dependencies>
 
