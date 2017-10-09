@@ -18,6 +18,11 @@
 			<artifactId>fxb-web</artifactId>
 			<version>${fxb.web.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.fxb</groupId>
+			<artifactId>fxb-security</artifactId>
+			<version>${fxb.security.version}</version>
+		</dependency>
 	</dependencies>
 
 

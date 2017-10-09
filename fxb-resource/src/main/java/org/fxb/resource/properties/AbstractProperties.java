@@ -65,12 +65,31 @@ public abstract class AbstractProperties {
 		return result;
 	}
 
+	public Properties getProperties(String prefix) {
+		List<String> keys = getKeys(prefix);
+		if (keys.size() > 0) {
+			Properties properties = new Properties();
+
+			for (String key : keys) {
+				String name = StringUtils.replace(key,prefix, "");
+				properties.setProperty(
+						name,
+						getString(key)
+				);
+			}
+
+			return properties;
+		}
+
+		return null;
+	}
+
 	public String getString(String key) {
-		return properties.getProperty(key);
+		return StringUtils.isEmpty(properties.getProperty(key)) ? null : properties.getProperty(key);
 	}
 
 	public String getString(String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+		return getString(key) == null ? defaultValue : getString(key);
 	}
 
 	public int getInt(String key) {

@@ -2,9 +2,9 @@ package org.fxb.resource.properties;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.fxb.commons.io.MultiplePathMatchingResourcePatternResolver;
 import org.fxb.core.boot.enums.Profile;
 import org.fxb.resource.exception.PropertiesException;
-import org.fxb.util.io.MultiplePathMatchingResourcePatternResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

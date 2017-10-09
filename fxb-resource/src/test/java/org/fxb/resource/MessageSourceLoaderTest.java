@@ -1,6 +1,6 @@
 package org.fxb.resource;
 
-import org.fxb.util.io.MessageSourcePathMatchingResource;
+import org.fxb.commons.io.MessageSourcePathMatchingResource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

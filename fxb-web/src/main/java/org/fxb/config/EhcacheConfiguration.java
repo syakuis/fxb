@@ -34,7 +34,7 @@ public class EhcacheConfiguration implements CachingConfigurer {
 	@Bean(destroyMethod="shutdown")
 	public net.sf.ehcache.CacheManager ehCacheManager() {
 
-		StringBuilder builder = new StringBuilder("classpath:org/fxb/config/cache.xml");
+		StringBuilder builder = new StringBuilder(config.getString("default.ehcache.cacheLocation"));
 		String cacheLocation = config.getString("ehcache.cacheLocation");
 		if (StringUtils.isNotEmpty(cacheLocation)) {
 			builder.append(",").append(cacheLocation);
@@ -44,11 +44,11 @@ public class EhcacheConfiguration implements CachingConfigurer {
 
 		try {
 			EhcacheFactoryBean factoryBean = new EhcacheFactoryBean(
-					"classpath:org/fxb/config/ehcache.xml",
+					config.getString("default.ehcache.ehcacheLocation"),
 					cacheLocation
 			);
 			logger.debug("><>< cacheLocation: {}", cacheLocation);
-			factoryBean.setCacheManagerName("fxbCacheManager");
+			factoryBean.setCacheManagerName(config.getString("default.ehcache.cacheManagerName"));
 			factoryBean.afterPropertiesSet();
 
 			return factoryBean.getObject();

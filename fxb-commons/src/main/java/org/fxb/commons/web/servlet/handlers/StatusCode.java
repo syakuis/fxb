@@ -1,4 +1,4 @@
-package org.fxb.web.servlet.handlers;
+package org.fxb.commons.web.servlet.handlers;
 
 /**
  * 응답코드
@@ -11,7 +11,7 @@ package org.fxb.web.servlet.handlers;
  * 406 : 로그인 실패
  * 480 : 폼 유효성검사 오류
  *
- * @see Success
+ * @see Done
  *
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com

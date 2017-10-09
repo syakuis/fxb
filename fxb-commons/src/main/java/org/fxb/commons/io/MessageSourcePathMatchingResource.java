@@ -1,4 +1,4 @@
-package org.fxb.util.io;
+package org.fxb.commons.io;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

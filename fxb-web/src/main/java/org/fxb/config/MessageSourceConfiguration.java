@@ -1,6 +1,8 @@
 package org.fxb.config;
 
 import org.fxb.resource.bean.factory.MessageSourceFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -18,28 +20,23 @@ import java.io.IOException;
  */
 @Configuration
 public class MessageSourceConfiguration {
+	private static final Logger logger = LoggerFactory.getLogger(MessageSourceConfiguration.class);
+
 	private MessageSource messageSource;
 
 	@Autowired
 	private Config config;
-
-	/**
-	 * 기본으로 읽어야할 메세지 로드
-	 */
-	private String[] basenames = new String[] {
-			"classpath*:org/hibernate/validator/message.properties",
-			"classpath*:org/fxb/config/i18n/message.properties",
-			"classpath*:org/fxb/config/i18n/message_*.properties",
-	};
 
 	@Bean
 	@DependsOn("config")
 	public MessageSource messageSource() throws IOException {
 		Assert.notNull(config, "The class must not be null");
 
+		String[] defaultBasenames = config.getStringArray("default.messageSource.basenames");
+
 		MessageSourceFactoryBean parentFactoryBean = new MessageSourceFactoryBean();
 		parentFactoryBean.setFileEncoding(config.getCharset());
-		parentFactoryBean.setBasenames(basenames);
+		parentFactoryBean.setBasenames(defaultBasenames);
 		parentFactoryBean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
 		parentFactoryBean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
 
@@ -57,6 +54,8 @@ public class MessageSourceConfiguration {
 		} else {
 			this.messageSource = parentFactoryBean.getObject();
 		}
+
+		logger.debug("><>< messageSource Loader : {}, {}", defaultBasenames, basenames);
 
 		return this.messageSource;
 	}

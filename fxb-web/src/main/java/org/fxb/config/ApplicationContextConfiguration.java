@@ -2,6 +2,7 @@ package org.fxb.config;
 
 import org.fxb.config.web.support.FreemarkerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -50,6 +51,7 @@ public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter imp
 	private Config config;
 
 	@Autowired
+	@Qualifier(value = "freemarkerConfig")
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
 	@PostConstruct

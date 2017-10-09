@@ -1,6 +1,5 @@
-package org.fxb.web.servlet.handlers;
+package org.fxb.commons.web.servlet.handlers;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,45 +12,43 @@ import java.util.Date;
  * @site http://syaku.tistory.com
  * @since 2016. 12. 16.
  */
-@AllArgsConstructor
-public class Success<T> {
+public class Done<T> {
 	@Getter
 	private final String message;
 	@Getter
 	private final boolean error;
 	@Getter
-	private final Date date;
+	private final Date date = new Date();
 	@Getter
 	private final StatusCode statusCode;
 	@Getter @Setter
-	private T content;
+	private T data;
 
-	public Success() {
+	public Done() {
 		this(null, false, StatusCode.OK);
 	}
 
-	public Success(String message) {
+	public Done(String message) {
 		this(message, false, StatusCode.OK);
 	}
 
-	public Success(boolean error) {
+	public Done(boolean error) {
 		this(null, error, StatusCode.OK);
 	}
 
-	public Success(String message, boolean error) {
+	public Done(String message, boolean error) {
 		this(message, error, StatusCode.OK);
 	}
 
-	public Success(String message, boolean error, StatusCode statusCode) {
+	public Done(String message, boolean error, StatusCode statusCode) {
 		this(message, error, statusCode, null);
 	}
 
-	public Success(String message, boolean error, StatusCode statusCode, T content) {
+	public Done(String message, boolean error, StatusCode statusCode, T data) {
 		this.message = message;
 		this.error = error;
 		this.statusCode = statusCode;
-		this.content = content;
-		this.date = new Date();
+		this.data = data;
 	}
 
 	public int getCode() {

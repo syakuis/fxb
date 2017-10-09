@@ -1,0 +1,14 @@
+~/
+.*/
+
+*.DS_Store
+Thumbs.db
+Thumbs.db\:encryptable
+RUNNING_PID
+
+*.log
+*.bak
+stats.json
+
+dist/
+node_modules/

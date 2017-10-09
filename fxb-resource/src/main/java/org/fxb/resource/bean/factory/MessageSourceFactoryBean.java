@@ -1,6 +1,6 @@
 package org.fxb.resource.bean.factory;
 
-import org.fxb.util.io.MessageSourcePathMatchingResource;
+import org.fxb.commons.io.MessageSourcePathMatchingResource;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.MessageSource;

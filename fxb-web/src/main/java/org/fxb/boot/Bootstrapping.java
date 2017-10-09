@@ -4,19 +4,17 @@ import org.fxb.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
-import java.util.stream.Stream;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -42,7 +40,7 @@ public class Bootstrapping {
 		print.append("\n_________________________________________________________________________________\n");
 
 		try {
-			InputStream input = getClass().getResourceAsStream("/org/fxb/config/intro.txt");
+			InputStream input = getClass().getResourceAsStream(config.getString("default.intro.path"));
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
 			String line;
@@ -62,6 +60,7 @@ public class Bootstrapping {
 				.append("                                                                                 \n")
 				.append("_________________________________________________________________________________\n\n")
 				.append("* Date: ").append(new Date()).append("\n")
+				.append("* charset: ").append(config.getCharset()).append("\n")
 				.append("* Profile: ").append(config.getProfile()).append("\n")
 				.append("* profiles: ").append(config.getString("profiles")).append("\n")
 				.append("* rootAbsolutePath: ").append(config.getRootAbsolutePath()).append("\n")
