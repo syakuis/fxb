@@ -1,6 +1,8 @@
 import React from 'react';
 import qs from 'qs';
 import Request from '_commons/Request';
+import css from 'classnames';
+import s from '_resources/login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class Login extends React.Component {
       this.request.post('/member/signin', qs.stringify({
         username: this.state.username,
         password: this.state.password,
-      })).then(res => {
+      })).then((res) => {
         console.log(res);
       });
     }
@@ -34,7 +36,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="row login">
+      <div className={css('row', s.)}>
         <div className="col-md-4 col-md-offset-4">
           <div>
             <form className="form">

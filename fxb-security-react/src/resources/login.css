@@ -1,14 +1,14 @@
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
+.login .heading,
+.login .checkbox {
   margin-bottom: 10px;
 }
 
-.form-signin .checkbox {
+.login .checkbox {
   font-weight: normal;
   padding-left: 20px;
 }
 
-.form-signin .form-control {
+.login .form-control {
   height: auto;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -17,13 +17,13 @@
   font-size: 16px;
 }
 
-.form-signin input[type="text"] {
+.login input[type="text"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="password"] {
+.login input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
