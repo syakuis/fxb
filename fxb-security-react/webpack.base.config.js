@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: path.join(__dirname, 'node_module'),
+        exclude: /\.module\.css$/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
@@ -59,7 +59,7 @@ module.exports = {
         }),
       },
       {
-        test: /\.css$/,
+        test: /\.module\.css$/,
         include: path.join(__dirname, src),
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',

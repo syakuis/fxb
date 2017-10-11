@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Mypage extends Component {
-  render() {
-    return (
-      <div>
-        Mypage
-      </div>
-    );
-  }
-}
+const Mypage = () => (
+  <div>
+    Mypage
+  </div>
+);
 
 export default Mypage;

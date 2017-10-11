@@ -1,8 +1,8 @@
 import React from 'react';
 import qs from 'qs';
 import Request from '_commons/Request';
-import css from 'classnames';
-import s from '_resources/login.css';
+import classnames from 'classnames';
+import s from '_resources/login.module.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className={css('row', s.)}>
+      <div className={classnames('row', s.login)}>
         <div className="col-md-4 col-md-offset-4">
           <div>
             <form className="form">
