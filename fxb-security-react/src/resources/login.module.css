@@ -1,30 +1,24 @@
-.login .heading,
-.login .checkbox {
-  margin-bottom: 10px;
+.login-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.login .checkbox {
-  font-weight: normal;
-  padding-left: 20px;
+.login {
+  width: 400px;
+  position: fixed;
+  color: #fff;
 }
 
-.login .form-control {
-  height: auto;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+.login.center {
+  transform: translateX(-50%) translateY(-50%);
+  left: 50%;
+  top: 50%;
 }
 
-.login input[type="text"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.login input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.login-container .background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: #000;
 }

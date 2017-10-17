@@ -29,7 +29,7 @@
   "config": {
     "filename": "fxb-security-react",
     "publicPath": "/",
-    "dist": "dist",
+    "output": "dist",
     "src": "src",
     "entry": "./src/index.js",
     "port": 8088,
@@ -39,8 +39,8 @@
     "jest": "jest",
     "build:prod": "NODE_ENV='production' webpack --profile --colors --progress",
     "build:publish": "NODE_ENV='production' webpack --config webpack.config.publish.js --profile --colors --progress",
-    "serv:dev": "webpack-dev-server --config webpack.config.dev.js --colors --progress --profile",
-    "stats:prod": "NODE_ENV='production' webpack --config webpack.config.stats.js --colors --progress --profile --json > stats.json"
+    "serv:dev": "NODE_ENV='development' webpack-dev-server --config webpack.config.dev.js --colors --progress --profile",
+    "stats:prod": "NODE_ENV='production' webpack --config webpack.config.stats.js --colors --progress --profile"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
@@ -48,9 +48,8 @@
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.0.0",
     "babel-plugin-dynamic-import-webpack": "^1.0.1",
-    "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-3": "^6.22.0",
@@ -58,14 +57,14 @@
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.1.1",
     "css-loader": "^0.28.4",
-    "eslint": "4.8.0",
-    "eslint-config-airbnb": "16.0.0",
+    "eslint": "4.9.0",
+    "eslint-config-airbnb": "16.1.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.6.3",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.5",
@@ -76,10 +75,11 @@
     "stylelint-config-standard": "^17.0.0",
     "stylelint-webpack-plugin": "^0.9.0",
     "url-loader": "^0.6.2",
-    "webpack": "3.6.0",
+    "webpack": "3.8.0",
     "webpack-bundle-analyzer": "^2.3.0",
-    "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-dev-server": "^2.9.2",
+    "webpack-merge": "^4.1.0",
+    "wepack": "^0.0.1"
   },
   "dependencies": {
     "axios": "^0.16.2",

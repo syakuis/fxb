@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
@@ -10,11 +10,7 @@ import Mypage from './components/Mypage';
 
 const Root = () => (
   <Router>
-    <div className="container">
-      <nav className="navbar navbar-light bg-light">
-        <Link className="navbar-brand" to="/" href>Home</Link>
-      </nav>
-
+    <div>
       <Route exact path="/" component={Mypage} />
       <Route path="/login" component={Login} />
     </div>
