@@ -1,8 +1,15 @@
 
 {
-  "presets": ["env", "react", "stage-3"],
+  "presets": [
+    [
+      "env", {
+        "targets": { "browsers": [ "last 2 Chrome versions" ] }
+      }
+    ], "react", "stage-3"
+  ],
   "plugins": [
     "dynamic-import-webpack",
-    "transform-object-assign"
+    "transform-object-assign",
+    "transform-runtime"
   ]
 }

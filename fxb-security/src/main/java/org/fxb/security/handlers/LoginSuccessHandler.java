@@ -3,6 +3,8 @@ package org.fxb.security.handlers;
 
 import org.fxb.commons.web.http.RequestUtils;
 import org.fxb.commons.web.servlet.handlers.Done;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -22,6 +24,8 @@ import java.util.Map;
  * @since 2016. 9. 21.
  */
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+	private static final Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
+
 	private String getRedirectUrl(HttpServletRequest request, HttpServletResponse response) {
 		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
@@ -50,7 +54,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 			Done<Map<String, Object>> success = new Done<>();
 
 			Map<String, Object> data = new HashMap<>();
+
 			data.put("principal", authentication.getPrincipal());
+			data.put("details", authentication.getDetails());
+			data.put("credentials", authentication.getCredentials());
 			if (targetUrlParameter != null) {
 				data.put(getTargetUrlParameter(), redirectUrl);
 			}

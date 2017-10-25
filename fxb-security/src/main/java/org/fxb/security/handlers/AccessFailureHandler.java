@@ -37,14 +37,16 @@ public class AccessFailureHandler implements AccessDeniedHandler {
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
-		if(RequestUtils.isAjax(request)) {
-			new ResponseContent(response, new Done<String>(exception.getMessage(), true, StatusCode.AccessDenied));
-		} else {
-			if (redirect) {
-				response.sendRedirect(request.getContextPath() + errorPage);
+		if (!response.isCommitted()) {
+			if(RequestUtils.isAjax(request)) {
+				new ResponseContent(response, new Done<String>(exception.getMessage(), true, StatusCode.AccessDenied));
 			} else {
-				request.setAttribute("loginFormUrl", loginFormUrl);
-				request.getRequestDispatcher(request.getContextPath() + errorPage).forward(request, response);
+				if (redirect) {
+					response.sendRedirect(request.getContextPath() + errorPage);
+				} else {
+					request.setAttribute("loginFormUrl", loginFormUrl);
+					request.getRequestDispatcher(request.getContextPath() + errorPage).forward(request, response);
+				}
 			}
 		}
 	}

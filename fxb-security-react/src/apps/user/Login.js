@@ -1,17 +1,30 @@
 import React from 'react';
-import qs from 'qs';
-import Request from '_commons/Request';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import s from '_resources/login.module.css';
+import Toastr from 'modern-toastr';
+
+import store from 'store';
+import storage from 'store/storages/cookieStorage';
+
+import s from './resources/login.module.css';
+import UserService from './services/UserService';
+
+const cookie = store.createStore(storage);
+
+const propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.request = Request.instance();
-
     this.onLogin = this.onLogin.bind(this);
     this.onChange = this.onChange.bind(this);
+
+    this.user = new UserService();
 
     this.state = {
       username: '',
@@ -26,15 +39,15 @@ class Login extends React.Component {
   onLogin(e) {
     e.preventDefault();
     if (this.state.username !== '' && this.state.password !== '') {
-      this.request.post('/member/signin', qs.stringify({
-        username: this.state.username,
-        password: this.state.password,
-      })).then((res) => {
-        const { error } = res.data;
-
+      this.user.login(this.state.username, this.state.password).then((res) => {
+        const { error, data } = res.data;
         if (error) {
           const message = '로그인을 실패하였습니다.';
-          console.log(message);
+          Toastr.error(message);
+        } else {
+          cookie.set('authorization', `${this.state.username}:${this.state.password}`);
+          const { redirectUrl } = data;
+          this.props.history.push(redirectUrl);
         }
       });
     }
@@ -58,21 +71,19 @@ class Login extends React.Component {
 
             <div className="form-check form-check-inline">
               <label htmlFor=" " className="form-check-label">
-                <input type="checkbox" className="form-check-input" />
-                아이디 저장
+                <input type="checkbox" className="form-check-input" /> 아이디 저장
               </label>
             </div>
 
             <div className="form-check form-check-inline">
               <label htmlFor=" " className="form-check-label">
-                <input type="checkbox" className="form-check-input" />
-                아이디 저장
+                <input type="checkbox" className="form-check-input" /> 아이디 저장
               </label>
             </div>
 
             <p />
 
-            <button type="submit" className="btn btn-primary btn-block">로그인</button>
+            <button type="submit" className="btn btn-light btn-block">로그인</button>
           </form>
         </div>
       </div>
@@ -80,5 +91,7 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = propTypes;
 
 export default Login;

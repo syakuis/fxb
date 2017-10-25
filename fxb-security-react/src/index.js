@@ -2,18 +2,23 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { HashRouter as Router, Route } from 'react-router-dom';
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'font-awesome/css/font-awesome.css';
+import '_config/globals';
+import Prepare from '_config/Prepare';
+import Authentication from '_apps/user/Authentication';
+import Layout from '_layouts/basic';
 
-import Login from './components/Login';
-import Mypage from './components/Mypage';
+import Login from '_apps/user/Login';
+import Mypage from '_apps/user/Mypage';
 
 const Root = () => (
   <Router>
-    <div>
-      <Route exact path="/" component={Mypage} />
-      <Route path="/login" component={Login} />
-    </div>
+    <Prepare>
+      <Layout>
+        <Authentication />
+        <Route exact path="/" component={Mypage} />
+        <Route path="/login" component={Login} />
+      </Layout>
+    </Prepare>
   </Router>
 );
 

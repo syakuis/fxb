@@ -3,8 +3,6 @@ package org.fxb.commons.web.servlet.handlers;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 /**
  * Controller 처리가 완료되었을 때 응답하기 위한 클래스
  *
@@ -17,8 +15,6 @@ public class Done<T> {
 	private final String message;
 	@Getter
 	private final boolean error;
-	@Getter
-	private final Date date = new Date();
 	@Getter
 	private final StatusCode statusCode;
 	@Getter @Setter
@@ -34,6 +30,10 @@ public class Done<T> {
 
 	public Done(boolean error) {
 		this(null, error, StatusCode.OK);
+	}
+
+	public Done(T data) {
+		this(null, false, StatusCode.OK, data);
 	}
 
 	public Done(String message, boolean error) {

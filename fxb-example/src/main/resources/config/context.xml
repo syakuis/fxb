@@ -10,7 +10,6 @@
 	">
 
 	<bean class="org.fxb.boot.Bootstrapping" />
-	<bean class="org.fxb.boot.config.SecurityConfiguration" />
 
 	<context:component-scan base-package="org.syaku" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />

@@ -1,6 +1,7 @@
 package org.fxb.boot.annotation;
 
-import org.fxb.boot.config.SecurityConfiguration;
+import org.fxb.config.SecurityConfiguration;
+import org.fxb.config.SecuritySupportConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -15,6 +16,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(SecurityConfiguration.class)
+@Import({ SecurityConfiguration.class, SecuritySupportConfiguration.class })
 public @interface FxbSecurityBoot {
 }

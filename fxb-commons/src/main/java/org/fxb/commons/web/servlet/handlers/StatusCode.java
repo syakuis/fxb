@@ -1,5 +1,7 @@
 package org.fxb.commons.web.servlet.handlers;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 응답코드
  * 200 : 성공
@@ -11,22 +13,23 @@ package org.fxb.commons.web.servlet.handlers;
  * 406 : 로그인 실패
  * 480 : 폼 유효성검사 오류
  *
- * @see Done
- *
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 16. 8. 19.
+ *
+ * @see Done
+ * @see HttpServletResponse
  */
 public enum StatusCode {
-	OK(200),
-	SecurityError(401),
-	Unauthorized(401),
-	AccessDenied(402),
-	DuplicationLogin(403),
-	PasswordUseExpired(404),
-	RSAFailure(405),
-	LoginFailure(406),
-	FormValidation(480);
+	OK(HttpServletResponse.SC_OK),
+	Unauthorized(HttpServletResponse.SC_UNAUTHORIZED),
+	AccessDenied(HttpServletResponse.SC_FORBIDDEN),
+	SecurityError(940),
+	LoginFailure(950),
+	DuplicationLogin(951),
+	PasswordUseExpired(952),
+	RSAFailure(941),
+	FormValidation(942);
 
 	private final int code;
 

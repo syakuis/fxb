@@ -3,8 +3,10 @@ package org.fxb.security.handlers;
 import org.fxb.commons.web.http.RequestUtils;
 import org.fxb.commons.web.servlet.handlers.Done;
 import org.fxb.commons.web.servlet.handlers.StatusCode;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,14 +18,22 @@ import java.io.IOException;
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 16. 5. 30.
+ *
+ * @see org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
  */
-public class UnauthorizedAccessHandler implements AuthenticationEntryPoint {
+public class UnauthorizedAccessHandler implements AuthenticationEntryPoint, InitializingBean {
 
 	private final String loginFormUrl;
 	private boolean redirect = true;
+	private String realmName;
+	private boolean isAjax;
 
 	public UnauthorizedAccessHandler(String loginFormUrl) {
 		this.loginFormUrl = loginFormUrl;
+	}
+
+	public void setRealmName(String realmName) {
+		this.realmName = realmName;
 	}
 
 	public void setRedirect(boolean redirect) {
@@ -31,9 +41,17 @@ public class UnauthorizedAccessHandler implements AuthenticationEntryPoint {
 	}
 
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+	public void afterPropertiesSet() throws Exception {
+		if (isAjax) {
+			Assert.hasText(realmName, "realmName must be specified");
+		}
+	}
 
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		if(RequestUtils.isAjax(request)) {
+			this.isAjax = true;
+			response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"");
 			new ResponseContent(response, new Done(exception.getMessage(), true, StatusCode.Unauthorized));
 		} else {
 			if (redirect) {
