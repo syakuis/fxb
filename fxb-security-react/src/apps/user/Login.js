@@ -45,7 +45,9 @@ class Login extends React.Component {
           const message = '로그인을 실패하였습니다.';
           Toastr.error(message);
         } else {
-          cookie.set('authorization', `${this.state.username}:${this.state.password}`);
+          cookie.set('authorization', {
+            username: this.state.username,
+          });
           const { redirectUrl } = data;
           this.props.history.push(redirectUrl);
         }

@@ -8,15 +8,20 @@ class Mypage extends React.Component {
     this.request = new UserService();
 
     this.state = {
-
+      username: '',
+      remoteAddress: '',
+      sessionId: '',
     };
   }
 
   componentWillMount() {
     this.request.user().then((res) => {
-      console.log(res);
-    }).catch((err) => {
-      console.log(err);
+      const { details, principal } = res.data.data;
+      this.setState({
+        username: principal.username,
+        remoteAddress: details.remoteAddress,
+        sessionId: details.sessionId,
+      });
     });
   }
 
@@ -27,25 +32,36 @@ class Mypage extends React.Component {
         <div className="col-6">
           <div className="card">
             <div className="card-body">
-              <div className="row">
-                <div className="col">
-                  IP
-                </div>
-                <div className="col-8">
-                  192.168.0.0
-                </div>
-              </div>
-              <hr />
 
               <div className="row">
                 <div className="col">
                   username
                 </div>
                 <div className="col-8">
-                  admin
+                  {this.state.username}
                 </div>
               </div>
               <hr />
+
+              <div className="row">
+                <div className="col">
+                  IP
+                </div>
+                <div className="col-8">
+                  {this.state.remoteAddress}
+                </div>
+              </div>
+              <hr />
+
+              <div className="row">
+                <div className="col">
+                  session Id
+                </div>
+                <div className="col-8">
+                  {this.state.sessionId}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

@@ -13,8 +13,8 @@ const defaultProps = {
 const Layout = props => (
   <div>
     <nav className="navbar navbar-light bg-light">
-      <Link className="navbar-brand" to="/" href>Home</Link>
-      <Link className="navbar-brand" to="/login" href>Login</Link>
+      <Link replace className="navbar-brand" to="/" href>Home</Link>
+      <Link replace className="navbar-brand" to="/login" href>Login</Link>
     </nav>
     {props.children}
   </div>

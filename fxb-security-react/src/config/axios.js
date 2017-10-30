@@ -30,6 +30,7 @@ const getRequestCount = () => requestCount;
 const axiosDefaults = () => {
   axios.defaults.baseURL = '/api';
   axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+  axios.defaults.withCredentials = true;
   axios.defaults.paramsSerializer = params => Qs.stringify(params, { arrayFormat: 'repeat' });
 
   axios.interceptors.request.use((request) => {
