@@ -1,3 +1,10 @@
+/**
+ * axios 기본 설정을 구성한다.
+ * @author: Seok Kyun. Choi. 최석균 (Syaku)
+ * @site: http://syaku.tistory.com
+ * @since: 2017. 10. 30.
+ */
+
 import axios from 'axios';
 import Qs from 'qs';
 

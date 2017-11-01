@@ -1,25 +1,16 @@
 import axios from 'axios';
 import qs from 'qs';
 
-class UserService {
-  constructor() {
-    this.request = axios;
-  }
+export const login = (username, password) => (
+  axios.post('/member/signin', qs.stringify({
+    username,
+    password,
+  }))
+);
 
-  login(username, password) {
-    return this.request.post('/member/signin', qs.stringify({
-      username,
-      password,
-    }));
-  }
+export const logout = () => axios.post('/member/logout');
 
-  user() {
-    return this.request.get('/member/user');
-  }
+export const user = () => axios.get('/member/user');
 
-  auth(url) {
-    return this.request.get('/member/authentication', { params: { url } });
-  }
-}
+export const auth = url => axios.get('/member/authentication', { params: { url } });
 
-export default UserService;

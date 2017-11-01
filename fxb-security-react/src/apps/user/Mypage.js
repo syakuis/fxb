@@ -1,11 +1,9 @@
 import React from 'react';
-import UserService from './services/UserService';
+import { user } from './services/UserService';
 
 class Mypage extends React.Component {
   constructor(props) {
     super(props);
-
-    this.request = new UserService();
 
     this.state = {
       username: '',
@@ -15,7 +13,7 @@ class Mypage extends React.Component {
   }
 
   componentWillMount() {
-    this.request.user().then((res) => {
+    user().then((res) => {
       const { details, principal } = res.data.data;
       this.setState({
         username: principal.username,

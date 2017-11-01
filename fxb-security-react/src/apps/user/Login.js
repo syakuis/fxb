@@ -7,7 +7,7 @@ import store from 'store';
 import storage from 'store/storages/cookieStorage';
 
 import s from './resources/login.module.css';
-import UserService from './services/UserService';
+import { login } from './services/UserService';
 
 const cookie = store.createStore(storage);
 
@@ -24,8 +24,6 @@ class Login extends React.Component {
     this.onLogin = this.onLogin.bind(this);
     this.onChange = this.onChange.bind(this);
 
-    this.user = new UserService();
-
     this.state = {
       username: '',
       password: '',
@@ -39,7 +37,7 @@ class Login extends React.Component {
   onLogin(e) {
     e.preventDefault();
     if (this.state.username !== '' && this.state.password !== '') {
-      this.user.login(this.state.username, this.state.password).then((res) => {
+      login(this.state.username, this.state.password).then((res) => {
         const { error, data } = res.data;
         if (error) {
           const message = '로그인을 실패하였습니다.';
