@@ -41,9 +41,11 @@ public class AuthenticationController {
 		data.put("principal", null);
 		data.put("details", null);
 		data.put("credentials", null);
+		data.put("username", null);
 		data.put("isAllowed", false);
 		data.put("isAnonymous", authentication == null);
 		if (authentication != null) {
+			data.put("username", authentication.getName());
 			data.put("principal", authentication.getPrincipal());
 			data.put("details", authentication.getDetails());
 			data.put("credentials", authentication.getCredentials());

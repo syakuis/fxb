@@ -29,6 +29,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -75,7 +76,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 	@Bean
 	public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource() {
 		LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<>();
-		requestMap.put(new AntPathRequestMatcher("/member/user"), SecurityConfig.createList("ROLE_USER"));
+		requestMap.put(new AntPathRequestMatcher("/"), SecurityConfig.createList("ROLE_USER"));
 		requestMap.put(new AntPathRequestMatcher("/member/user"), SecurityConfig.createList("ROLE_USER"));
 		return new DefaultFilterInvocationSecurityMetadataSource(requestMap);
 	}
@@ -181,6 +182,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
 			http
 					.addFilterAt(this.filterSecurityInterceptor, FilterSecurityInterceptor.class)
+					.addFilterAt(new BasicAuthenticationFilter(this.authenticationManager, unauthorizedAccessHandler), BasicAuthenticationFilter.class)
 //					.addFilterAt(basicAuthenticationFilter, BasicAuthenticationFilter.class)
 					.sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.valueOf(config.getString("security.sessionCreationPolicy")))
