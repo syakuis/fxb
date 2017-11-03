@@ -9,7 +9,7 @@ import createStore from '_config/store';
 import Layout from '_layouts/basic';
 
 import Login from '_apps/user/Login';
-// import AccessControl from '_apps/user/AccessControl';
+
 import Logout from '_apps/user/Logout';
 import Mypage from '_apps/user/Mypage';
 import ErrorPage from '_apps/page/ErrorPage';
@@ -23,10 +23,12 @@ const Root = () => (
   <Provider store={store}>
     <Router history={browserHistory}>
       <Layout>
-        <Route path="/login" component={Login} />
-        <Route path="/error" component={ErrorPage} />
-        <PrivateRoute exact path="/" component={Mypage} />
-        <PrivateRoute path="/logout" component={Logout} />
+        <Authentication>
+          <Route path="/login" component={Login} />
+          <Route path="/error" component={ErrorPage} />
+          <PrivateRoute exact path="/" component={Mypage} />
+          <PrivateRoute path="/logout" component={Logout} />
+        </Authentication>
       </Layout>
     </Router>
   </Provider>

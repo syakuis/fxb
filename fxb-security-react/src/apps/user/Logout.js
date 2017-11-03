@@ -17,11 +17,12 @@ class Logout extends React.Component {
   }
 
   componentWillMount() {
-    logout().then(() => this.setState({ success: true }));
+    logout().then(() => { this.setState({ success: true }); });
   }
 
   render() {
     if (!this.state.success) return null;
+    console.log('good');
     return <Redirect to={{ pathname: '/', state: this.props.location }} />;
   }
 }

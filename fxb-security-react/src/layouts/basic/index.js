@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Authorize } from '_config/auth';
+import Link from '_components/router/Link';
+import Authorize from '_components/security/Authorize';
 
 const propTypes = {
   children: PropTypes.node,
@@ -14,12 +14,12 @@ const defaultProps = {
 const Layout = props => (
   <div>
     <nav className="navbar navbar-light bg-light">
-      <Link replace className="navbar-brand" to="/" href>Home</Link>
+      <Link className="navbar-brand" to="/" href>Home</Link>
       <Authorize not>
-        <Link replace className="navbar-brand" to="/login" href>Login</Link>
+        <Link className="navbar-brand" to="/login" href>Login</Link>
       </Authorize>
       <Authorize>
-        <Link replace className="navbar-brand" to="/logout" href>Logout</Link>
+        <Link className="navbar-brand" to="/logout" href>Logout</Link>
       </Authorize>
     </nav>
     {props.children}

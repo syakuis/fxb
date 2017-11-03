@@ -14,7 +14,7 @@ const pkg = require('./package.json');
 const base = (args) => {
   const config = Object.assign(pkg.config, args);
   const {
-    port, publicPath, output, src, entry, filename, externals
+    port, vendors, publicPath, output, src, entry, filename, externals
   } = config;
 
   return {
@@ -116,15 +116,15 @@ const base = (args) => {
         _resources: path.resolve(__dirname, `${src}/resources`),
         _commons: path.resolve(__dirname, `${src}/commons`),
         _config: path.resolve(__dirname, `${src}/config`),
-        // _entrypoint: path.resolve(__dirname, `${src}/entrypoint`),
-        // _services: path.resolve(__dirname, `${src}/services`),
         _components: path.resolve(__dirname, `${src}/components`),
         _apps: path.resolve(__dirname, `${src}/apps`),
         _layouts: path.resolve(__dirname, `${src}/layouts`),
+        _reducers: path.resolve(__dirname, `${src}/reducers`),
+        // _entrypoint: path.resolve(__dirname, `${src}/entrypoint`),
+        // _services: path.resolve(__dirname, `${src}/services`),
         // _containers: path.resolve(__dirname, `${src}/containers`),
         // _utils: path.resolve(__dirname, `${src}/utils`),
         // _actions: path.resolve(__dirname, `${src}/actions`),
-        _reducers: path.resolve(__dirname, `${src}/reducers`),
       },
     },
 

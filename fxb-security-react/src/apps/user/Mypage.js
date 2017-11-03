@@ -24,6 +24,7 @@ class Mypage extends React.Component {
   }
 
   render() {
+    console.log('mypage');
     return (
       <div className="row">
         <div className="col" />
