@@ -1,7 +1,7 @@
 import * as actions from './userActions';
 
 const defaultProps = {
-  username: null,
+  username: undefined,
   isAllowed: false,
   isAnonymous: true,
   lastLoginDate: null,

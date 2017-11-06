@@ -17,9 +17,12 @@ const defaultProps = {
   user: {},
 };
 
-const isAuthorize = user => user.username !== null;
+const isAuthorize = user => user !== null;
 
-const Authorize = props => (!isAuthorize(props.user) === props.not ? props.children : null);
+const Authorize = (props) => {
+  if (props.user.username === undefined) return null;
+  return !isAuthorize(props.user.username) === props.not ? props.children : null;
+};
 
 Authorize.propTypes = propTypes;
 Authorize.defaultProps = defaultProps;
