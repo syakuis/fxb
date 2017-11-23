@@ -13,6 +13,7 @@ import Login from '_apps/user/Login';
 import Logout from '_apps/user/Logout';
 import Mypage from '_apps/user/Mypage';
 import ErrorPage from '_apps/page/ErrorPage';
+import Grant from '_apps/grant';
 
 import Authentication from './components/security/Authentication';
 import PrivateRoute from './components/security/PrivateRoute';
@@ -26,6 +27,7 @@ const Root = () => (
         <Authentication>
           <Route path="/login" component={Login} />
           <Route path="/error" component={ErrorPage} />
+          <Route path="/grant" component={Grant} />
           <PrivateRoute exact path="/" component={Mypage} />
           <PrivateRoute path="/logout" component={Logout} />
         </Authentication>
