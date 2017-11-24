@@ -1,6 +1,6 @@
 package org.fxb.config;
 
-import org.fxb.config.web.support.FreemarkerSupport;
+import org.fxb.config.support.FreemarkerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
