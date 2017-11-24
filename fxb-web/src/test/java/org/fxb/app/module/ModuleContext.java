@@ -1,9 +1,7 @@
 package org.fxb.app.module;
 
 import lombok.ToString;
-import org.apache.commons.beanutils.BeanUtils;
-import org.fxb.app.module.model.Module;
-import org.fxb.app.module.model.ModuleDetails;
+import org.fxb.web.module.model.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.fxb.app.module.model;
+package org.fxb.web.module.model;
 
 import lombok.Getter;
 import lombok.Setter;

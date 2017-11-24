@@ -1,4 +1,4 @@
-package org.fxb.app.module.model;
+package org.fxb.web.module.model;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

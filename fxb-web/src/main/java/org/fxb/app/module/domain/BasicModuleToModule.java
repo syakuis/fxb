@@ -1,8 +1,8 @@
 package org.fxb.app.module.domain;
 
-import org.fxb.app.module.model.Module;
-import org.fxb.app.module.model.ModuleBinding;
-import org.fxb.app.module.model.ModuleDetails;
+import org.fxb.web.module.model.Module;
+import org.fxb.web.module.model.ModuleBinding;
+import org.fxb.web.module.model.ModuleDetails;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

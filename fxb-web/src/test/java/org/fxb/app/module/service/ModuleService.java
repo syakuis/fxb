@@ -1,7 +1,7 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.model.ModuleDetails;
-import org.fxb.app.module.model.OptionDetails;
+import org.fxb.web.module.model.ModuleDetails;
+import org.fxb.web.module.model.OptionDetails;
 
 import java.util.ArrayList;
 import java.util.List;

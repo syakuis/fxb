@@ -3,7 +3,7 @@ package org.fxb.app.module.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.fxb.app.module.model.Option;
+import org.fxb.web.module.model.Option;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

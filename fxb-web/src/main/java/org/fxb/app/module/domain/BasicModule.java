@@ -3,7 +3,7 @@ package org.fxb.app.module.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.fxb.app.module.model.Option;
+import org.fxb.web.module.model.Option;
 
 import java.util.Arrays;
 import java.util.Date;
