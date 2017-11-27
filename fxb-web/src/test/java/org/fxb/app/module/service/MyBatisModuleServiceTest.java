@@ -1,9 +1,6 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.model.BasicModule;
 import org.fxb.app.module.domain.Module;
-import org.fxb.app.module.domain.condition.ModuleSearch;
-import org.fxb.app.module.mapper.ModuleMapper;
 import org.fxb.boot.Bootstrapping;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,37 +23,41 @@ import java.util.List;
 @ContextConfiguration(classes = Bootstrapping.class)
 @ActiveProfiles({ "dev", "mybatis" })
 public class MyBatisModuleServiceTest {
-  @Resource(name = "moduleMapper")
-  private ModuleMapper moduleMapper;
+  @Resource(name = "myBatisModuleService")
+  private MyBatisModuleService moduleService;
 
   @Test
   public void good() {
-    Assert.assertNotNull(moduleMapper);
+    Assert.assertNotNull(moduleService);
 
-    Module basicModule = moduleMapper.selectOne(null, "test");
+    Module module = moduleService.getModule(null, "test");
 
-    if (basicModule == null) {
-      basicModule = new Module();
-      basicModule.setModuleName("test");
-      basicModule.setModuleId("test");
-      moduleMapper.insert(basicModule);
+    if (module == null) {
+      module = new Module();
+      module.setModuleName("test");
+      module.setModuleId("test");
     } else {
-      basicModule.setBrowserTitle("good");
-      moduleMapper.update(basicModule);
+      module.setBrowserTitle("good");
     }
 
-    Assert.assertNotNull(basicModule.getModuleIdx());
+    moduleService.saveModule(module);
 
-    List<Module> modules = moduleMapper.select(basicModule.getModuleName(), new ModuleSearch());
+    Assert.assertNotNull(module.getModuleIdx());
+
+    List<Module> modules = moduleService.getModules(module.getModuleName());
 
     Assert.assertEquals(modules.size(), 1);
 
-    Assert.assertNotNull(basicModule);
+    Assert.assertNotNull(module);
 
-    moduleMapper.delete(basicModule.getModuleIdx());
+    moduleService.deleteModule(module.getModuleIdx());
 
-    long count = moduleMapper.selectCount(basicModule.getModuleName(), new ModuleSearch());
+    module = moduleService.getModule(module.getModuleIdx(), null);
 
-    Assert.assertEquals(count, 0);
+    Assert.assertNull(module);
   }
+
+  // todo service method 들 분리하기
+
+  // todo transaction test
 }
