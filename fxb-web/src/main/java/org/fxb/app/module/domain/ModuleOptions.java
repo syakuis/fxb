@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.fxb.web.module.model.Option;
 
+import java.util.List;
+
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
@@ -15,6 +17,7 @@ import org.fxb.web.module.model.Option;
 @ToString
 public class ModuleOptions {
   protected String moduleIdx;
+  protected Long moduleOptionsSrl;
   protected int order;
   protected String name;
   protected String value;

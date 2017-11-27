@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.fxb.app.module.mapper.OptionMapper">
+<mapper namespace="org.fxb.app.module.mapper.ModuleOptionsMapper">
 
-  <resultMap id="option" type="org.fxb.app.module.model.BasicOption">
+  <resultMap id="moduleOptions" type="org.fxb.app.module.domain.ModuleOptions">
     <result property="moduleIdx" column="module_idx" />
-    <result property="name" column="options_name" />
-    <result property="value" column="options_value" />
-    <result property="title" column="options_title" />
-    <result property="order" column="options_order" />
+    <result property="moduleOptionsSrl" column="module_options_srl" />
+    <result property="name" column="option_name" />
+    <result property="value" column="option_value" />
+    <result property="title" column="option_title" />
+    <result property="order" column="option_order" />
   </resultMap>
 
-  <select id="selectByModuleId" resultMap="option">
+  <select id="selectByModuleId" resultMap="moduleOptions">
     SELECT * FROM module_options
     WHERE module_idx = #{moduleIdx}
   </select>
@@ -18,12 +19,14 @@
   <insert id="insert">
     INSERT INTO module_options (
       module_idx,
+      module_options_srl,
       option_name,
       option_value,
       option_title,
       option_order,
     ) VALUES (
       #{moduleIdx},
+      MODULE_OPTIONS_SRL_SEQ.NEXTVAL,
       #{name},
       #{value},
       #{title},
@@ -32,15 +35,22 @@
   </insert>
 
   <update id="update">
-    UPDATE module_options
+    UPDATE module_options SET
       option_name = #{name},
       option_value = #{value},
       option_title = #{title},
       option_order = #{order}
     WHERE module_idx = #{moduleIdx}
+    AND module_options_srl = #{moduleOptionsSrl}
   </update>
 
-  <delete id="delete">
+  <delete id="deleteByModuleOptionsSrl">
+    DELETE FROM module_options
+    WHERE module_idx = #{moduleIdx}
+    AND module_options_srl = #{moduleOptionsSrl}
+  </delete>
+
+  <delete id="deleteByModuleIdx">
     DELETE FROM module_options WHERE module_idx = #{moduleIdx}
   </delete>
 
