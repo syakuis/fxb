@@ -1,4 +1,4 @@
-package org.fxb.app.module.domain;
+package org.fxb.app.module.model;
 
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleBinding;

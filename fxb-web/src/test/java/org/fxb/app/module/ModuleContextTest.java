@@ -1,8 +1,8 @@
 package org.fxb.app.module;
 
-import org.fxb.app.module.domain.BasicModule;
-import org.fxb.app.module.domain.BasicModuleToModule;
-import org.fxb.app.module.domain.BasicOption;
+import org.fxb.app.module.model.BasicModule;
+import org.fxb.app.module.model.BasicModuleToModule;
+import org.fxb.app.module.model.BasicOption;
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleBinding;
 import org.fxb.web.module.model.ModuleDetails;

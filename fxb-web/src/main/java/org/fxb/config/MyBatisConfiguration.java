@@ -1,14 +1,17 @@
 package org.fxb.config;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.ibatis.mapping.DatabaseIdProvider;
+import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.fxb.commons.io.MultiplePathMatchingResourcePatternResolver;
 import org.fxb.config.support.Mapper;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -36,43 +39,56 @@ public class MyBatisConfiguration {
   private Config config;
 
   @Autowired
+  @Qualifier("fxbDataSource")
   private DataSource dataSource;
 
-  @Bean
+  private SqlSessionFactory sqlSessionFactory;
+  private DatabaseIdProvider databaseIdProvider;
+
+  @Bean("fxbDatabaseIdProvider")
+  public DatabaseIdProvider databaseIdProvider() {
+    return databaseIdProvider;
+  }
+
+  @Bean("fxbSqlSessionFactory")
   public SqlSessionFactory sqlSessionFactory() throws Exception {
-    String type = config.getString("dataSource.type");
-    Assert.hasText(type, "'name' must not be empty");
+    databaseIdProvider = new VendorDatabaseIdProvider();
+    databaseIdProvider.setProperties(config.getProperties("myBatis.providers."));
 
-    String configLocation = config.getString("mybatis.configLocation");
-    String[] defaultMapperLocations = StringUtils.tokenizeToStringArray(config.getString("default.mybatis.mapperLocations"), ",");
-    String[] mapperLocations = StringUtils.tokenizeToStringArray(config.getString("mybatis.mapperLocations"), ",");
-    if (mapperLocations.length > 0) {
-      defaultMapperLocations = ArrayUtils.addAll(defaultMapperLocations, mapperLocations);
-    }
+    String configLocation = config.getString("default.myBatis.configLocation");
+    String[] mapperLocations = StringUtils.tokenizeToStringArray(config.getString("default.myBatis.mapperLocations"), ",");
 
-    String[] mappers = new String[ defaultMapperLocations.length ];
-    for (int i = 0; i < defaultMapperLocations.length; i++) {
-      mappers[i] = String.format(defaultMapperLocations[i], type);
-    }
+    Assert.notEmpty(mapperLocations, "[Assertion failed] - this array must not be empty: it must contain at least 1 element");
+
+    MultiplePathMatchingResourcePatternResolver pathResourcePatternResolver = new MultiplePathMatchingResourcePatternResolver();
+    Resource[] resources = pathResourcePatternResolver.getResources(mapperLocations);
+
+    Assert.notEmpty(resources, "[Assertion failed] - this array must not be empty: it must contain at least 1 element");
 
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource);
-
-    MultiplePathMatchingResourcePatternResolver pathResourcePatternResolver = new MultiplePathMatchingResourcePatternResolver();
-    Resource[] resources = pathResourcePatternResolver.getResources(mappers);
     sqlSessionFactoryBean.setMapperLocations(resources);
+    sqlSessionFactoryBean.setTypeAliasesPackage(config.getString("default.myBatis.basePackage"));
+    sqlSessionFactoryBean.setDatabaseIdProvider(databaseIdProvider);
 
     if (!"".equals(configLocation)) {
       sqlSessionFactoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource(configLocation));
     }
 
+    this.sqlSessionFactory = sqlSessionFactoryBean.getObject();
+
     if (logger.isDebugEnabled()) {
-      logger.debug("\ndataSource type : {}\nmyBatis configLocation : {}\nmyBatis mapperLocations : {}",
-        type,
+      logger.debug("\ndatabaseIdProvider: {}\nmyBatis configLocation : {}\nmyBatis mapperLocations : {}",
+        databaseIdProvider.getDatabaseId(dataSource),
         configLocation,
-        StringUtils.arrayToCommaDelimitedString(mappers));
+        StringUtils.arrayToCommaDelimitedString(mapperLocations));
     }
 
-    return sqlSessionFactoryBean.getObject();
+    return this.sqlSessionFactory;
+  }
+
+  @Bean("fxbSqlSessionTemplate")
+  public SqlSessionTemplate sqlSessionTemplate() {
+    return new SqlSessionTemplate(sqlSessionFactory);
   }
 }

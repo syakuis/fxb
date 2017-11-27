@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.naming.NamingException;
@@ -29,7 +32,12 @@ public class DataSourceConfiguration {
   @Autowired
   private Config config;
 
-  public DataSourceConfiguration() {
+  public void setDataSource(BasicDataSource dataSource) {
+    this.dataSource = dataSource;
+  }
+
+  public void initializationDataSource() {
+    Assert.notNull(config, "config is null!!!");
     dataSource = new BasicDataSource();
 
     String driverClassName = config.getString("dataSource.driverClassName");
@@ -131,20 +139,23 @@ public class DataSourceConfiguration {
     }
   }
 
-  public DataSourceConfiguration(BasicDataSource dataSource) {
-    this.dataSource = dataSource;
-  }
-
-  @Bean(destroyMethod = "close")
+  @Bean(name = "fxbDataSource", destroyMethod = "close")
   public DataSource dataSource() throws NamingException {
+
+    if (dataSource == null) this.initializationDataSource();
 
     if (logger.isDebugEnabled()) {
       List<String> names = config.getKeys(propertiesName);
       for (String name : names) {
-        logger.debug("{} : {}", name, config.getString(name));
+        logger.debug("><>< {} : {}", name, config.getString(name));
       }
     }
 
     return dataSource;
+  }
+
+  @Bean("fxbTransactionManager")
+  public PlatformTransactionManager transactionManager() {
+    return new DataSourceTransactionManager(dataSource);
   }
 }

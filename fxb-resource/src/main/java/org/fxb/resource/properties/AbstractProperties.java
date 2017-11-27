@@ -61,7 +61,7 @@ public abstract class AbstractProperties {
       } else if (org.apache.commons.lang3.StringUtils.startsWith(key, prefix)) {
         result.add(key);
       }
-    };
+    }
     return result;
   }
 
@@ -96,8 +96,8 @@ public abstract class AbstractProperties {
     return getLonger(key, null);
   }
 
-  public Long getLonger(String key, Integer defaultValue) {
-    return Long.valueOf(properties.getProperty(key), defaultValue);
+  public Long getLonger(String key, Long defaultValue) {
+    return Long.getLong(properties.getProperty(key), defaultValue);
   }
 
   public Integer getInteger(String key) {
@@ -105,7 +105,7 @@ public abstract class AbstractProperties {
   }
 
   public Integer getInteger(String key, Integer defaultValue) {
-    return Integer.valueOf(properties.getProperty(key), defaultValue);
+    return Integer.getInteger(properties.getProperty(key), defaultValue);
   }
 
   public int getInt(String key) {
@@ -130,7 +130,7 @@ public abstract class AbstractProperties {
 
   public Boolean getBool(String key, Boolean defaultValue) {
     String value = properties.getProperty(key);
-    return value  == null ? defaultValue : Boolean.valueOf(value);
+    return value  == null && defaultValue != null ? defaultValue : Boolean.valueOf(value);
   }
 
   public boolean getBoolean(String key) {

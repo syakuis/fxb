@@ -1,8 +1,9 @@
-package org.fxb.app.module.domain;
+package org.fxb.app.module.model;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.fxb.app.module.domain.ModuleOptions;
 import org.fxb.web.module.model.Option;
 
 /**
@@ -13,13 +14,10 @@ import org.fxb.web.module.model.Option;
 @Getter
 @Setter
 @ToString
-public class BasicOption implements Option {
-  private String moduleIdx;
-  private int order;
-  private String name;
-  private String value;
-  private String title;
-
+public class BasicOption extends ModuleOptions implements Option {
+  public BasicOption() {
+    super();
+  }
   public BasicOption(String moduleIdx, int order, String name) {
     this(moduleIdx, order, name, null, null);
   }
