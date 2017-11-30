@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.fxb.app.module.mapper.ModuleOptionsMapper">
+<mapper namespace="org.fxb.app.module.mybatis.ModuleOptionsMapper">
 
   <resultMap id="moduleOptions" type="org.fxb.app.module.domain.ModuleOptions">
     <result property="moduleIdx" column="module_idx" />
@@ -11,26 +11,30 @@
     <result property="order" column="option_order" />
   </resultMap>
 
-  <select id="selectByModuleId" resultMap="moduleOptions">
+  <select id="selectByModuleIdx" resultMap="moduleOptions">
     SELECT * FROM module_options
     WHERE module_idx = #{moduleIdx}
   </select>
 
   <insert id="insert">
+    <selectKey keyProperty="moduleOptionsSrl" resultType="long" order="BEFORE">
+      SELECT MODULE_OPTIONS_SRL_SEQ.NEXTVAL FROM DUAL
+    </selectKey>
+
     INSERT INTO module_options (
       module_idx,
       module_options_srl,
       option_name,
       option_value,
       option_title,
-      option_order,
+      option_order
     ) VALUES (
       #{moduleIdx},
-      MODULE_OPTIONS_SRL_SEQ.NEXTVAL,
+      #{moduleOptionsSrl},
       #{name},
       #{value},
       #{title},
-      #{order},
+      #{order}
     )
   </insert>
 

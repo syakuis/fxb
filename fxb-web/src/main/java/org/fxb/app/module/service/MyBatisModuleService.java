@@ -1,10 +1,13 @@
 package org.fxb.app.module.service;
 
 import org.fxb.app.module.domain.Module;
+import org.fxb.app.module.domain.ModuleOptions;
 import org.fxb.app.module.domain.condition.ModuleSearch;
-import org.fxb.app.module.mapper.ModuleMapper;
+import org.fxb.app.module.mybatis.ModuleMapper;
+import org.fxb.app.module.mybatis.ModuleOptionsBatchDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +22,9 @@ import java.util.List;
 public class MyBatisModuleService {
   @Resource(name = "moduleMapper")
   private ModuleMapper moduleMapper;
+
+  @Resource(name = "moduleOptionsBatchDAO")
+  private ModuleOptionsBatchDAO moduleOptionsBatchDAO;
 
   public List<Module> getModules(String moduleName) {
     // object 를 null 로 입력하면 myBatis 에서 매칭하지 못한다.
@@ -38,12 +44,17 @@ public class MyBatisModuleService {
 //  }
 
   @Transactional
-  public void saveModule(Module module) {
-    if (module != null && module.getModuleIdx() != null) {
-      moduleMapper.update(module);
-    } else {
+  public Module saveModule(Module module, List<ModuleOptions> moduleOptions) {
+    Assert.notNull(module, "the module must not be null");
+    if (module.getModuleIdx() == null) {
       moduleMapper.insert(module);
+    } else {
+      moduleMapper.update(module);
     }
+
+    module.setModuleOptions(moduleOptionsBatchDAO.save(module.getModuleIdx(), moduleOptions, true));
+
+    return module;
   }
 
   @Transactional

@@ -1,4 +1,4 @@
-package org.fxb.app.module.mapper;
+package org.fxb.app.module.mybatis;
 
 import org.apache.ibatis.annotations.Param;
 import org.fxb.app.module.domain.Module;

@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
+ * todo LocalContainerEntityManagerFactoryBean 상속하여 리팩토리하기
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 16. 7. 22.

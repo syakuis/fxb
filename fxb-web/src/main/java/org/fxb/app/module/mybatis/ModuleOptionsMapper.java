@@ -1,4 +1,4 @@
-package org.fxb.app.module.mapper;
+package org.fxb.app.module.mybatis;
 
 import org.apache.ibatis.annotations.Param;
 import org.fxb.app.module.domain.ModuleOptions;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Mapper
 public interface ModuleOptionsMapper {
-  List<ModuleOptions> selectByModuleId(String moduleIdx);
+  List<ModuleOptions> selectByModuleIdx(String moduleIdx);
   void insert(ModuleOptions moduleOptions);
   void update(ModuleOptions moduleOptions);
   void deleteByModuleIdx(String moduleIdx);

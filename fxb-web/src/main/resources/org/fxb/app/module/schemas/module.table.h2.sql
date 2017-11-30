@@ -8,7 +8,7 @@
       BROWSER_TITLE        VARCHAR2(255) NULL ,
       SKIN                 VARCHAR2(100) NULL ,
       LAYOUT_IDX           CHAR(20) NULL,
-      REG_DATE             DATE NULL
+      REG_DATE             DATETIME NULL
     );
 
     ALTER TABLE MODULE

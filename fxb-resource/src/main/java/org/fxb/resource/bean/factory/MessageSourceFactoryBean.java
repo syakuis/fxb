@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
+ * todo ReloadableResourceBundleMessageSource 상속하여 리팩토리하기.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 9. 2.

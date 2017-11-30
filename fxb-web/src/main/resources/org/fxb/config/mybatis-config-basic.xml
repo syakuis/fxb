@@ -11,9 +11,10 @@
     <setting name="multipleResultSetsEnabled" value="true"/>
     <setting name="useColumnLabel"            value="true"/>
     <setting name="useGeneratedKeys"          value="false"/>
-    <setting name="defaultExecutorType"      value="SIMPLE"/>
-    <setting name="defaultStatementTimeout"  value="25000"/>
+    <setting name="defaultExecutorType"       value="SIMPLE"/>
+    <setting name="defaultStatementTimeout"   value="25000"/>
     <setting name="jdbcTypeForNull"           value="NULL" />
+    <setting name="defaultExecutorType"       value="BATCH" />
   </settings>
 
   <typeHandlers>
