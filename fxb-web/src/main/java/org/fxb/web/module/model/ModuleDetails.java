@@ -26,7 +26,7 @@ public class ModuleDetails implements Module {
   private Map<String, Option> options;
 
   public ModuleDetails(String moduleIdx, String mid) {
-    this(moduleIdx, mid, mid, null, new HashMap<>());
+    this(moduleIdx, mid, mid, null, new HashMap<String, Option>());
   }
 
   public ModuleDetails(String moduleIdx, String mid, Map<String, Option> options) {

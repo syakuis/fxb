@@ -172,6 +172,6 @@ public abstract class AbstractProperties {
   }
 
   public <T> List<T> getList(String key, String delimiter, boolean trim) {
-    return Arrays.asList(this.getArray(key, delimiter, trim));
+    return Arrays.asList((T) this.getArray(key, delimiter, trim));
   }
 }

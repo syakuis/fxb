@@ -33,70 +33,75 @@ import java.util.Properties;
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class PropertiesConfigurationTest {
-	private final Logger logger = LoggerFactory.getLogger(PropertiesConfigurationTest.class);
+  private final Logger logger = LoggerFactory.getLogger(PropertiesConfigurationTest.class);
 
-	static final String[] locations = new String[]{
-			"classpath:org/fxb/config/fxb.properties",
-			"classpath:fxb.properties",
-			"classpath:fxb-%s.properties"
-	};
+  static final String[] locations = new String[]{
+      "classpath:org/fxb/config/fxb.properties",
+      "classpath:fxb.properties",
+      "classpath:fxb-%s.properties"
+  };
 
-	static final String fileEcoding = null;
+  static final String fileEcoding = null;
 
-	@Configuration
-	static class PropertiesConfiguration {
-		@Autowired
-		ServletContext servletContext;
+  @Configuration
+  static class PropertiesConfiguration {
+    @Autowired
+    ServletContext servletContext;
 
-		@Autowired
-		Environment environment;
+    @Autowired
+    Environment environment;
 
-		@Bean
-		public Properties properties() throws PropertiesException {
-			PropertiesFactoryBean factoryBean = new PropertiesFactoryBean();
-			factoryBean.setServletContext(servletContext);
-			factoryBean.setEnvironment(environment);
-			factoryBean.setLocations(locations);
-			return factoryBean.getObject();
-		}
-	}
+    @Bean
+    public Properties properties() throws PropertiesException {
+      PropertiesFactoryBean factoryBean = new PropertiesFactoryBean();
+      factoryBean.setServletContext(servletContext);
+      factoryBean.setEnvironment(environment);
+      factoryBean.setLocations(locations);
+      return factoryBean.getObject();
+    }
+  }
 
-	@Configuration
-	static class PropetiesPostProcessorConfiguraion {
-		@Bean
-		static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
-			return new PropertiesBeanFactoryPostProcessor(
-					"properties2",
-					PropertiesFactoryBean.class,
-					locations
-			);
-		}
-	}
+  @Configuration
+  static class PropetiesPostProcessorConfiguraion {
+    @Bean
+    static PropertiesBeanFactoryPostProcessor propertiesBeanFactoryPostProcessor() {
+      return new PropertiesBeanFactoryPostProcessor(
+          "properties2",
+          PropertiesFactoryBean.class,
+          locations
+      );
+    }
+  }
 
-	@Autowired
-	Properties properties;
+  @Autowired
+  Properties properties;
 
-	@Autowired
-	Properties properties2;
+  @Autowired
+  Properties properties2;
 
-	@Value("#{properties['cacheSeconds']}")
-	int cacheSeconds;
+  @Value("#{properties['cacheSeconds']}")
+  int cacheSeconds;
 
-	@Test
-	public void propertiesFactoryBeanTest() {
-		Assert.assertNotNull(properties);
-		Assert.assertNotNull(properties2);
-		Assert.assertEquals(cacheSeconds, 1000);
+  @Test
+  public void propertiesFactoryBeanTest() {
+    Assert.assertNotNull(properties);
+    Assert.assertNotNull(properties2);
+    Assert.assertEquals(cacheSeconds, 1000);
 
-		Enumeration<Object> enumeration = properties.keys();
-		List<String> result = new ArrayList<>();
-		while(enumeration.hasMoreElements()) {
-			result.add((String) enumeration.nextElement());
-		}
+    Enumeration<Object> enumeration = properties.keys();
+    List<String> keys = new ArrayList<>();
+    while(enumeration.hasMoreElements()) {
+      keys.add((String) enumeration.nextElement());
+    }
 
-		result.stream().forEach(key -> {
-			Assert.assertEquals(properties.getProperty(key), properties2.getProperty(key));
-			logger.debug("{} = {}\n{} = {}", key, properties.getProperty(key), properties2.getProperty(key));
-		});
-	}
+//    keys.stream().forEach(key -> {
+//      Assert.assertEquals(properties.getProperty(key), properties2.getProperty(key));
+//      logger.debug("{} = {}\n{} = {}", key, properties.getProperty(key), properties2.getProperty(key));
+//    });
+
+    for (String key : keys) {
+      Assert.assertEquals(properties.getProperty(key), properties2.getProperty(key));
+      logger.debug("{} = {}\n{} = {}", key, properties.getProperty(key), properties2.getProperty(key));
+    }
+  }
 }
