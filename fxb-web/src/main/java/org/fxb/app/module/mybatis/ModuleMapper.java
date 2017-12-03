@@ -1,7 +1,7 @@
 package org.fxb.app.module.mybatis;
 
 import org.apache.ibatis.annotations.Param;
-import org.fxb.app.module.domain.Module;
+import org.fxb.app.module.domain.ModuleEntity;
 import org.fxb.app.module.domain.condition.ModuleSearch;
 import org.fxb.config.support.Mapper;
 
@@ -14,11 +14,16 @@ import java.util.List;
  */
 @Mapper
 public interface ModuleMapper {
-  List<Module> select(@Param("moduleName") String moduleName, @Param("moduleSearch") ModuleSearch moduleSearch);
-  List<Module> selectPaging(@Param("moduleName") String moduleName, @Param("startRow") int startRow, @Param("endRow") int endRow, @Param("moduleSearch") ModuleSearch moduleSearch);
+  List<ModuleEntity> select(@Param("moduleName") String moduleName, @Param("moduleSearch") ModuleSearch moduleSearch);
+  List<ModuleEntity> selectPaging(
+    @Param("moduleName") String moduleName,
+    @Param("startRow") int startRow,
+    @Param("endRow") int endRow,
+    @Param("moduleSearch") ModuleSearch moduleSearch
+  );
   long selectCount(@Param("moduleName") String moduleName, @Param("moduleSearch") ModuleSearch moduleSearch);
-  Module selectOne(@Param("moduleIdx") String moduleIdx, @Param("moduleId") String moduleId);
-  void insert(Module module);
-  void update(Module module);
-  void delete(String moduleIdx);
+  ModuleEntity selectOne(@Param("moduleIdx") String moduleIdx);
+  void insert(ModuleEntity module);
+  void update(ModuleEntity module);
+  void delete(@Param("moduleIdx") String moduleIdx);
 }

@@ -1,6 +1,7 @@
 package org.fxb.config;
 
 import org.apache.commons.lang3.StringUtils;
+import org.fxb.commons.logger.Output;
 import org.fxb.context.cache.bean.factory.EhcacheFactoryBean;
 import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
 import org.slf4j.Logger;
@@ -26,57 +27,62 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableCaching
 public class EhcacheConfiguration implements CachingConfigurer {
-	private final Logger logger = LoggerFactory.getLogger(EhcacheConfiguration.class);
+  private final Logger logger = LoggerFactory.getLogger(EhcacheConfiguration.class);
 
-	@Autowired
-	private Config config;
+  @Autowired
+  private Config config;
 
-	@Bean(destroyMethod="shutdown")
-	public net.sf.ehcache.CacheManager ehCacheManager() {
+  @Bean(destroyMethod="shutdown")
+  public net.sf.ehcache.CacheManager ehCacheManager() {
+    Output output = new Output("Ehcache ContextBean");
 
-		StringBuilder builder = new StringBuilder(config.getString("default.ehcache.cacheLocation"));
-		String cacheLocation = config.getString("ehcache.cacheLocation");
-		if (StringUtils.isNotEmpty(cacheLocation)) {
-			builder.append(",").append(cacheLocation);
-		}
+    StringBuilder builder = new StringBuilder(config.getString("default.ehcache.cacheLocation"));
+    String cacheLocation = config.getString("ehcache.cacheLocation");
+    if (StringUtils.isNotEmpty(cacheLocation)) {
+      builder.append(",").append(cacheLocation);
+    }
 
-		cacheLocation = builder.toString();
+    cacheLocation = builder.toString();
 
-		try {
-			EhcacheFactoryBean factoryBean = new EhcacheFactoryBean(
-					config.getString("default.ehcache.ehcacheLocation"),
-					cacheLocation
-			);
-			logger.debug("><>< cacheLocation: {}", cacheLocation);
-			factoryBean.setCacheManagerName(config.getString("default.ehcache.cacheManagerName"));
-			factoryBean.afterPropertiesSet();
+    try {
+      EhcacheFactoryBean factoryBean = new EhcacheFactoryBean(
+          config.getString("default.ehcache.ehcacheLocation"),
+          cacheLocation
+      );
+      output.append(false,"cacheLocation: ", cacheLocation);
+//      logger.debug("><>< cacheLocation: {}", cacheLocation);
+      factoryBean.setCacheManagerName(config.getString("default.ehcache.cacheManagerName"));
+      factoryBean.afterPropertiesSet();
 
-			return factoryBean.getObject();
-		} catch (EhcacheConfigurationException e) {
-			logger.error(e.getMessage(), e);
-		}
+      output.end();
 
-		return null;
-	}
+      return factoryBean.getObject();
+    } catch (EhcacheConfigurationException e) {
+      logger.error(e.getMessage(), e);
+    }
 
-	@Bean("fxbCacheManager")
-	@Override
-	public CacheManager cacheManager() {
-		return new EhCacheCacheManager(ehCacheManager());
-	}
+    output.end();
+    return null;
+  }
 
-	@Override
-	public CacheResolver cacheResolver() {
-		return null;
-	}
+  @Bean("fxbCacheManager")
+  @Override
+  public CacheManager cacheManager() {
+    return new EhCacheCacheManager(ehCacheManager());
+  }
 
-	@Override
-	public KeyGenerator keyGenerator() {
-		return new SimpleKeyGenerator();
-	}
+  @Override
+  public CacheResolver cacheResolver() {
+    return null;
+  }
 
-	@Override
-	public CacheErrorHandler errorHandler() {
-		return null;
-	}
+  @Override
+  public KeyGenerator keyGenerator() {
+    return new SimpleKeyGenerator();
+  }
+
+  @Override
+  public CacheErrorHandler errorHandler() {
+    return null;
+  }
 }

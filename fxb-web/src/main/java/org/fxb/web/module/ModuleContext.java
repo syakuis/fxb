@@ -1,4 +1,4 @@
-package org.fxb.app.module;
+package org.fxb.web.module;
 
 import lombok.ToString;
 import org.fxb.web.module.model.Module;
@@ -21,14 +21,24 @@ public class ModuleContext {
   private List<String> moduleIdxIndex = new ArrayList<>();
   private List<String> idIndex = new ArrayList<>();
 
-  private synchronized void reload() {
+  // 서비스 ...
+  private boolean isReloaded;
+
+  private String getIdIndex(String mid, String sid) {
+    return new StringBuffer(mid).append("+").append(sid).toString();
+  }
+
+  /**
+   * context id index 를 초기화 한다.
+   */
+  private synchronized void indexReset() {
     this.moduleIdxIndex.clear();
     this.idIndex.clear();
 
     for(Map.Entry<String, Module> entry : this.context.entrySet()) {
       Module moduleDetails = entry.getValue();
       this.moduleIdxIndex.add(moduleDetails.getModuleIdx());
-      this.idIndex.add(moduleDetails.getMid() + "+" + moduleDetails.getSid());
+      this.idIndex.add(getIdIndex(moduleDetails.getMid(), moduleDetails.getSid()));
     }
   }
 
@@ -42,24 +52,24 @@ public class ModuleContext {
 
   public String getMid(String moduleIdx) {
     Module module = this.context.get(moduleIdx);
-    if (module != null) {
-      return module.getMid();
+    if (module == null) {
+      return null;
     }
 
-    return null;
+    return module.getMid();
   }
 
   public String getSid(String moduleIdx) {
     Module module = this.context.get(moduleIdx);
-    if (module != null) {
-      return module.getSid();
+    if (module == null) {
+      return null;
     }
 
-    return null;
+    return module.getSid();
   }
 
   public String getModuleIdx(String mid, String sid) {
-    int index = this.idIndex.indexOf(mid + "+" + sid);
+    int index = this.idIndex.indexOf(getIdIndex(mid, sid));
     if (index > -1) {
       return this.moduleIdxIndex.get(index);
     }
@@ -75,18 +85,16 @@ public class ModuleContext {
       this.context.put(module.getModuleIdx(), module);
     }
 
-    this.reload();
+    this.indexReset();
   }
 
   public synchronized void put(Module module) {
     this.context.put(module.getModuleIdx(), module);
   }
 
-  // merge 기능은 frontend 에서 처리한다.
-
   public synchronized void del(String moduleIdx) {
     this.context.remove(moduleIdx);
-    this.reload();
+    this.indexReset();
   }
 
   public synchronized void reset() {

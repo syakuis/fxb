@@ -18,31 +18,25 @@ import java.util.*;
 public class ModuleDetails implements Module {
   private final String moduleIdx;
   private final String mid;
-  private String sid;
-  private String name;
+  private final String sid;
+  private final String name;
   private String layout;
   private String menu;
   private String skin;
   private Map<String, Option> options;
 
-  public ModuleDetails(String moduleIdx, String mid) {
-    this(moduleIdx, mid, mid, null, new HashMap<String, Option>());
-  }
-
-  public ModuleDetails(String moduleIdx, String mid, Map<String, Option> options) {
-    this(moduleIdx, mid, mid, null, options);
-  }
-
-  public ModuleDetails(String moduleIdx, String mid, String sid, Map<String, Option> options) {
-    this(moduleIdx, mid, sid, null, options);
-  }
-
-  public ModuleDetails(String moduleIdx, String mid, String sid, String name, Map<String, Option> options) {
+  /**
+   *
+   * @param moduleIdx = moduleIdx (unique)
+   * @param mid = moduleName
+   * @param sid = moduleIdx (unique)
+   * @param name = mdouleTitle
+   */
+  public ModuleDetails(String moduleIdx, String mid, String sid, String name) {
     this.moduleIdx = moduleIdx;
     this.mid = mid;
     this.sid = sid;
     this.name = name;
-    this.options = options;
   }
 
   public void setOptions(Map<String, Option> options) {

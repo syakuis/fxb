@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.fxb.app.module.mybatis.ModuleOptionsMapper">
+<mapper namespace="org.fxb.app.module.mybatis.ModuleOptionMapper">
 
-  <resultMap id="moduleOptions" type="org.fxb.app.module.domain.ModuleOptions">
+  <resultMap id="moduleOption" type="org.fxb.app.module.domain.ModuleOptionEntity">
     <result property="moduleIdx" column="module_idx" />
-    <result property="moduleOptionsSrl" column="module_options_srl" />
+    <result property="moduleOptionSrl" column="module_option_srl" />
     <result property="name" column="option_name" />
     <result property="value" column="option_value" />
     <result property="title" column="option_title" />
     <result property="order" column="option_order" />
   </resultMap>
 
-  <select id="selectByModuleIdx" resultMap="moduleOptions">
-    SELECT * FROM module_options
-    WHERE module_idx = #{moduleIdx}
+  <select id="selectByModuleIdx" resultMap="moduleOption">
+    SELECT * FROM module_option
+    <if test="moduleIdx != null">
+      WHERE module_idx = #{moduleIdx}
+    </if>
   </select>
 
   <insert id="insert">
-    <selectKey keyProperty="moduleOptionsSrl" resultType="long" order="BEFORE">
-      SELECT MODULE_OPTIONS_SRL_SEQ.NEXTVAL FROM DUAL
+    <selectKey keyProperty="moduleOptionSrl" resultType="long" order="BEFORE">
+      SELECT MODULE_OPTION_SRL_SEQ.NEXTVAL FROM DUAL
     </selectKey>
 
-    INSERT INTO module_options (
+    INSERT INTO module_option (
       module_idx,
-      module_options_srl,
+      module_option_srl,
       option_name,
       option_value,
       option_title,
       option_order
     ) VALUES (
       #{moduleIdx},
-      #{moduleOptionsSrl},
+      #{moduleOptionSrl},
       #{name},
       #{value},
       #{title},
@@ -39,23 +41,23 @@
   </insert>
 
   <update id="update">
-    UPDATE module_options SET
+    UPDATE module_option SET
       option_name = #{name},
       option_value = #{value},
       option_title = #{title},
       option_order = #{order}
     WHERE module_idx = #{moduleIdx}
-    AND module_options_srl = #{moduleOptionsSrl}
+    AND module_option_srl = #{moduleOptionSrl}
   </update>
 
-  <delete id="deleteByModuleOptionsSrl">
-    DELETE FROM module_options
+  <delete id="deleteByModuleOptionSrl">
+    DELETE FROM module_option
     WHERE module_idx = #{moduleIdx}
-    AND module_options_srl = #{moduleOptionsSrl}
+    AND module_option_srl = #{moduleOptionSrl}
   </delete>
 
   <delete id="deleteByModuleIdx">
-    DELETE FROM module_options WHERE module_idx = #{moduleIdx}
+    DELETE FROM module_option WHERE module_idx = #{moduleIdx}
   </delete>
 
 </mapper>

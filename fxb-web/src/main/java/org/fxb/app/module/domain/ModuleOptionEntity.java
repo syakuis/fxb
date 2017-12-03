@@ -4,9 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.fxb.web.module.model.Option;
-
-import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -17,9 +14,10 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class ModuleOptions {
+public class ModuleOptionEntity {
   protected String moduleIdx;
-  protected Long moduleOptionsSrl;
+  // todo 왜 Long?
+  protected Long moduleOptionSrl;
   protected int order;
   protected String name;
   protected String value;

@@ -14,7 +14,7 @@ import javax.sql.DataSource;
  * @since 2017. 11. 29.
  */
 @Configuration
-public class ModuleOptionsConfiguration {
+public class ModuleOptionConfiguration {
   @Autowired
   @Qualifier("fxbDataSource")
   DataSource dataSource;
@@ -23,7 +23,7 @@ public class ModuleOptionsConfiguration {
   public void init() throws Exception {
     new PopulatorDataSourceInitializer(
       dataSource,
-      "org/fxb/app/module/schemas/moduleOptions.table.h2.sql"
+      "org/fxb/app/module/schemas/moduleOption.table.h2.sql"
     ).afterPropertiesSet();
   }
 }

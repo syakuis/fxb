@@ -1,9 +1,7 @@
 package org.fxb.app.module.mybatis.config;
 
-import org.fxb.app.module.domain.Module;
-import org.fxb.app.module.domain.ModuleOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.ModuleOptionEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,10 +13,8 @@ import java.util.List;
  * @since 2017. 11. 28.
  */
 public class DataInitialization {
-  private static final Logger logger = LoggerFactory.getLogger(DataInitialization.class);
-
-  public static Module module(String moduleName, String moduleId, boolean isNew) {
-    Module module = new Module();
+  public static ModuleEntity module(String moduleName, String moduleId, boolean isNew) {
+    ModuleEntity module = new ModuleEntity();
     module.setModuleName(moduleName);
     if (isNew) {
       module.setModuleId(moduleId + new Date());
@@ -31,17 +27,17 @@ public class DataInitialization {
     return module;
   }
 
-  public static List<ModuleOptions> moduleOptions(String moduleIdx, int count) {
-    List<ModuleOptions> moduleOptions = new ArrayList<>();
+  public static List<ModuleOptionEntity> moduleOptions(String moduleIdx, int count) {
+    List<ModuleOptionEntity> moduleOptions = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      ModuleOptions options = new ModuleOptions();
-      options.setModuleIdx(moduleIdx);
-      options.setOrder(i);
-      options.setName("name_" + i);
-      options.setValue("value_" + i);
-      options.setTitle("title_" + i);
+      ModuleOptionEntity moduleOption = new ModuleOptionEntity();
+      moduleOption.setModuleIdx(moduleIdx);
+      moduleOption.setOrder(i);
+      moduleOption.setName("name_" + i);
+      moduleOption.setValue("value_" + i);
+      moduleOption.setTitle("title_" + i);
 
-      moduleOptions.add(options);
+      moduleOptions.add(moduleOption);
     }
 
     return moduleOptions;

@@ -8,11 +8,6 @@ import java.util.Map;
  * @since 2017. 11. 22.
  */
 public interface Module {
-
-  void setSid(String sid);
-
-  void setName(String name);
-
   void setLayout(String layout);
 
   void setMenu(String menu);

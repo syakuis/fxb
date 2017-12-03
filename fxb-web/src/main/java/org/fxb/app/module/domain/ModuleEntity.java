@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class Module {
+public class ModuleEntity {
   protected String moduleIdx;
   protected String moduleName;
   protected String moduleId;
@@ -26,5 +26,5 @@ public class Module {
   protected String layoutIdx;
   protected Date regDate;
 
-  protected List<ModuleOptions> moduleOptions;
+  protected List<ModuleOptionEntity> moduleOptions;
 }

@@ -1,18 +1,16 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.domain.Module;
-import org.fxb.app.module.domain.ModuleOptions;
-import org.fxb.app.module.model.BasicModule;
+import org.fxb.app.module.domain.ModuleEntity;
 import org.fxb.app.module.mybatis.config.DataInitialization;
 import org.fxb.app.module.mybatis.config.ModuleConfiguration;
-import org.fxb.app.module.mybatis.config.ModuleOptionsConfiguration;
+import org.fxb.app.module.mybatis.config.ModuleOptionConfiguration;
 import org.fxb.boot.Bootstrapping;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -32,34 +31,59 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Bootstrapping.class)
-@Import(value = {ModuleConfiguration.class, ModuleOptionsConfiguration.class})
+@Import(value = {ModuleConfiguration.class, ModuleOptionConfiguration.class})
 @ActiveProfiles({ "test", "mybatis" })
 public class MyBatisModuleServiceTest {
   @Resource(name = "myBatisModuleService")
-  private MyBatisModuleService moduleService;
+  private ModuleService moduleService;
 
   String moduleId = "test";
   String moduleName = "test";
+  String moduleIdx = null;
   int dataRow = 10;
 
-  @Test
-  @Transactional
-  public void test() {
+  @Before
+  public void init() {
     Assert.assertNotNull(moduleService);
     Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
 
-    Module module = moduleService.saveModule(
-      DataInitialization.module(moduleName, moduleId, false),
-      DataInitialization.moduleOptions(null, dataRow)
-    );
+    for (int i = 0; i < dataRow; i++) {
+      ModuleEntity moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+      moduleEntity.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
+      moduleService.saveModule(moduleEntity);
+      if (i == 0) moduleIdx = moduleEntity.getModuleIdx();
+    }
+  }
 
-    Module moduleCheck = moduleService.getModule(module.getModuleIdx(), null);
-    Assert.assertThat(module, is(moduleCheck));
-    Assert.assertThat(module.getModuleOptions(), is(moduleCheck.getModuleOptions()));
+  @Test
+  @Transactional
+  public void initDataChecking() {
+    List<ModuleEntity> modules = moduleService.getModules();
+    Assert.assertThat(modules.size(), is(dataRow));
+
+    ModuleEntity moduleCheck = moduleService.getModule(moduleIdx);
+    ModuleEntity moduleCheck2 = moduleService.getModule(moduleCheck.getModuleIdx());
+
+    Assert.assertThat(moduleCheck, is(moduleCheck2));
+    Assert.assertThat(moduleCheck.getModuleOptions(), is(moduleCheck2.getModuleOptions()));
     Assert.assertThat(moduleCheck.getModuleOptions().size(), is(dataRow));
+  }
 
-    moduleService.deleteModule(module.getModuleIdx());
+  @Test
+  @Transactional
+  public void update() {
 
-    Assert.assertNull(moduleService.getModule(moduleCheck.getModuleIdx(), null));
+    for (int i = 0; i < dataRow; i++) {
+      if (i % 2 == 0) {
+        ModuleEntity module = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+        module.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
+        moduleService.saveModule(module);
+      }
+    }
+  }
+
+  public void delete() {
+    moduleService.deleteModule(moduleIdx);
+    Assert.assertNull(moduleService.getModule(moduleIdx));
   }
 }
