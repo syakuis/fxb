@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ModuleEntity 의 데이터를 Module 에 저장한다.
@@ -32,13 +29,37 @@ public class MyBatisModuleContextService implements ModuleContextService {
   ModuleOptionService moduleOptionService;
 
   @Override
-  public Map<String, Module> getModuleContext() {
-    return null;
+  public List<String> getModuleIdx() {
+    List<String> moduleIdxIndex = new ArrayList<>();
+
+    for(Map.Entry<String, Module> entry : this.getModuleContext().entrySet()) {
+      Module moduleDetails = entry.getValue();
+      moduleIdxIndex.add(moduleDetails.getModuleIdx());
+    }
+
+    return moduleIdxIndex;
   }
 
   @Override
-  public synchronized List<Module> getModules() {
-    List<Module> result = new ArrayList<>();
+  public List<String> getId() {
+    List<String> idIndex = new ArrayList<>();
+
+    for(Map.Entry<String, Module> entry : this.getModuleContext().entrySet()) {
+      Module moduleDetails = entry.getValue();
+      idIndex.add(createId(moduleDetails.getMid(), moduleDetails.getSid()));
+    }
+
+    return idIndex;
+  }
+
+  @Override
+  public String createId(String mid, String sid) {
+    return new StringBuffer(mid).append("+").append(sid).toString();
+  }
+
+  @Override
+  public synchronized Map<String, Module> getModuleContext() {
+    Map<String, Module> result = new HashMap<>();
 
     List<ModuleEntity> modules = moduleService.getModules();
     for (ModuleEntity moduleEntity : modules) {
@@ -67,7 +88,7 @@ public class MyBatisModuleContextService implements ModuleContextService {
       }
       module.setOptions(ModuleDetails.setOptions(options));
 
-      result.add(module);
+      result.put(module.getModuleIdx(), module);
     }
 
     return result;

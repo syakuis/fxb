@@ -1,25 +1,25 @@
-package org.fxb.app.module.service;
+package org.fxb.app.module;
 
 import org.fxb.app.module.domain.ModuleEntity;
 import org.fxb.app.module.mybatis.config.DataInitialization;
 import org.fxb.app.module.mybatis.config.ModuleConfiguration;
 import org.fxb.app.module.mybatis.config.ModuleOptionConfiguration;
+import org.fxb.app.module.service.ModuleService;
 import org.fxb.boot.Bootstrapping;
-import org.fxb.web.module.ModuleContextService;
-import org.fxb.web.module.model.Module;
+import org.fxb.web.module.ModuleContext;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 
@@ -33,34 +33,35 @@ import static org.hamcrest.core.Is.is;
 @ContextConfiguration(classes = Bootstrapping.class)
 @Import({ModuleConfiguration.class, ModuleOptionConfiguration.class})
 @ActiveProfiles({"test", "mybatis"})
-public class ModuleContextServiceTest {
+public class ModuleContextTest {
   @Resource(name = "myBatisModuleService")
   private ModuleService moduleService;
 
-  @Resource(name = "myBatisModuleContextService")
-  private ModuleContextService moduleContextService;
+  @Autowired
+  private ModuleContext moduleContext;
 
   String moduleId = "test";
   String moduleName = "test";
+  String moduleIdx = null;
   int dataRow = 10;
 
+  @Before
+  public void init() {
+    Assert.assertNotNull(moduleService);
+    Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
+
+    for (int i = 0; i < dataRow; i++) {
+      ModuleEntity moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+      moduleEntity.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
+      moduleService.saveModule(moduleEntity);
+      if (i == 0) moduleIdx = moduleEntity.getModuleIdx();
+    }
+
+    Assert.assertThat("초기화 데이터 검증", moduleService.getModules().size(), is(dataRow));
+  }
+
   @Test
-  @Transactional
   public void test() {
-//    Assert.assertNotNull(moduleService);
-//    Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
-//
-//    for (int i = 0; i < dataRow; i++) {
-//      moduleService.saveModule(
-//        DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false),
-//        DataInitialization.moduleOptions(null, dataRow)
-//      );
-//    }
-//
-//    Assert.assertThat("초기화 데이터 검증", moduleService.getModules().size(), is(dataRow));
-//
-//    List<Module> modules = moduleContextService.getModules();
-//    List<Module> modules2 = moduleContextService.getModules();
-//    List<Module> modules3 = moduleContextService.getModules();
+    System.out.println(moduleContext.get());
   }
 }
