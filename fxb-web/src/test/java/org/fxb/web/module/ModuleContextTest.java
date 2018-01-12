@@ -1,18 +1,21 @@
-package org.fxb.app.module;
+package org.fxb.web.module;
 
+import org.fxb.app.module.config.ModuleConfiguration;
 import org.fxb.app.module.domain.ModuleEntity;
-import org.fxb.app.module.mybatis.config.DataInitialization;
-import org.fxb.app.module.mybatis.config.ModuleConfiguration;
-import org.fxb.app.module.mybatis.config.ModuleOptionConfiguration;
+import org.fxb.app.module.mapper.config.DataInitialization;
+import org.fxb.app.module.mapper.config.ModuleInitializationConfiguration;
 import org.fxb.app.module.service.ModuleService;
 import org.fxb.boot.Bootstrapping;
-import org.fxb.web.module.ModuleContext;
+import org.fxb.web.module.model.Module;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 
@@ -31,10 +35,14 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Bootstrapping.class)
-@Import({ModuleConfiguration.class, ModuleOptionConfiguration.class})
+@Import(value = {ModuleConfiguration.class, ModuleInitializationConfiguration.class})
 @ActiveProfiles({"test", "mybatis"})
 public class ModuleContextTest {
-  @Resource(name = "myBatisModuleService")
+  @Autowired
+  @Qualifier("fxbCacheManager")
+  CacheManager cacheManager;
+
+  @Resource(name = "moduleService")
   private ModuleService moduleService;
 
   @Autowired
@@ -47,6 +55,8 @@ public class ModuleContextTest {
 
   @Before
   public void init() {
+    Assert.assertEquals(cacheManager.getCache("fxb.module").getName(), "fxb.module");
+
     Assert.assertNotNull(moduleService);
     Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
 
@@ -62,6 +72,18 @@ public class ModuleContextTest {
 
   @Test
   public void test() {
-    System.out.println(moduleContext.get());
+    Map<String, Module> module = moduleContext.get();
+    Cache.ValueWrapper valueWrapper = cacheManager.getCache("fxb.module").get("moduleContext");
+    Assert.assertThat(
+      module,
+      is((Map<String, Module>) valueWrapper.get())
+    );
+
+    for(String moduleIdx : module.keySet()) {
+      Module moduleData = module.get(moduleIdx);
+
+      Assert.assertEquals(moduleData.getMid(), moduleContext.getMid(moduleIdx));
+      Assert.assertEquals(moduleData.getSid(), moduleContext.getSid(moduleIdx));
+    }
   }
 }

@@ -1,11 +1,7 @@
 package org.fxb.app.module.service;
 
 import org.fxb.app.module.domain.ModuleEntity;
-import org.fxb.app.module.domain.ModuleOptionEntity;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,31 +16,17 @@ import java.util.List;
  */
 @Transactional(readOnly = true)
 public interface ModuleService {
-  @Cacheable(cacheNames = "fxb.module", key = "'modules'", sync = true)
   List<ModuleEntity> getModules();
 
   List<ModuleEntity> getModules(String moduleName);
 
-  @Cacheable(cacheNames = "fxb.module", key = "'module'.concat(#result.moduleIdx)", condition = "#result.moduleIdx != null", sync = true)
   ModuleEntity getModule(String moduleIdx);
 
   @Transactional
-  @Caching(
-    evict = {
-      @CacheEvict(cacheNames = "fxb.module", key = "'modules'"),
-      @CacheEvict(cacheNames = "fxb.module", key = "'moduleOptions'.concat(#result.moduleIdx)", condition = "#result.moduleIdx != null"),
-    },
-    put = @CachePut(cacheNames = "fxb.module", key = "'module'.concat(#result.moduleIdx)", condition = "#result.moduleIdx != null")
-  )
+  @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")
   ModuleEntity saveModule(ModuleEntity module);
 
   @Transactional
-  @Caching(
-    evict = {
-      @CacheEvict(cacheNames = "fxb.module", key = "'modules'"),
-      @CacheEvict(cacheNames = "fxb.module", key = "'moduleOptions'.concat(#result.moduleIdx)", condition = "#result.moduleIdx != null"),
-      @CacheEvict(cacheNames = "fxb.module", key = "'module'.concat(#moduleIdx)", condition = "#moduleIdx != null")
-    }
-  )
+  @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")
   void deleteModule(String moduleIdx);
 }

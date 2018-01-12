@@ -1,15 +1,11 @@
-package org.fxb.app.module.mybatis.config;
+package org.fxb.app.module.mapper.config;
 
 import org.fxb.context.db.bean.factory.PopulatorDataSourceInitializer;
-import org.fxb.web.module.ModuleContext;
-import org.fxb.web.module.ModuleContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -18,7 +14,7 @@ import javax.sql.DataSource;
  * @since 2017. 11. 29.
  */
 @Configuration
-public class ModuleConfiguration {
+public class ModuleInitializationConfiguration {
   @Autowired
   @Qualifier("fxbDataSource")
   DataSource dataSource;
@@ -27,15 +23,8 @@ public class ModuleConfiguration {
   public void init() throws Exception {
     new PopulatorDataSourceInitializer(
       dataSource,
-      "org/fxb/app/module/schemas/module.table.h2.sql"
+      "org/fxb/app/module/schemas/module.table.h2.sql",
+      "org/fxb/app/module/schemas/moduleOption.table.h2.sql"
     ).afterPropertiesSet();
-  }
-
-  @Resource(name = "myBatisModuleContextService")
-  private ModuleContextService moduleContextService;
-
-  @Bean
-  public ModuleContext moduleContext() {
-    return new ModuleContext(moduleContextService);
   }
 }

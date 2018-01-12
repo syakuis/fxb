@@ -1,4 +1,4 @@
-package org.fxb.app.module.mybatis.config;
+package org.fxb.app.module.mapper.config;
 
 import org.fxb.app.module.domain.ModuleEntity;
 import org.fxb.app.module.domain.ModuleOptionEntity;

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ import java.util.Date;
  */
 @Configuration
 @ComponentScan(
-		basePackages = "org.fxb.config",
+		basePackages = {"org.fxb.config"},
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
@@ -35,7 +36,7 @@ public class Bootstrapping {
 	private Config config;
 
 	@PostConstruct
-	public void intro() throws IOException {
+	public void intro() {
 		StringBuilder print = new StringBuilder();
 		print.append("\n_________________________________________________________________________________\n");
 
@@ -67,5 +68,11 @@ public class Bootstrapping {
 				.append("_________________________________________________________________________________\n\n");
 
 		System.out.println(print.toString());
+
+		Assert.isTrue(
+			config.getString("profiles").indexOf("mybatis") > -1 ||
+				config.getString("profiles").indexOf("jpa") > -1,
+			"profiles requires mybatis or jpa."
+		);
 	}
 }

@@ -1,4 +1,4 @@
-package org.fxb.app.module.domain.condition;
+package org.fxb.app.module.dto;
 
 import lombok.Getter;
 import lombok.Setter;

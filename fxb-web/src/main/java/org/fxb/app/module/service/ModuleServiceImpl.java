@@ -1,15 +1,12 @@
 package org.fxb.app.module.service;
 
+import org.fxb.app.module.dao.ModuleDAO;
+import org.fxb.app.module.dao.ModuleOptionBatchDAO;
+import org.fxb.app.module.dao.ModuleOptionDAO;
 import org.fxb.app.module.domain.ModuleEntity;
-import org.fxb.app.module.domain.ModuleOptionEntity;
-import org.fxb.app.module.domain.condition.ModuleSearch;
-import org.fxb.app.module.mybatis.ModuleMapper;
-import org.fxb.app.module.mybatis.ModuleOptionBatchDAO;
-import org.fxb.app.module.mybatis.ModuleOptionMapper;
-import org.springframework.stereotype.Service;
+import org.fxb.app.module.dto.ModuleSearch;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,42 +14,43 @@ import java.util.List;
  * @site http://syaku.tistory.com
  * @since 2017. 11. 27.
  */
-@Service
-public class MyBatisModuleService implements ModuleService {
-  @Resource(name = "moduleMapper")
-  private ModuleMapper moduleMapper;
-
-  @Resource(name = "moduleOptionMapper")
-  private ModuleOptionMapper moduleOptionMapper;
-
-  @Resource(name = "moduleOptionBatchDAO")
+public class ModuleServiceImpl implements ModuleService {
+  private ModuleDAO moduleDAO;
   private ModuleOptionBatchDAO moduleOptionBatchDAO;
+
+  public void setModuleDAO(ModuleDAO moduleDAO) {
+    this.moduleDAO = moduleDAO;
+  }
+
+  public void setModuleOptionBatchDAO(ModuleOptionBatchDAO moduleOptionBatchDAO) {
+    this.moduleOptionBatchDAO = moduleOptionBatchDAO;
+  }
 
   @Override
   public List<ModuleEntity> getModules(String moduleName) {
     Assert.notNull("the moduleName must not be null.", moduleName);
     // object 를 null 로 입력하면 myBatis 에서 매칭하지 못한다.
-    return moduleMapper.select(moduleName, new ModuleSearch());
+    return moduleDAO.findAllByModuleName(moduleName, new ModuleSearch());
   }
 
   @Override
   public List<ModuleEntity> getModules() {
-    return moduleMapper.select(null, new ModuleSearch());
+    return moduleDAO.findAllByModuleName(null, new ModuleSearch());
   }
 
   @Override
   public ModuleEntity getModule(String moduleIdx) {
     Assert.notNull("the moduleIdx must not be null.", moduleIdx);
-    return moduleMapper.selectOne(moduleIdx);
+    return moduleDAO.findOneByModuleIdx(moduleIdx);
   }
 
   @Override
   public ModuleEntity saveModule(ModuleEntity module) {
     Assert.notNull(module, "the module must not be null");
     if (module.getModuleIdx() == null) {
-      moduleMapper.insert(module);
+      moduleDAO.insert(module);
     } else {
-      moduleMapper.update(module);
+      moduleDAO.update(module);
     }
 
     module.setModuleOptions(
@@ -64,6 +62,6 @@ public class MyBatisModuleService implements ModuleService {
 
   @Override
   public void deleteModule(String moduleIdx) {
-    moduleMapper.delete(moduleIdx);
+    moduleDAO.delete(moduleIdx);
   }
 }

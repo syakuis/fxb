@@ -9,11 +9,7 @@
 	   http://www.springframework.org/schema/context/spring-context.xsd
 	">
 
-	<bean class="org.fxb.boot.Bootstrapping" />
+	<context:component-scan base-package="org.fxb.boot" />
 
-	<context:component-scan base-package="org.syaku" use-default-filters="false">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
-	</context:component-scan>
+	<context:component-scan base-package="org.syaku" />
 </beans>

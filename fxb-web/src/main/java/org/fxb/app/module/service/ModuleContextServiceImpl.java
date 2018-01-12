@@ -2,16 +2,18 @@ package org.fxb.app.module.service;
 
 import org.fxb.app.module.domain.ModuleEntity;
 import org.fxb.app.module.domain.ModuleOptionEntity;
-import org.fxb.web.module.ModuleContextService;
+import org.fxb.web.module.BasicModuleContextService;
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleDetails;
 import org.fxb.web.module.model.Option;
 import org.fxb.web.module.model.OptionDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ModuleEntity 의 데이터를 Module 에 저장한다.
@@ -19,46 +21,23 @@ import java.util.*;
  * @site http://syaku.tistory.com
  * @since 2017. 11. 30.
  */
-@Service
 @Transactional(readOnly = true)
-public class MyBatisModuleContextService implements ModuleContextService {
-  @Resource(name = "myBatisModuleService")
+public class ModuleContextServiceImpl extends BasicModuleContextService {
   ModuleService moduleService;
 
-  @Resource(name = "myBatisModuleOptionService")
   ModuleOptionService moduleOptionService;
 
-  @Override
-  public List<String> getModuleIdx() {
-    List<String> moduleIdxIndex = new ArrayList<>();
+  public void setModuleService(ModuleService moduleService) {
+    this.moduleService = moduleService;
+  }
 
-    for(Map.Entry<String, Module> entry : this.getModuleContext().entrySet()) {
-      Module moduleDetails = entry.getValue();
-      moduleIdxIndex.add(moduleDetails.getModuleIdx());
-    }
-
-    return moduleIdxIndex;
+  public void setModuleOptionService(ModuleOptionService moduleOptionService) {
+    this.moduleOptionService = moduleOptionService;
   }
 
   @Override
-  public List<String> getId() {
-    List<String> idIndex = new ArrayList<>();
-
-    for(Map.Entry<String, Module> entry : this.getModuleContext().entrySet()) {
-      Module moduleDetails = entry.getValue();
-      idIndex.add(createId(moduleDetails.getMid(), moduleDetails.getSid()));
-    }
-
-    return idIndex;
-  }
-
-  @Override
-  public String createId(String mid, String sid) {
-    return new StringBuffer(mid).append("+").append(sid).toString();
-  }
-
-  @Override
-  public synchronized Map<String, Module> getModuleContext() {
+  @Cacheable(cacheNames = "fxb.module", key = "'moduleContext'", sync = true)
+  public Map<String, Module> getModuleContext() {
     Map<String, Module> result = new HashMap<>();
 
     List<ModuleEntity> modules = moduleService.getModules();

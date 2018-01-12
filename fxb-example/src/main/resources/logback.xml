@@ -7,8 +7,8 @@
 		</layout>
 	</appender>
 
-	<logger name="org.springframework" level="error" />
-	<logger name="org.springframework.security" level="debug" />
+	<logger name="org.springframework" level="debug" />
+	<!--<logger name="org.springframework.security" level="debug" />-->
 	<logger name="org.fxb" level="debug" />
 
 	<root level="debug">

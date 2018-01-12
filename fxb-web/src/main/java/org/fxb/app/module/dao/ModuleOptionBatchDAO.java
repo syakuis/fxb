@@ -1,10 +1,8 @@
-package org.fxb.app.module.mybatis;
+package org.fxb.app.module.dao;
 
 import org.fxb.app.module.domain.ModuleOptionEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +17,12 @@ import java.util.List;
  * @site http://syaku.tistory.com
  * @since 2017. 11. 27.
  */
-@Repository
 public class ModuleOptionBatchDAO {
-  @Resource(name = "moduleOptionMapper")
-  private ModuleOptionMapper moduleOptionMapper;
+  private ModuleOptionDAO moduleOptionDAO;
+
+  public void setModuleOptionDAO(ModuleOptionDAO moduleOptionDAO) {
+    this.moduleOptionDAO = moduleOptionDAO;
+  }
 
   /**
    * 일괄적으로 모듈 옵션을 수정하거나 추가할때는 입력된 데이터를 제외하고 기존 데이터는 삭제된다.
@@ -38,7 +38,7 @@ public class ModuleOptionBatchDAO {
     List<ModuleOptionEntity> result = new ArrayList<>();
 
     if ((moduleOptions == null || moduleOptions.isEmpty()) && autoDelete) {
-      moduleOptionMapper.deleteByModuleIdx(moduleIdx);
+      moduleOptionDAO.deleteByModuleIdx(moduleIdx);
       return result;
     }
 
@@ -54,9 +54,9 @@ public class ModuleOptionBatchDAO {
       moduleOption.setOrder(i);
 
       if (moduleOption.getModuleOptionSrl() == null) {
-        moduleOptionMapper.insert(moduleOption);
+        moduleOptionDAO.insert(moduleOption);
       } else {
-        moduleOptionMapper.update(moduleOption);
+        moduleOptionDAO.update(moduleOption);
       }
 
       moduleOptionSrl.add(moduleOption.getModuleOptionSrl());
@@ -76,7 +76,7 @@ public class ModuleOptionBatchDAO {
   private List<Long> deleteByNotModuleOptionSrl(String moduleIdx, List<Long> moduleOptionSrl) {
     List<Long> moduleOptionSrlOriginal = new ArrayList<>();
 
-    List<ModuleOptionEntity> moduleOptionEntities = moduleOptionMapper.selectByModuleIdx(moduleIdx);
+    List<ModuleOptionEntity> moduleOptionEntities = moduleOptionDAO.findByModuleIdx(moduleIdx);
 
     for (ModuleOptionEntity moduleOptionEntity : moduleOptionEntities) {
       moduleOptionSrlOriginal.add(moduleOptionEntity.getModuleOptionSrl());
@@ -86,7 +86,7 @@ public class ModuleOptionBatchDAO {
     moduleOptionSrlOriginal.removeAll(moduleOptionSrl);
 
     for (Long srl : moduleOptionSrlOriginal) {
-      moduleOptionMapper.deleteByModuleOptionSrl(moduleIdx, srl);
+      moduleOptionDAO.deleteByModuleOptionSrl(moduleIdx, srl);
     }
 
     return moduleOptionSrlOriginal;

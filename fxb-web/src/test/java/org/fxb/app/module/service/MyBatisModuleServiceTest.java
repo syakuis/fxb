@@ -1,9 +1,9 @@
 package org.fxb.app.module.service;
 
+import org.fxb.app.module.config.ModuleConfiguration;
 import org.fxb.app.module.domain.ModuleEntity;
-import org.fxb.app.module.mybatis.config.DataInitialization;
-import org.fxb.app.module.mybatis.config.ModuleConfiguration;
-import org.fxb.app.module.mybatis.config.ModuleOptionConfiguration;
+import org.fxb.app.module.mapper.config.DataInitialization;
+import org.fxb.app.module.mapper.config.ModuleInitializationConfiguration;
 import org.fxb.boot.Bootstrapping;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
@@ -18,7 +18,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -31,10 +30,10 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Bootstrapping.class)
-@Import(value = {ModuleConfiguration.class, ModuleOptionConfiguration.class})
+@Import(value = {ModuleConfiguration.class, ModuleInitializationConfiguration.class})
 @ActiveProfiles({ "test", "mybatis" })
 public class MyBatisModuleServiceTest {
-  @Resource(name = "myBatisModuleService")
+  @Resource(name = "moduleService")
   private ModuleService moduleService;
 
   String moduleId = "test";

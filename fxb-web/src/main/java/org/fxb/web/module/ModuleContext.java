@@ -4,6 +4,7 @@ import lombok.ToString;
 import org.fxb.web.module.model.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Map;
 
@@ -23,15 +24,15 @@ public class ModuleContext {
     this.moduleContextService = moduleContextService;
   }
 
-  public Map<String, Module> get() {
+  public synchronized Map<String, Module> get() {
     return this.moduleContextService.getModuleContext();
   }
 
-  public Module get(String moduleIdx) {
+  public synchronized Module get(String moduleIdx) {
     return this.moduleContextService.getModuleContext().get(moduleIdx);
   }
 
-  public String getMid(String moduleIdx) {
+  public synchronized String getMid(String moduleIdx) {
     Module module = this.moduleContextService.getModuleContext().get(moduleIdx);
     if (module == null) {
       return null;
@@ -40,7 +41,7 @@ public class ModuleContext {
     return module.getMid();
   }
 
-  public String getSid(String moduleIdx) {
+  public synchronized String getSid(String moduleIdx) {
     Module module = this.moduleContextService.getModuleContext().get(moduleIdx);
     if (module == null) {
       return null;
@@ -49,7 +50,7 @@ public class ModuleContext {
     return module.getSid();
   }
 
-  public String getModuleIdx(String mid, String sid) {
+  public synchronized String getModuleIdx(String mid, String sid) {
     int index = this.moduleContextService.getModuleIdx().indexOf(moduleContextService.createId(mid, sid));
     if (index > -1) {
       return this.moduleContextService.getModuleIdx().get(index);

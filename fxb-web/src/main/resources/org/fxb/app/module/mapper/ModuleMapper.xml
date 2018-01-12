@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.fxb.app.module.mybatis.ModuleMapper">
+<mapper namespace="org.fxb.app.module.mapper.ModuleMapper">
 
   <resultMap id="module" type="org.fxb.app.module.domain.ModuleEntity">
     <id property="moduleIdx" column="module_idx" />
@@ -21,7 +21,7 @@
     <result property="layoutIdx" column="layout_idx" />
     <result property="regDate" column="reg_date" />
 
-    <collection property="moduleOptions" resultMap="org.fxb.app.module.mybatis.ModuleOptionMapper.moduleOption"/>
+    <collection property="moduleOptions" resultMap="org.fxb.app.module.mapper.ModuleOptionMapper.moduleOption"/>
   </resultMap>
 
   <sql id="whereList">
@@ -35,7 +35,7 @@
     </if>
   </sql>
 
-  <select id="select" resultMap="module">
+  <select id="findAllByModuleName" resultMap="module">
     SELECT * FROM module
     <where>
       <include refid="whereList"/>
@@ -43,14 +43,14 @@
   </select>
 
 
-  <select id="selectCount" resultType="long">
+  <select id="countByModuleName" resultType="long">
     SELECT NVL(COUNT(*),0) FROM module
     <where>
       <include refid="whereList"/>
     </where>
   </select>
 
-  <select id="selectPaging" resultMap="module">
+  <select id="findAllByModuleNamePaging" resultMap="module">
     SELECT * FROM (
     SELECT D.*, ROWNUM rnum FROM (
     SELECT * FROM module
@@ -62,7 +62,7 @@
     ) WHERE rnum &gt; #{startRow}
   </select>
 
-  <select id="selectOne" resultMap="moduleObject">
+  <select id="findOneByModuleIdx" resultMap="moduleObject">
     SELECT * FROM module M
     LEFT OUTER JOIN module_option O ON O.module_idx = M.module_idx
     WHERE M.module_idx = #{moduleIdx}

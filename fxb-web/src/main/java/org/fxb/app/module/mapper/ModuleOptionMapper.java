@@ -1,6 +1,7 @@
-package org.fxb.app.module.mybatis;
+package org.fxb.app.module.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.fxb.app.module.dao.ModuleOptionDAO;
 import org.fxb.app.module.domain.ModuleOptionEntity;
 import org.fxb.config.support.Mapper;
 
@@ -12,10 +13,9 @@ import java.util.List;
  * @since 2017. 11. 27.
  */
 @Mapper
-public interface ModuleOptionMapper {
-  List<ModuleOptionEntity> selectByModuleIdx(@Param("moduleIdx") String moduleIdx);
-  void insert(ModuleOptionEntity moduleOption);
-  void update(ModuleOptionEntity moduleOption);
-  void deleteByModuleIdx(String moduleIdx);
+public interface ModuleOptionMapper extends ModuleOptionDAO {
+  @Override
+  List<ModuleOptionEntity> findByModuleIdx(@Param("moduleIdx") String moduleIdx);
+  @Override
   void deleteByModuleOptionSrl(@Param("moduleIdx") String moduleIdx, @Param("moduleOptionSrl") Long moduleOptionSrl);
 }
