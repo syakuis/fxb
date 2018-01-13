@@ -1,6 +1,6 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.Module;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +16,15 @@ import java.util.List;
  */
 @Transactional(readOnly = true)
 public interface ModuleService {
-  List<ModuleEntity> getModules();
+  List<Module> getModules();
 
-  List<ModuleEntity> getModules(String moduleName);
+  List<Module> getModules(String moduleName);
 
-  ModuleEntity getModule(String moduleIdx);
+  Module getModule(String moduleIdx);
 
   @Transactional
   @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")
-  ModuleEntity saveModule(ModuleEntity module);
+  Module saveModule(Module module);
 
   @Transactional
   @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")

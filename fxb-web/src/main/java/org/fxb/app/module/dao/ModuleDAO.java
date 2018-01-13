@@ -1,6 +1,6 @@
 package org.fxb.app.module.dao;
 
-import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.Module;
 import org.fxb.app.module.dto.ModuleSearch;
 
 import java.util.List;
@@ -11,16 +11,16 @@ import java.util.List;
  * @since 2018. 1. 12.
  */
 public interface ModuleDAO {
-  List<ModuleEntity> findAllByModuleName(String moduleName, ModuleSearch moduleSearch);
-  List<ModuleEntity> findAllByModuleNamePaging(
+  List<Module> findAllByModuleName(String moduleName, ModuleSearch moduleSearch);
+  List<Module> findAllByModuleNamePaging(
     String moduleName,
     int startRow,
     int endRow,
     ModuleSearch moduleSearch
   );
   long countByModuleName(String moduleName, ModuleSearch moduleSearch);
-  ModuleEntity findOneByModuleIdx(String moduleIdx);
-  void insert(ModuleEntity module);
-  void update(ModuleEntity module);
+  Module findOneByModuleIdx(String moduleIdx);
+  void insert(Module module);
+  void update(Module module);
   void delete(String moduleIdx);
 }

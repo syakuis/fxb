@@ -1,6 +1,6 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.ModuleOption;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Transactional(readOnly = true)
 public interface ModuleOptionService {
-  List<ModuleOptionEntity> getModuleOptions(String moduleIdx);
+  List<ModuleOption> getModuleOptions(String moduleIdx);
 }

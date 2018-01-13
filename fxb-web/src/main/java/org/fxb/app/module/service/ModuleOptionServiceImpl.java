@@ -1,7 +1,7 @@
 package org.fxb.app.module.service;
 
 import org.fxb.app.module.dao.ModuleOptionDAO;
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.ModuleOption;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ModuleOptionServiceImpl implements ModuleOptionService {
   }
 
   @Override
-  public List<ModuleOptionEntity> getModuleOptions(String moduleIdx) {
+  public List<ModuleOption> getModuleOptions(String moduleIdx) {
     return moduleOptionDAO.findByModuleIdx(moduleIdx);
   }
 }

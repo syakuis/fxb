@@ -1,12 +1,10 @@
 package org.fxb.web.module;
 
-import org.fxb.app.module.config.ModuleConfiguration;
-import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.Module;
 import org.fxb.app.module.mapper.config.DataInitialization;
 import org.fxb.app.module.mapper.config.ModuleInitializationConfiguration;
 import org.fxb.app.module.service.ModuleService;
 import org.fxb.boot.Bootstrapping;
-import org.fxb.web.module.model.Module;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,7 +33,7 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Bootstrapping.class)
-@Import(value = {ModuleConfiguration.class, ModuleInitializationConfiguration.class})
+@Import(value = ModuleInitializationConfiguration.class)
 @ActiveProfiles({"test", "mybatis"})
 public class ModuleContextTest {
   @Autowired
@@ -61,7 +59,7 @@ public class ModuleContextTest {
     Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
 
     for (int i = 0; i < dataRow; i++) {
-      ModuleEntity moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+      Module moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
       moduleEntity.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
       moduleService.saveModule(moduleEntity);
       if (i == 0) moduleIdx = moduleEntity.getModuleIdx();
@@ -72,15 +70,15 @@ public class ModuleContextTest {
 
   @Test
   public void test() {
-    Map<String, Module> module = moduleContext.get();
+    Map<String, org.fxb.web.module.model.Module> module = moduleContext.get();
     Cache.ValueWrapper valueWrapper = cacheManager.getCache("fxb.module").get("moduleContext");
     Assert.assertThat(
       module,
-      is((Map<String, Module>) valueWrapper.get())
+      is((Map<String, org.fxb.web.module.model.Module>) valueWrapper.get())
     );
 
     for(String moduleIdx : module.keySet()) {
-      Module moduleData = module.get(moduleIdx);
+      org.fxb.web.module.model.Module moduleData = module.get(moduleIdx);
 
       Assert.assertEquals(moduleData.getMid(), moduleContext.getMid(moduleIdx));
       Assert.assertEquals(moduleData.getSid(), moduleContext.getSid(moduleIdx));

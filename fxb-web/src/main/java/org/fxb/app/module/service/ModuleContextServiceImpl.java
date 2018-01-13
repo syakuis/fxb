@@ -1,9 +1,8 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.domain.ModuleEntity;
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.Module;
+import org.fxb.app.module.domain.ModuleOption;
 import org.fxb.web.module.BasicModuleContextService;
-import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleDetails;
 import org.fxb.web.module.model.Option;
 import org.fxb.web.module.model.OptionDetails;
@@ -37,12 +36,12 @@ public class ModuleContextServiceImpl extends BasicModuleContextService {
 
   @Override
   @Cacheable(cacheNames = "fxb.module", key = "'moduleContext'", sync = true)
-  public Map<String, Module> getModuleContext() {
-    Map<String, Module> result = new HashMap<>();
+  public Map<String, org.fxb.web.module.model.Module> getModuleContext() {
+    Map<String, org.fxb.web.module.model.Module> result = new HashMap<>();
 
-    List<ModuleEntity> modules = moduleService.getModules();
-    for (ModuleEntity moduleEntity : modules) {
-      Module module = new ModuleDetails(
+    List<Module> modules = moduleService.getModules();
+    for (Module moduleEntity : modules) {
+      org.fxb.web.module.model.Module module = new ModuleDetails(
         moduleEntity.getModuleIdx(),
         moduleEntity.getModuleName(),
         moduleEntity.getModuleId(),
@@ -54,8 +53,8 @@ public class ModuleContextServiceImpl extends BasicModuleContextService {
 
       List<Option> options = new LinkedList<>();
 
-      List<ModuleOptionEntity> moduleOptions = moduleOptionService.getModuleOptions(moduleEntity.getModuleIdx());
-      for (ModuleOptionEntity moduleOption : moduleOptions) {
+      List<ModuleOption> moduleOptions = moduleOptionService.getModuleOptions(moduleEntity.getModuleIdx());
+      for (ModuleOption moduleOption : moduleOptions) {
         Option option = new OptionDetails(
           moduleOption.getName(),
           moduleOption.getValue(),

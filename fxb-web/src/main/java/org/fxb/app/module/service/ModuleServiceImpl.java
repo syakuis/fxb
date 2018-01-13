@@ -2,8 +2,7 @@ package org.fxb.app.module.service;
 
 import org.fxb.app.module.dao.ModuleDAO;
 import org.fxb.app.module.dao.ModuleOptionBatchDAO;
-import org.fxb.app.module.dao.ModuleOptionDAO;
-import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.Module;
 import org.fxb.app.module.dto.ModuleSearch;
 import org.springframework.util.Assert;
 
@@ -27,25 +26,25 @@ public class ModuleServiceImpl implements ModuleService {
   }
 
   @Override
-  public List<ModuleEntity> getModules(String moduleName) {
+  public List<Module> getModules(String moduleName) {
     Assert.notNull("the moduleName must not be null.", moduleName);
     // object 를 null 로 입력하면 myBatis 에서 매칭하지 못한다.
     return moduleDAO.findAllByModuleName(moduleName, new ModuleSearch());
   }
 
   @Override
-  public List<ModuleEntity> getModules() {
+  public List<Module> getModules() {
     return moduleDAO.findAllByModuleName(null, new ModuleSearch());
   }
 
   @Override
-  public ModuleEntity getModule(String moduleIdx) {
+  public Module getModule(String moduleIdx) {
     Assert.notNull("the moduleIdx must not be null.", moduleIdx);
     return moduleDAO.findOneByModuleIdx(moduleIdx);
   }
 
   @Override
-  public ModuleEntity saveModule(ModuleEntity module) {
+  public Module saveModule(Module module) {
     Assert.notNull(module, "the module must not be null");
     if (module.getModuleIdx() == null) {
       moduleDAO.insert(module);

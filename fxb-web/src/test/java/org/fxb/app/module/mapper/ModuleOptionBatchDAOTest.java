@@ -3,7 +3,7 @@ package org.fxb.app.module.mapper;
 import org.fxb.app.module.config.ModuleConfiguration;
 import org.fxb.app.module.dao.ModuleOptionBatchDAO;
 import org.fxb.app.module.dao.ModuleOptionDAO;
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.ModuleOption;
 import org.fxb.app.module.mapper.config.DataInitialization;
 import org.fxb.app.module.mapper.config.ModuleInitializationConfiguration;
 import org.fxb.boot.Bootstrapping;
@@ -43,7 +43,7 @@ public class ModuleOptionBatchDAOTest {
   String moduleIdx = "MODUL000000000000031";
   int dataRow = 100;
   int updateDataRow = 4;
-  List<ModuleOptionEntity> moduleOptions = new ArrayList<>();
+  List<ModuleOption> moduleOptions = new ArrayList<>();
 
   @Before
   public void init() {
@@ -53,21 +53,21 @@ public class ModuleOptionBatchDAOTest {
   @Test
   @Transactional
   public void test() {
-    List<ModuleOptionEntity> list = moduleOptionDAO.findByModuleIdx(moduleIdx);
+    List<ModuleOption> list = moduleOptionDAO.findByModuleIdx(moduleIdx);
     Assert.assertEquals("빈 데이터 검증", 0, list.size());
 
     // 데이터 추가
     moduleOptionBatchDAO.save(moduleIdx, moduleOptions, false);
 
     // 추가된 데이터 검증
-    List<ModuleOptionEntity> insertList = moduleOptionDAO.findByModuleIdx(moduleIdx);
+    List<ModuleOption> insertList = moduleOptionDAO.findByModuleIdx(moduleIdx);
     Assert.assertEquals("추가된 데이터 검증", dataRow, insertList.size());
 
-    List<ModuleOptionEntity> result = new ArrayList<>();
+    List<ModuleOption> result = new ArrayList<>();
 
     // 일부 데이터만 수정
     int stop = 0;
-    for (ModuleOptionEntity option : insertList) {
+    for (ModuleOption option : insertList) {
       if (stop < updateDataRow) {
         result.add(option);
         stop++;
@@ -81,14 +81,14 @@ public class ModuleOptionBatchDAOTest {
     moduleOptionBatchDAO.save(moduleIdx, result, false);
 
     // 데이터 수정 검증
-    List<ModuleOptionEntity> moduleOptionsUpdate = moduleOptionDAO.findByModuleIdx(moduleIdx);
+    List<ModuleOption> moduleOptionsUpdate = moduleOptionDAO.findByModuleIdx(moduleIdx);
     Assert.assertEquals("데이터 수정 검증", updateDataRow, moduleOptionsUpdate.size());
 
     // 모든 데이터 삭제
     moduleOptionDAO.deleteByModuleIdx(moduleIdx);
 
     // 데이터 삭제 검증
-    List<ModuleOptionEntity> clean = moduleOptionDAO.findByModuleIdx(moduleIdx);
+    List<ModuleOption> clean = moduleOptionDAO.findByModuleIdx(moduleIdx);
     Assert.assertEquals("데이터 삭제 검증", 0, clean.size());
   }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.fxb.app.module.mapper.ModuleOptionMapper">
 
-  <resultMap id="moduleOption" type="org.fxb.app.module.domain.ModuleOptionEntity">
+  <resultMap id="moduleOption" type="org.fxb.app.module.domain.ModuleOption">
     <result property="moduleIdx" column="module_idx" />
     <result property="moduleOptionSrl" column="module_option_srl" />
     <result property="name" column="option_name" />

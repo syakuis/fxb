@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class MyBatisModuleConfiguration extends ModuleConfiguration {
   public MyBatisModuleConfiguration(
-    @Qualifier("moduleMapper")
+    @Qualifier("moduleDAO")
     ModuleDAO moduleDAO,
-    @Qualifier("moduleOptionMapper")
+    @Qualifier("moduleOptionDAO")
     ModuleOptionDAO moduleOptionDAO) {
     super(moduleDAO, moduleOptionDAO);
   }

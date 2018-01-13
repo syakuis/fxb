@@ -1,6 +1,6 @@
 package org.fxb.app.module.dao;
 
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.ModuleOption;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class ModuleOptionBatchDAO {
    * @param autoDelete 기존 데이터는 있는 데 입력된 moduleOptions null 이거나 비어있으면 기존 데이터를 모두 삭제한다. default = false
    * @return
    */
-  public List<ModuleOptionEntity> save(String moduleIdx, List<ModuleOptionEntity> moduleOptions, boolean autoDelete) {
+  public List<ModuleOption> save(String moduleIdx, List<ModuleOption> moduleOptions, boolean autoDelete) {
     Assert.notNull(moduleIdx, "The class must not be null");
 
-    List<ModuleOptionEntity> result = new ArrayList<>();
+    List<ModuleOption> result = new ArrayList<>();
 
     if ((moduleOptions == null || moduleOptions.isEmpty()) && autoDelete) {
       moduleOptionDAO.deleteByModuleIdx(moduleIdx);
@@ -49,7 +49,7 @@ public class ModuleOptionBatchDAO {
       moduleOptions.size() : 0;
 
     for (int i = 0; i < loop; i++) {
-      ModuleOptionEntity moduleOption = moduleOptions.get(i);
+      ModuleOption moduleOption = moduleOptions.get(i);
       moduleOption.setModuleIdx(moduleIdx);
       moduleOption.setOrder(i);
 
@@ -76,9 +76,9 @@ public class ModuleOptionBatchDAO {
   private List<Long> deleteByNotModuleOptionSrl(String moduleIdx, List<Long> moduleOptionSrl) {
     List<Long> moduleOptionSrlOriginal = new ArrayList<>();
 
-    List<ModuleOptionEntity> moduleOptionEntities = moduleOptionDAO.findByModuleIdx(moduleIdx);
+    List<ModuleOption> moduleOptionEntities = moduleOptionDAO.findByModuleIdx(moduleIdx);
 
-    for (ModuleOptionEntity moduleOptionEntity : moduleOptionEntities) {
+    for (ModuleOption moduleOptionEntity : moduleOptionEntities) {
       moduleOptionSrlOriginal.add(moduleOptionEntity.getModuleOptionSrl());
     }
 

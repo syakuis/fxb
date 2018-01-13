@@ -1,6 +1,6 @@
 package org.fxb.app.module.dao;
 
-import org.fxb.app.module.domain.ModuleOptionEntity;
+import org.fxb.app.module.domain.ModuleOption;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import java.util.List;
  * @since 2018. 1. 12.
  */
 public interface ModuleOptionDAO {
-  List<ModuleOptionEntity> findByModuleIdx(String moduleIdx);
+  List<ModuleOption> findByModuleIdx(String moduleIdx);
 
-  void insert(ModuleOptionEntity moduleOption);
+  void insert(ModuleOption moduleOption);
 
-  void update(ModuleOptionEntity moduleOption);
+  void update(ModuleOption moduleOption);
 
   void deleteByModuleIdx(String moduleIdx);
 

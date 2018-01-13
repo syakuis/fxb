@@ -14,7 +14,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class ModuleOptionEntity {
+public class ModuleOption {
   protected String moduleIdx;
   // todo 왜 Long?
   protected Long moduleOptionSrl;

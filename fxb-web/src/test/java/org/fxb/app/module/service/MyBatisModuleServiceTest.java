@@ -1,7 +1,7 @@
 package org.fxb.app.module.service;
 
 import org.fxb.app.module.config.ModuleConfiguration;
-import org.fxb.app.module.domain.ModuleEntity;
+import org.fxb.app.module.domain.Module;
 import org.fxb.app.module.mapper.config.DataInitialization;
 import org.fxb.app.module.mapper.config.ModuleInitializationConfiguration;
 import org.fxb.boot.Bootstrapping;
@@ -47,7 +47,7 @@ public class MyBatisModuleServiceTest {
     Assert.assertThat(moduleService.getModules(moduleName), IsEmptyCollection.empty());
 
     for (int i = 0; i < dataRow; i++) {
-      ModuleEntity moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+      Module moduleEntity = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
       moduleEntity.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
       moduleService.saveModule(moduleEntity);
       if (i == 0) moduleIdx = moduleEntity.getModuleIdx();
@@ -57,11 +57,11 @@ public class MyBatisModuleServiceTest {
   @Test
   @Transactional
   public void initDataChecking() {
-    List<ModuleEntity> modules = moduleService.getModules();
+    List<Module> modules = moduleService.getModules();
     Assert.assertThat(modules.size(), is(dataRow));
 
-    ModuleEntity moduleCheck = moduleService.getModule(moduleIdx);
-    ModuleEntity moduleCheck2 = moduleService.getModule(moduleCheck.getModuleIdx());
+    Module moduleCheck = moduleService.getModule(moduleIdx);
+    Module moduleCheck2 = moduleService.getModule(moduleCheck.getModuleIdx());
 
     Assert.assertThat(moduleCheck, is(moduleCheck2));
     Assert.assertThat(moduleCheck.getModuleOptions(), is(moduleCheck2.getModuleOptions()));
@@ -74,7 +74,7 @@ public class MyBatisModuleServiceTest {
 
     for (int i = 0; i < dataRow; i++) {
       if (i % 2 == 0) {
-        ModuleEntity module = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
+        Module module = DataInitialization.module(moduleName, i == 0 ? moduleId : moduleId + i, false);
         module.setModuleOptions(DataInitialization.moduleOptions(null, dataRow));
         moduleService.saveModule(module);
       }

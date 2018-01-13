@@ -29,4 +29,5 @@ node_modules/
 .tmp/
 /bin/
 
-/**/test/java/java8/
+/**/test/
+!/**/test/java/org/fxb/

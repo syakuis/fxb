@@ -3,6 +3,7 @@ package org.fxb.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,5 @@ import org.springframework.stereotype.Service;
   }
 )
 public class ContextConfiguration {
+
 }
