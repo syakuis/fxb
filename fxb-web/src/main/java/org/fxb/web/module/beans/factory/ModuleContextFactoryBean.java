@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * basePackages 경로를 스캔하여 {@link Created} 를 찾아 {@link ModuleContext} 에 추가한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 1. 19.
@@ -51,16 +52,22 @@ public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextM
       }
     }
 
-    return new ModuleContextManager();
+    return moduleContextManager;
   }
 
-  private List<CreateModule> findAnnotatedClasses(String scanPackage) {
+  /**
+   * Module 정보를 수집한다.
+   * @param basePackage
+   * @return
+   */
+  private List<CreateModule> findAnnotatedClasses(String basePackage) {
     List<CreateModule> modules = new ArrayList<>();
-    for (BeanDefinition bean : provider.findCandidateComponents(scanPackage)) {
+    for (BeanDefinition bean : provider.findCandidateComponents(basePackage)) {
       try {
         Class<?> clazz = Class.forName(bean.getBeanClassName());
-        if (clazz == CreateModule.class) {
+        if (clazz != null && clazz.getClass() == CreateModule.class.getClass()) {
           modules.add((CreateModule) clazz.newInstance());
+          logger.debug("{} module instance.", clazz.getCanonicalName());
         } else {
           logger.debug("class not module.class {}", bean.getBeanClassName());
         }
