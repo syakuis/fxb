@@ -17,7 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Bootstrapping.class)
-@ActiveProfiles({ "mybatis" })
+@ActiveProfiles({ "test", "mybatis" })
 public class BootstrappingTest {
 
 	@Autowired

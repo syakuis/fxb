@@ -7,17 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.annotation.PostConstruct;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
- * DB module 데이터를 공유하기 위한 저장소.
+ * module 데이터를 공유하기 위한 저장소.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 11. 22.
  */
 @ToString
-public class ModuleContext {
+public class ModuleContext implements Serializable {
   private static final Logger logger = LoggerFactory.getLogger(ModuleContext.class);
+  private static final long serialVersionUID = -1429812913792066578L;
 
   private final ModuleContextService moduleContextService;
 
@@ -30,11 +32,11 @@ public class ModuleContext {
   }
 
   public synchronized Module get(String moduleIdx) {
-    return this.moduleContextService.getModuleContext().get(moduleIdx);
+    return this.get().get(moduleIdx);
   }
 
   public synchronized String getMid(String moduleIdx) {
-    Module module = this.moduleContextService.getModuleContext().get(moduleIdx);
+    Module module = this.get().get(moduleIdx);
     if (module == null) {
       return null;
     }
@@ -43,7 +45,7 @@ public class ModuleContext {
   }
 
   public synchronized String getSid(String moduleIdx) {
-    Module module = this.moduleContextService.getModuleContext().get(moduleIdx);
+    Module module = this.get().get(moduleIdx);
     if (module == null) {
       return null;
     }

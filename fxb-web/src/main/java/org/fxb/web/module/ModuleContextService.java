@@ -14,5 +14,10 @@ public interface ModuleContextService {
   List<String> getModuleIdx();
   List<String> getId();
   String createId(String mid, String sid);
+
+  /**
+   * module 정보 전체를 읽는 다.
+   * @return
+   */
   Map<String, Module> getModuleContext();
 }

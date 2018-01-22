@@ -12,9 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
-
 /**
+ * mapper 와 jpa 를 모두 사용하기 위한 DI 설정 클래스
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 1. 12.
@@ -86,8 +85,6 @@ public class ModuleConfiguration {
   public ModuleContext moduleContext() {
     Assert.notNull(moduleContextService, "this argument is required; it must not be null");
     ModuleContext moduleContext = new ModuleContext(moduleContextService);
-    // 캐시를 생성하기 위해 최소 한번 호출한다.
-    moduleContext.get();
     return moduleContext;
   }
 }

@@ -1,9 +1,8 @@
 package org.fxb.config;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
+import org.fxb.web.module.ModuleContextManager;
+import org.fxb.web.module.beans.factory.ModuleContextFactoryBean;
+import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +25,10 @@ import org.springframework.stereotype.Service;
 )
 public class ContextConfiguration {
 
+//  @Bean
+//  public ModuleContextManager moduleContextManager() throws Exception {
+//    ModuleContextFactoryBean moduleContextFactoryBean = new ModuleContextFactoryBean();
+//    moduleContextFactoryBean.setBasePackages("org.fxb.app");
+//    return moduleContextFactoryBean.getObject();
+//  }
 }
