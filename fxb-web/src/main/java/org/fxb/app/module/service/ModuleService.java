@@ -20,13 +20,13 @@ public interface ModuleService {
 
   List<Module> getModules(String moduleName);
 
-  Module getModule(String moduleIdx);
+  Module getModule(String moduleId);
 
   @Transactional
-  @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")
   Module saveModule(Module module);
+  @Transactional
+  Module saveModule(Module module, boolean isOnlyNew);
 
   @Transactional
-  @CacheEvict(cacheNames = "fxb.module", key = "'moduleContext'")
-  void deleteModule(String moduleIdx);
+  void deleteModule(String moduleId);
 }

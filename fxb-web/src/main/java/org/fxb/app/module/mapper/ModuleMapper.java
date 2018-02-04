@@ -3,7 +3,6 @@ package org.fxb.app.module.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.fxb.app.module.dao.ModuleDAO;
 import org.fxb.app.module.domain.Module;
-import org.fxb.app.module.dto.ModuleSearch;
 import org.fxb.config.support.Mapper;
 
 import java.util.List;
@@ -16,18 +15,9 @@ import java.util.List;
 @Mapper("moduleDAO")
 public interface ModuleMapper extends ModuleDAO {
   @Override
-  List<Module> findAllByModuleName(@Param("moduleName") String moduleName, @Param("moduleSearch") ModuleSearch moduleSearch);
+  List<Module> findByModuleName(@Param("moduleName") String moduleName);
   @Override
-  List<Module> findAllByModuleNamePaging(
-    @Param("moduleName") String moduleName,
-    @Param("startRow") int startRow,
-    @Param("endRow") int endRow,
-    @Param("moduleSearch") ModuleSearch moduleSearch
-  );
+  Module findOneByModuleId(@Param("moduleId") String moduleId);
   @Override
-  long countByModuleName(@Param("moduleName") String moduleName, @Param("moduleSearch") ModuleSearch moduleSearch);
-  @Override
-  Module findOneByModuleIdx(@Param("moduleIdx") String moduleIdx);
-  @Override
-  void delete(@Param("moduleIdx") String moduleIdx);
+  void deleteByModuleId(@Param("moduleId") String moduleId);
 }

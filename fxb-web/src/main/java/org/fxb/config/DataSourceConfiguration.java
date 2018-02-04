@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -27,18 +28,19 @@ public class DataSourceConfiguration {
 
   private final static String propertiesName = "dataSource.";
 
-  private BasicDataSource dataSource;
+  private DataSource dataSource;
+  private DriverManagerDataSource driverManagerDataSource;
 
   @Autowired
   private Config config;
 
-  public void setDataSource(BasicDataSource dataSource) {
+  public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
   }
 
-  public void initializationDataSource() {
+  private BasicDataSource getDataSource() {
     Assert.notNull(config, "config is null!!!");
-    dataSource = new BasicDataSource();
+    BasicDataSource dataSource = new BasicDataSource();
 
     String driverClassName = config.getString("dataSource.driverClassName");
     String url = config.getString("dataSource.url");
@@ -137,12 +139,15 @@ public class DataSourceConfiguration {
     if (defaultCatalog != null) {
       dataSource.setDefaultCatalog(defaultCatalog);
     }
+
+    return dataSource;
   }
 
   @Bean(name = "fxbDataSource", destroyMethod = "close")
-  public DataSource dataSource() throws NamingException {
+  public DataSource dataSource() {
+    System.out.println("------------------ dataSource");
 
-    if (dataSource == null) this.initializationDataSource();
+    if (dataSource == null) dataSource = this.getDataSource();
 
     if (logger.isDebugEnabled()) {
       List<String> names = config.getKeys(propertiesName);

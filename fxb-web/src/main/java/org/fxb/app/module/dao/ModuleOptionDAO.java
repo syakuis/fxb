@@ -10,13 +10,13 @@ import java.util.List;
  * @since 2018. 1. 12.
  */
 public interface ModuleOptionDAO {
-  List<ModuleOption> findByModuleIdx(String moduleIdx);
+  List<ModuleOption> findByModuleId(String moduleId);
 
   void insert(ModuleOption moduleOption);
 
-  void update(ModuleOption moduleOption);
+  void updateByModuleIdAndOptionName(String moduleId, String optionName, ModuleOption moduleOption);
 
-  void deleteByModuleIdx(String moduleIdx);
+  void deleteByModuleId(String moduleId);
 
-  void deleteByModuleOptionSrl(String moduleIdx, Long moduleOptionSrl);
+  void deleteByModuleIdAndOptionName(String moduleId, String optionName);
 }

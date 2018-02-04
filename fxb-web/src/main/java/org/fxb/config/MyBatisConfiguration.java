@@ -52,6 +52,7 @@ public class MyBatisConfiguration {
 
   @Bean("fxbSqlSessionFactory")
   public SqlSessionFactory sqlSessionFactory() throws Exception {
+    System.out.println("------------------ myBatis");
     databaseIdProvider = new VendorDatabaseIdProvider();
     databaseIdProvider.setProperties(config.getProperties("myBatis.providers."));
 

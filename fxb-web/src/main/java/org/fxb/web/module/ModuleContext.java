@@ -20,44 +20,4 @@ import java.util.Map;
 public class ModuleContext implements Serializable {
   private static final Logger logger = LoggerFactory.getLogger(ModuleContext.class);
   private static final long serialVersionUID = -1429812913792066578L;
-
-  private final ModuleContextService moduleContextService;
-
-  public ModuleContext(ModuleContextService moduleContextService) {
-    this.moduleContextService = moduleContextService;
-  }
-
-  public synchronized Map<String, Module> get() {
-    return this.moduleContextService.getModuleContext();
-  }
-
-  public synchronized Module get(String moduleIdx) {
-    return this.get().get(moduleIdx);
-  }
-
-  public synchronized String getMid(String moduleIdx) {
-    Module module = this.get().get(moduleIdx);
-    if (module == null) {
-      return null;
-    }
-
-    return module.getMid();
-  }
-
-  public synchronized String getSid(String moduleIdx) {
-    Module module = this.get().get(moduleIdx);
-    if (module == null) {
-      return null;
-    }
-
-    return module.getSid();
-  }
-
-  public synchronized String getModuleIdx(String mid, String sid) {
-    int index = this.moduleContextService.getModuleIdx().indexOf(moduleContextService.createId(mid, sid));
-    if (index > -1) {
-      return this.moduleContextService.getModuleIdx().get(index);
-    }
-    return null;
-  }
 }

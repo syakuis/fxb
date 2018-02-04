@@ -15,7 +15,21 @@ import java.util.List;
 @Mapper("moduleOptionDAO")
 public interface ModuleOptionMapper extends ModuleOptionDAO {
   @Override
-  List<ModuleOption> findByModuleIdx(@Param("moduleIdx") String moduleIdx);
+  List<ModuleOption> findByModuleId(@Param("moduleId") String moduleId);
+
   @Override
-  void deleteByModuleOptionSrl(@Param("moduleIdx") String moduleIdx, @Param("moduleOptionSrl") Long moduleOptionSrl);
+  void insert(ModuleOption moduleOption);
+
+  @Override
+  void updateByModuleIdAndOptionName(
+    @Param("moduleId") String moduleId,
+    @Param("optionName") String optionName,
+    @Param("moduleOption") ModuleOption moduleOption);
+
+  @Override
+  void deleteByModuleId(@Param("moduleId") String moduleId);
+
+  @Override
+  void deleteByModuleIdAndOptionName(
+    @Param("moduleId") String moduleId, @Param("optionName") String optionName);
 }

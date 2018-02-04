@@ -10,23 +10,21 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode
-public class OptionDetails implements Option {
+public class ModuleOptionDetails implements ModuleOption {
   private final String name;
-  // todo generic type
   private String value;
-  // todo comment change
   private String title;
   private int order;
 
-  public OptionDetails(String name) {
+  public ModuleOptionDetails(String name) {
     this(name, null, null, 0);
   }
 
-  public OptionDetails(String name, String value, int order) {
+  public ModuleOptionDetails(String name, String value, int order) {
     this(name, value, null, order);
   }
 
-  public OptionDetails(String name, String value, String title, int order) {
+  public ModuleOptionDetails(String name, String value, String title, int order) {
     this.name = name;
     this.value = value;
     this.title = title;

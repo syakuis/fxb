@@ -28,4 +28,30 @@ public class ModuleContextManager implements Serializable {
   public synchronized Module getModule(String name) {
     return this.context.get(name);
   }
+
+  public synchronized List<String> getModuleIdx() {
+    List<String> moduleIdxIndex = new ArrayList<>();
+
+    for(Map.Entry<String, Module> entry : this.context.entrySet()) {
+      Module moduleDetails = entry.getValue();
+      moduleIdxIndex.add(moduleDetails.getModuleIdx());
+    }
+
+    return moduleIdxIndex;
+  }
+
+  public synchronized List<String> getId() {
+    List<String> idIndex = new ArrayList<>();
+
+    for(Map.Entry<String, Module> entry : this.context.entrySet()) {
+      Module moduleDetails = entry.getValue();
+//      idIndex.add(createId(moduleDetails.getMid(), moduleDetails.getSid()));
+    }
+
+    return idIndex;
+  }
+
+  public synchronized String createId(String mid, String sid) {
+    return new StringBuffer(mid).append("+").append(sid).toString();
+  }
 }

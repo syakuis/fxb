@@ -29,6 +29,6 @@ public class Data implements CreateModule {
 
   @Override
   public Module value() {
-    return new ModuleDetails("module", "module", "module", "module");
+    return new ModuleDetails("module", "module", "module");
   }
 }

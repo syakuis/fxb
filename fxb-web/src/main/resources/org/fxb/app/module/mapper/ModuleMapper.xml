@@ -3,109 +3,48 @@
 <mapper namespace="org.fxb.app.module.mapper.ModuleMapper">
 
   <resultMap id="module" type="org.fxb.app.module.domain.Module">
-    <id property="moduleIdx" column="module_idx" />
+    <id property="moduleId" column="module_id" />
     <result property="moduleName" column="module_name" />
-    <result property="moduleId" column="module_id" />
-    <result property="browserTitle" column="browser_title" />
-    <result property="skin" column="skin" />
-    <result property="layoutIdx" column="layout_idx" />
     <result property="regDate" column="reg_date" />
   </resultMap>
 
   <resultMap id="moduleObject" type="org.fxb.app.module.domain.Module">
-    <id property="moduleIdx" column="module_idx" />
+    <id property="moduleId" column="module_id" />
     <result property="moduleName" column="module_name" />
-    <result property="moduleId" column="module_id" />
-    <result property="browserTitle" column="browser_title" />
-    <result property="skin" column="skin" />
-    <result property="layoutIdx" column="layout_idx" />
     <result property="regDate" column="reg_date" />
 
     <collection property="moduleOptions" resultMap="org.fxb.app.module.mapper.ModuleOptionMapper.moduleOption"/>
   </resultMap>
 
-  <sql id="whereList">
-    <if test="moduleName != null">AND module_name = #{moduleName}</if>
-    <if test="moduleSearch.searchType != null and moduleSearch.searchValue != null and moduleName == null">
-      <choose>
-        <when test="moduleSearch.searchType == 'browserTitle' ">AND browser_title LIKE '%' || #{moduleSearch.searchValue} || '%'</when>
-        <when test="moduleSearch.searchType == 'moduleName' ">AND module_name = #{moduleSearch.searchValue}</when>
-        <when test="moduleSearch.searchType == 'moduleId' ">AND module_id = #{moduleSearch.searchValue}</when>
-      </choose>
-    </if>
-  </sql>
-
-  <select id="findAllByModuleName" resultMap="module">
+  <select id="findAll" resultMap="module">
     SELECT * FROM module
-    <where>
-      <include refid="whereList"/>
-    </where>
   </select>
 
-
-  <select id="countByModuleName" resultType="long">
-    SELECT NVL(COUNT(*),0) FROM module
-    <where>
-      <include refid="whereList"/>
-    </where>
+  <select id="findByModuleName" resultMap="module">
+    SELECT * FROM module WHERE module_name = #{moduleName}
   </select>
 
-  <select id="findAllByModuleNamePaging" resultMap="module">
-    SELECT * FROM (
-    SELECT D.*, ROWNUM rnum FROM (
-    SELECT * FROM module
-    <where>
-      <include refid="whereList"/>
-    </where>
-    ORDER BY module_idx DESC, ROWID
-    ) D WHERE ROWNUM &lt;= #{endRow}
-    ) WHERE rnum &gt; #{startRow}
-  </select>
-
-  <select id="findOneByModuleIdx" resultMap="moduleObject">
+  <select id="findOneByModuleId" resultMap="moduleObject">
     SELECT * FROM module M
-    LEFT OUTER JOIN module_option O ON O.module_idx = M.module_idx
-    WHERE M.module_idx = #{moduleIdx}
+    LEFT OUTER JOIN module_option O ON O.module_id = M.module_id
+    WHERE M.module_id = #{moduleId}
   </select>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="moduleIdx">
-
-    <selectKey keyProperty="moduleIdx" resultType="string" order="BEFORE">
-      SELECT 'MODUL' || LPAD(MODULE_IDX_SEQ.NEXTVAL, 15, '0') FROM DUAL
-    </selectKey>
-
+  <insert id="insert">
     INSERT INTO module (
-    module_idx,
     module_name,
     module_id,
-    browser_title,
-    skin,
-    layout_idx,
     reg_date,
     ) VALUES (
-    #{moduleIdx},
     #{moduleName},
     #{moduleId},
-    #{browserTitle},
-    #{skin},
-    #{layoutIdx},
     #{regDate},
     )
   </insert>
 
-  <update id="update">
-    UPDATE module
-    <set>
-      browser_title = #{browserTitle},
-      skin = #{skin},
-      layout_idx = #{layoutIdx}
-    </set>
-    WHERE module_idx = #{moduleIdx}
-  </update>
-
-  <delete id="delete">
+  <delete id="deleteByModuleId">
     DELETE FROM module
-    WHERE module_idx = #{moduleIdx}
+    WHERE module_id = #{moduleId}
   </delete>
 
 </mapper>

@@ -18,13 +18,9 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class Module {
-  protected String moduleIdx;
-  protected String moduleName;
-  protected String moduleId;
-  protected String browserTitle;
-  protected String skin;
-  protected String layoutIdx;
-  protected Date regDate;
+  private String moduleId;
+  private String moduleName;
+  private Date regDate;
 
-  protected List<ModuleOption> moduleOptions;
+  private List<ModuleOption> moduleOptions;
 }

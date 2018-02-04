@@ -15,11 +15,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ModuleOption {
-  protected String moduleIdx;
-  // todo 왜 Long?
-  protected Long moduleOptionSrl;
-  protected int order;
-  protected String name;
-  protected String value;
-  protected String title;
+  private String moduleId;
+  private String name;
+  private String value;
+  private String title;
+  private int order;
 }

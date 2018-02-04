@@ -29,6 +29,7 @@ public class ContextConfiguration {
 
   @Bean
   public ModuleContextManager moduleContextManager() throws Exception {
+    System.out.println("------------------ moduleContextManager");
     ModuleContextFactoryBean moduleContextFactoryBean = new ModuleContextFactoryBean();
     moduleContextFactoryBean.setBasePackages("org.fxb.app");
     moduleContextFactoryBean.afterPropertiesSet();

@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RequestMapping("/api/example")
 public class ApiController {
-  @Autowired
-  ModuleContext moduleContext;
+//  @Autowired
+//  ModuleContext moduleContext;
   @GetMapping
   @ResponseBody
   public String getApiExample() {
-    moduleContext.get();
+//    moduleContext.get();
     return "good";
   }
 }

@@ -1,15 +1,9 @@
 package org.fxb.web.module;
 
-import org.fxb.app.module.init.ModuleTestConfiguration;
-import org.fxb.app.module.service.ModuleService;
+import org.fxb.app.module.ModuleTestConfiguration;
 import org.fxb.web.module.model.Module;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.CacheManager;
-
-import javax.annotation.Resource;
 
 import java.util.List;
 
