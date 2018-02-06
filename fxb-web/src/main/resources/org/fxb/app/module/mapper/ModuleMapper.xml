@@ -24,7 +24,12 @@
     SELECT * FROM module WHERE module_name = #{moduleName}
   </select>
 
-  <select id="findOneByModuleId" resultMap="moduleObject">
+  <select id="findOneByModuleId" resultMap="module">
+    SELECT * FROM module M
+    WHERE module_id = #{moduleId}
+  </select>
+
+  <select id="findWithModuleOptionByModuleId" resultMap="moduleObject">
     SELECT * FROM module M
     LEFT OUTER JOIN module_option O ON O.module_id = M.module_id
     WHERE M.module_id = #{moduleId}
@@ -34,11 +39,11 @@
     INSERT INTO module (
     module_name,
     module_id,
-    reg_date,
+    reg_date
     ) VALUES (
     #{moduleName},
     #{moduleId},
-    #{regDate},
+    #{regDate}
     )
   </insert>
 

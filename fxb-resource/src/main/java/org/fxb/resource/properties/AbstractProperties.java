@@ -71,7 +71,7 @@ public abstract class AbstractProperties {
       Properties properties = new Properties();
 
       for (String key : keys) {
-        String name = StringUtils.replace(key,prefix, "");
+        String name = StringUtils.replace(key, prefix, "");
         properties.setProperty(
             name,
             getString(key)

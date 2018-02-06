@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +27,6 @@ public class DataSourceConfiguration {
   private final static String propertiesName = "dataSource.";
 
   private DataSource dataSource;
-  private DriverManagerDataSource driverManagerDataSource;
 
   @Autowired
   private Config config;
@@ -143,10 +140,8 @@ public class DataSourceConfiguration {
     return dataSource;
   }
 
-  @Bean(name = "fxbDataSource", destroyMethod = "close")
+  @Bean(name = "fxbDataSource")
   public DataSource dataSource() {
-    System.out.println("------------------ dataSource");
-
     if (dataSource == null) dataSource = this.getDataSource();
 
     if (logger.isDebugEnabled()) {

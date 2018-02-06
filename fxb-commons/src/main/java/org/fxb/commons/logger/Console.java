@@ -8,14 +8,16 @@ import org.slf4j.LoggerFactory;
  * @site http://syaku.tistory.com
  * @since 2017. 11. 30.
  */
-public class Output {
-  private static final Logger logger = LoggerFactory.getLogger(Output.class);
+public class Console {
+  private static final Logger logger = LoggerFactory.getLogger(Console.class);
+  public static final String FXB_LOGGER = "fxb logger -";
+  public static final String FXB_DEBUG = "fxb debug -";
   private StringBuilder stringBuilder;
   private final String LINE = "---------------------------------------------------------------";
   private final String TITLE_MARK = "#";
   private final String BR = "\n";
 
-  public Output(String title) {
+  public Console(String title) {
     stringBuilder = new StringBuilder();
     stringBuilder
       .append(BR)

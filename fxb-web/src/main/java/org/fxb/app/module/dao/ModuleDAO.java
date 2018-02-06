@@ -11,8 +11,9 @@ import java.util.List;
  */
 public interface ModuleDAO {
   List<Module> findAll();
-  List<Module> findByModuleName(String moduleId);
+  List<Module> findByModuleName(String moduleName);
   Module findOneByModuleId(String moduleId);
+  List<Module> findWithModuleOptionByModuleId(String moduleId);
   void insert(Module module);
   void deleteByModuleId(String moduleId);
 }

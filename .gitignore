@@ -29,5 +29,3 @@ node_modules/
 .tmp/
 /bin/
 
-/**/test/
-!/**/test/java/org/fxb/

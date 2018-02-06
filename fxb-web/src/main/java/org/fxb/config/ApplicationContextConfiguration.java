@@ -39,7 +39,6 @@ import javax.annotation.PostConstruct;
       RestControllerAdvice.class,
     })
   }
-
 )
 public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
   private Validator validator;
