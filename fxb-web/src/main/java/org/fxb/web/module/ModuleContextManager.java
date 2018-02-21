@@ -1,12 +1,17 @@
 package org.fxb.web.module;
 
-import org.fxb.web.module.model.Module;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import org.apache.commons.lang3.SerializationUtils;
+import org.fxb.web.module.model.Module;
+import org.fxb.web.module.model.ModuleDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -15,43 +20,84 @@ import java.util.Map;
  */
 public class ModuleContextManager implements Serializable {
   private static final long serialVersionUID = -7851817699437417342L;
-  private static final Map<String, Module> context = new HashMap<>();
+  private static final Map<String, Module> context = new ConcurrentHashMap<>();
 
-  public synchronized void addModule(String name, Module module) {
-    this.context.put(name, module);
+  /**
+   * moduleId 가 같으면 moduleIdx 가 같은 것만 수정할 수 있다.
+   * @param module
+   */
+  public synchronized Module addModule(Module module) {
+    return sync(module, 0);
   }
 
-  public synchronized List<Module> getModules() {
-    return new ArrayList<>(this.context.values());
-  }
-
-  public synchronized Module getModule(String name) {
-    return this.context.get(name);
-  }
-
-  public synchronized List<String> getModuleIdx() {
-    List<String> moduleIdxIndex = new ArrayList<>();
-
-    for(Map.Entry<String, Module> entry : this.context.entrySet()) {
-      Module moduleDetails = entry.getValue();
-      moduleIdxIndex.add(moduleDetails.getModuleIdx());
+  public Map<String, Module> getModule() {
+    synchronized(this.context) {
+      return new HashMap<>(this.context);
     }
-
-    return moduleIdxIndex;
   }
 
-  public synchronized List<String> getId() {
-    List<String> idIndex = new ArrayList<>();
-
-    for(Map.Entry<String, Module> entry : this.context.entrySet()) {
-      Module moduleDetails = entry.getValue();
-//      idIndex.add(createId(moduleDetails.getMid(), moduleDetails.getSid()));
+  /**
+   * context map to list
+   * todo caching
+   * @return
+   */
+  public List<Module> getModules() {
+    synchronized (context) {
+      return new ArrayList<>(context.values());
     }
-
-    return idIndex;
   }
 
-  public synchronized String createId(String mid, String sid) {
-    return new StringBuffer(mid).append("+").append(sid).toString();
+  public synchronized Module getModule(String moduleId) {
+    return sync(new ModuleDetails(moduleId, moduleId), 1);
+  }
+
+  private Module sync(Module module, int type) {
+    synchronized (context) {
+      if (type == 0) {
+        Assert.hasText(module.getModuleId(), "name must not be empty");
+
+        if (context.containsKey(module.getModuleId())) {
+          Module original = context.get(module.getModuleId());
+          if (!original.getModuleIdx().equals(module.getModuleIdx())) {
+            throw new IllegalArgumentException("the module is exists");
+          }
+        }
+
+        context.put(module.getModuleId(), module);
+      }
+
+      return SerializationUtils.clone((ModuleDetails) context.get(module.getModuleId()));
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    synchronized (this.context) {
+      return this.context.hashCode();
+    }
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    synchronized (this.context) {
+      if (obj == this.context) {
+        return true;
+      }
+
+      if (!(obj instanceof Map)) {
+        return false;
+      }
+
+      Map<String, Module> o = (Map<String, Module>) obj;
+
+      return o.equals(this.context);
+    }
+  }
+
+  @Override
+  public String toString() {
+    synchronized (this.context) {
+      return this.context.toString();
+    }
   }
 }

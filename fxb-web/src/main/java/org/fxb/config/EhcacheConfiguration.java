@@ -1,7 +1,6 @@
 package org.fxb.config;
 
 import org.apache.commons.lang3.StringUtils;
-import org.fxb.commons.logger.Console;
 import org.fxb.context.cache.bean.factory.EhcacheFactoryBean;
 import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
 import org.slf4j.Logger;
@@ -34,8 +33,6 @@ public class EhcacheConfiguration implements CachingConfigurer {
 
   @Bean(destroyMethod="shutdown")
   public net.sf.ehcache.CacheManager ehCacheManager() {
-    Console output = new Console("Ehcache ContextBean");
-
     StringBuilder builder = new StringBuilder(config.getString("default.ehcache.cacheLocation"));
     String cacheLocation = config.getString("ehcache.cacheLocation");
     if (StringUtils.isNotEmpty(cacheLocation)) {
@@ -49,19 +46,16 @@ public class EhcacheConfiguration implements CachingConfigurer {
           config.getString("default.ehcache.ehcacheLocation"),
           cacheLocation
       );
-      output.append(false,"cacheLocation: ", cacheLocation);
+
 //      logger.debug("><>< cacheLocation: {}", cacheLocation);
       factoryBean.setCacheManagerName(config.getString("default.ehcache.cacheManagerName"));
       factoryBean.afterPropertiesSet();
-
-      output.end();
 
       return factoryBean.getObject();
     } catch (EhcacheConfigurationException e) {
       logger.error(e.getMessage(), e);
     }
 
-    output.end();
     return null;
   }
 

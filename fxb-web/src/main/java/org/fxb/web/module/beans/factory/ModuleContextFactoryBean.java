@@ -1,10 +1,11 @@
 package org.fxb.web.module.beans.factory;
 
-import org.fxb.web.module.CreateModule;
-import org.fxb.web.module.ModuleContext;
+import java.util.ArrayList;
+import java.util.List;
+import org.fxb.web.module.ModuleInitialization;
 import org.fxb.web.module.ModuleContextManager;
-import org.fxb.web.module.annotation.Created;
-import org.fxb.web.module.model.Module;
+import org.fxb.web.module.annotation.ModuleInit;
+import org.fxb.web.module.model.ModuleDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
@@ -13,11 +14,8 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * basePackages 경로를 스캔하여 {@link Created} 를 찾아 {@link ModuleContext} 에 추가한다.
+ * basePackages 경로를 스캔하여 {@link ModuleInit} 를 찾아 {@link ModuleContextManager} 추가한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 1. 19.
@@ -42,13 +40,16 @@ public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextM
   protected ModuleContextManager createInstance() {
     moduleContextManager = new ModuleContextManager();
     provider = new ClassPathScanningCandidateComponentProvider(false);
-    provider.addIncludeFilter(new AnnotationTypeFilter(Created.class));
+    provider.addIncludeFilter(new AnnotationTypeFilter(ModuleInit.class));
 
     for (String basePackage : basePackages) {
-      List<CreateModule> modules = findAnnotatedClasses(basePackage);
-      for (CreateModule module : modules) {
-        moduleContextManager.addModule(module.name(), module.value());
-        logger.debug("{} module create.", module.name());
+      List<ModuleInitialization> modules = findAnnotatedClasses(basePackage);
+      for (ModuleInitialization module : modules) {
+        ModuleDetails moduleDetails = (ModuleDetails) module.getObject();
+        if (moduleDetails != null && moduleDetails.getModuleId() != null) {
+          moduleContextManager.addModule(moduleDetails);
+          logger.debug("added {} ({}) in the ModuleContext.", moduleDetails.getModuleId(), moduleDetails.getModuleIdx());
+        }
       }
     }
 
@@ -60,16 +61,14 @@ public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextM
    * @param basePackage
    * @return
    */
-  private List<CreateModule> findAnnotatedClasses(String basePackage) {
-    List<CreateModule> modules = new ArrayList<>();
+  private List<ModuleInitialization> findAnnotatedClasses(String basePackage) {
+    List<ModuleInitialization> modules = new ArrayList<>();
     for (BeanDefinition bean : provider.findCandidateComponents(basePackage)) {
       try {
         Class<?> clazz = Class.forName(bean.getBeanClassName());
-        if (clazz != null && clazz.getClass() == CreateModule.class.getClass()) {
-          modules.add((CreateModule) clazz.newInstance());
-          logger.debug("{} module instance.", clazz.getCanonicalName());
-        } else {
-          logger.debug("class not module.class {}", bean.getBeanClassName());
+        if (clazz != null && clazz.getClass() == ModuleInitialization.class.getClass()) {
+          modules.add((ModuleInitialization) clazz.newInstance());
+          logger.debug("{} ModuleInitialization Instance.", clazz.getCanonicalName());
         }
       } catch (ClassNotFoundException e) {
         logger.error(e.getMessage(), e);

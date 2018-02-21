@@ -1,7 +1,7 @@
 package org.fxb.config;
 
 import org.fxb.web.module.ModuleContextManager;
-import org.fxb.web.module.annotation.Created;
+import org.fxb.web.module.annotation.ModuleInit;
 import org.fxb.web.module.beans.factory.ModuleContextFactoryBean;
 import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
       Configuration.class,
       Service.class,
       Repository.class,
-      Created.class,
+      ModuleInit.class,
     })
   }
 )

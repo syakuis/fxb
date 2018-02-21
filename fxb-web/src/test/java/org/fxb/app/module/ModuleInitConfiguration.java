@@ -1,14 +1,12 @@
 package org.fxb.app.module;
 
-import org.fxb.commons.logger.Console;
+import javax.sql.DataSource;
 import org.fxb.context.db.bean.factory.PopulatorDataSourceInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-
-import javax.sql.DataSource;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -28,7 +26,6 @@ public class ModuleInitConfiguration {
     dataSourceInitializer.setBeforeResources(
       "org/fxb/app/module/schemas/module.table.h2.sql",
       "org/fxb/app/module/schemas/moduleOption.table.h2.sql");
-//    dataSourceInitializer.setCleanResources("org/fxb/app/module/schemas/module.cleaner.h2.sql");
     return dataSourceInitializer;
   }
 }

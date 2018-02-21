@@ -1,6 +1,6 @@
 package org.fxb.boot.config;
 
-import org.fxb.web.module.annotation.Created;
+import org.fxb.web.module.annotation.ModuleInit;
 import org.junit.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -30,14 +30,14 @@ public class AnnotationClassScannerTest {
     // Don't pull default filters (@Component, etc.):
     ClassPathScanningCandidateComponentProvider provider
       = new ClassPathScanningCandidateComponentProvider(false);
-    provider.addIncludeFilter(new AnnotationTypeFilter(Created.class));
+    provider.addIncludeFilter(new AnnotationTypeFilter(ModuleInit.class));
     return provider;
   }
 
   private void printMetadata(BeanDefinition beanDef) {
     try {
       Class<?> cl = Class.forName(beanDef.getBeanClassName());
-      Created findable = cl.getAnnotation(Created.class);
+      ModuleInit findable = cl.getAnnotation(ModuleInit.class);
       System.out.printf("Found class: %s, with meta name: %s%n",
         cl.getSimpleName(), findable);
     } catch (Exception e) {

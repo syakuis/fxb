@@ -41,7 +41,7 @@ public class ModuleContextServiceImpl implements ModuleContextService {
 
       // todo add moduleOption
 
-      moduleContextManager.addModule(module.getModuleIdx(), module);
+      moduleContextManager.addModule(module);
     }
   }
 

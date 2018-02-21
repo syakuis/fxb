@@ -12,6 +12,10 @@ import org.fxb.config.support.Mapper;
  */
 @Mapper("moduleOptionDAO")
 public interface ModuleOptionMapper extends ModuleOptionDAO {
+
+//  @Override
+//  void insertForEach(@Param("moduleOptions") List<ModuleOption> moduleOptions);
+
   @Override
   void updateByModuleIdAndOptionName(
     @Param("moduleId") String moduleId,

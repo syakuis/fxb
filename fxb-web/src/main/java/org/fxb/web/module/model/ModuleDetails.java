@@ -1,10 +1,15 @@
 package org.fxb.web.module.model;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.*;
 
 /**
  * 모듈 정보를 여러 모듈들에 공유하기 위한 사용되는 모델
@@ -13,32 +18,27 @@ import java.util.*;
  * @since 2017. 11. 21.
  */
 @Getter
-@Setter
 @ToString
-public class ModuleDetails implements Module {
-  private final String moduleIdx;
+public class ModuleDetails implements Module, Serializable {
+  private static final long serialVersionUID = 2098116822975147890L;
   private final String moduleName;
   private final String moduleId;
-  private String title;
+  private String moduleIdx;
   private Date createdDate;
+
+  @Setter
+  private String title;
+  @Setter
   private Map<String, ModuleOption> moduleOptions;
 
   public ModuleDetails(String moduleName, String moduleId) {
-    this(null, moduleName, moduleId);
-  }
-
-  public ModuleDetails(String moduleIdx, String moduleName, String moduleId) {
-    if (moduleIdx == null) {
-      this.moduleIdx = UUID.randomUUID().toString();
-    } else {
-      this.moduleIdx = moduleIdx;
-    }
+    this.moduleIdx = UUID.randomUUID().toString();
     this.moduleName = moduleName;
     this.moduleId = moduleId;
     this.createdDate = new Date();
   }
 
-  public static Map<String, ModuleOption> setModuleOptions(ModuleOption...options) {
+  public static Map<String, ModuleOption> setModuleOptions(ModuleOption... options) {
     return ModuleDetails.setModuleOptions(Arrays.asList(options));
   }
 

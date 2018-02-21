@@ -1,8 +1,7 @@
 package org.fxb.app.module.dao;
 
-import org.fxb.app.module.domain.Module;
-
 import java.util.List;
+import org.fxb.app.module.domain.Module;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -13,7 +12,6 @@ public interface ModuleDAO {
   List<Module> findAll();
   List<Module> findByModuleName(String moduleName);
   Module findOneByModuleId(String moduleId);
-  List<Module> findWithModuleOptionByModuleId(String moduleId);
   void insert(Module module);
   void deleteByModuleId(String moduleId);
 }

@@ -1,10 +1,8 @@
 package org.fxb.app.module.service;
 
-import org.fxb.app.module.domain.Module;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import org.fxb.app.module.domain.Module;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 캐싱 전략을 구성하기 위해 데이터를 변경할때는 moduleIdx 필드로 조회한다.
@@ -16,6 +14,7 @@ import java.util.List;
  */
 @Transactional(readOnly = true)
 public interface ModuleService {
+
   List<Module> getModules();
 
   List<Module> getModules(String moduleName);
@@ -24,6 +23,13 @@ public interface ModuleService {
 
   @Transactional
   Module saveModule(Module module);
+
+  /**
+   * 모듈 정보를 저장한다. module.moduleIdx 존재하면 수정 없으면 등록한다.
+   * @param module 모듈 정보
+   * @param isOnlyNew 동일한 모듈정보가 존재여부와 상관없이 등록한다.
+   * @return
+   */
   @Transactional
   Module saveModule(Module module, boolean isOnlyNew);
 

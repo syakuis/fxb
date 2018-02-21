@@ -16,20 +16,18 @@
     <collection property="moduleOptions" resultMap="org.fxb.app.module.mapper.ModuleOptionMapper.moduleOption"/>
   </resultMap>
 
-  <select id="findAll" resultMap="module">
-    SELECT * FROM module
-  </select>
-
-  <select id="findByModuleName" resultMap="module">
-    SELECT * FROM module WHERE module_name = #{moduleName}
-  </select>
-
-  <select id="findOneByModuleId" resultMap="module">
+  <select id="findAll" resultMap="moduleObject">
     SELECT * FROM module M
-    WHERE module_id = #{moduleId}
+    LEFT OUTER JOIN module_option O ON O.module_id = M.module_id
   </select>
 
-  <select id="findWithModuleOptionByModuleId" resultMap="moduleObject">
+  <select id="findByModuleName" resultMap="moduleObject">
+    SELECT * FROM module M
+    LEFT OUTER JOIN module_option O ON O.module_id = M.module_id
+    WHERE M.module_name = #{moduleName}
+  </select>
+
+  <select id="findOneByModuleId" resultMap="moduleObject">
     SELECT * FROM module M
     LEFT OUTER JOIN module_option O ON O.module_id = M.module_id
     WHERE M.module_id = #{moduleId}

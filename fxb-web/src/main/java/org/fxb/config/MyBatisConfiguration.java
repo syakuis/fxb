@@ -2,6 +2,7 @@ package org.fxb.config;
 
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.fxb.commons.io.MultiplePathMatchingResourcePatternResolver;
 import org.fxb.config.support.Mapper;
@@ -31,7 +32,11 @@ import javax.sql.DataSource;
 @Configuration
 @Profile("mybatis")
 @EnableTransactionManagement
-@MapperScan(basePackages = "org.fxb.app", annotationClass = Mapper.class)
+@MapperScan(
+    basePackages = "org.fxb.app", annotationClass = Mapper.class,
+    sqlSessionFactoryRef = "fxbSqlSessionFactory",
+    sqlSessionTemplateRef = "fxbSqlSessionTemplate"
+)
 public class MyBatisConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(MyBatisConfiguration.class);
 
@@ -90,6 +95,6 @@ public class MyBatisConfiguration {
 
   @Bean("fxbSqlSessionTemplate")
   public SqlSessionTemplate sqlSessionTemplate() {
-    return new SqlSessionTemplate(sqlSessionFactory);
+    return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
   }
 }
