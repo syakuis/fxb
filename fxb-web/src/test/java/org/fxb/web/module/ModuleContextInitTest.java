@@ -29,6 +29,9 @@ public class ModuleContextInitTest extends ModuleTestConfiguration {
     Assert.assertEquals(module.getModuleId(), _module.getModuleId());
   }
 
+  /**
+   * {@link ModuleInfo2} load test
+   */
   @Test
   public void moduleInfo2() {
     ModuleInfo2 moduleInfo = new ModuleInfo2();

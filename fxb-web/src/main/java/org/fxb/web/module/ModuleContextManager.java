@@ -9,8 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.SerializationUtils;
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleDetails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 /**
@@ -26,8 +24,20 @@ public class ModuleContextManager implements Serializable {
    * moduleId 가 같으면 moduleIdx 가 같은 것만 수정할 수 있다.
    * @param module
    */
-  public synchronized Module addModule(Module module) {
-    return sync(module, 0);
+  public void addModule(Module module) {
+    if (module == null) throw new IllegalArgumentException("module must not be empty");
+    Assert.hasText(module.getModuleId(), "moduleId must not be empty");
+
+    synchronized (this.context) {
+      if (context.containsKey(module.getModuleId())) {
+        Module original = context.get(module.getModuleId());
+        if (!original.getModuleIdx().equals(module.getModuleIdx())) {
+          throw new IllegalArgumentException("the module is exists");
+        }
+      }
+
+      context.put(module.getModuleId(), module);
+    }
   }
 
   public Map<String, Module> getModule() {
@@ -47,26 +57,12 @@ public class ModuleContextManager implements Serializable {
     }
   }
 
-  public synchronized Module getModule(String moduleId) {
-    return sync(new ModuleDetails(moduleId, moduleId), 1);
-  }
-
-  private Module sync(Module module, int type) {
-    synchronized (context) {
-      if (type == 0) {
-        Assert.hasText(module.getModuleId(), "name must not be empty");
-
-        if (context.containsKey(module.getModuleId())) {
-          Module original = context.get(module.getModuleId());
-          if (!original.getModuleIdx().equals(module.getModuleIdx())) {
-            throw new IllegalArgumentException("the module is exists");
-          }
-        }
-
-        context.put(module.getModuleId(), module);
+  public Module getModule(String moduleId) {
+    synchronized (this.context) {
+      if (!this.context.containsKey(moduleId)) {
+        throw new IllegalArgumentException("the module is not found.");
       }
-
-      return SerializationUtils.clone((ModuleDetails) context.get(module.getModuleId()));
+      return SerializationUtils.clone((ModuleDetails) context.get(moduleId));
     }
   }
 
@@ -79,18 +75,18 @@ public class ModuleContextManager implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
+    if (!(obj instanceof Map)) {
+      return false;
+    }
+
     synchronized (this.context) {
       if (obj == this.context) {
         return true;
       }
 
-      if (!(obj instanceof Map)) {
-        return false;
-      }
+      Map<String, Module> _obj = (Map<String, Module>) obj;
 
-      Map<String, Module> o = (Map<String, Module>) obj;
-
-      return o.equals(this.context);
+      return _obj.equals(this.context);
     }
   }
 

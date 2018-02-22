@@ -52,12 +52,12 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
 
     // module exists test : no exception
     moduleDetails.setTitle(title);
-    Module module2 = moduleContextManager.addModule(moduleDetails);
+    moduleContextManager.addModule(moduleDetails);
 
     Module module = moduleContextManager.getModule(moduleDetails.getModuleId());
 
     if (!title.equals(module.getTitle())) {
-      logger.debug("{} ==========> {} =========> {}", title, module2.getTitle(), module.getTitle());
+      logger.debug("{} ==========> {} =========> {}", title, moduleDetails.getTitle(), module.getTitle());
     }
 
     Assert.assertEquals(title, module.getTitle());
@@ -65,8 +65,8 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
     Module newModule = new ModuleDetails(moduleId, moduleId);
     Assert.assertNotNull(newModule.getModuleIdx());
     Assert.assertNotNull(newModule.getCreatedDate());
-    Module module3 = moduleContextManager.addModule(newModule);
-    Assert.assertEquals(module3.getModuleId(), moduleId);
+    moduleContextManager.addModule(newModule);
+    Assert.assertEquals(newModule.getModuleId(), moduleId);
   }
 
   @Test

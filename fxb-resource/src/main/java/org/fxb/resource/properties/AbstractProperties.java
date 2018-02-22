@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 /**
+ * todo 일반화하기 : 특정한 방식에 구애받지 않고 리소스를 로드할 수 있는 부분만 분리한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 8. 26.
