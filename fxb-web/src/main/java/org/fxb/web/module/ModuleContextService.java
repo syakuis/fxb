@@ -1,23 +1,29 @@
 package org.fxb.web.module;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * DB 에서 모듈 정보를 읽어 온다. 즉 가변 모듈 정보를 관리한다.
- *
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
- * @since 2017. 11. 30.
+ * @since 2018. 2. 22.
  */
-public interface ModuleContextService {
+public class ModuleContextService {
+  private final Logger logger = LoggerFactory.getLogger(ModuleContextService.class);
 
-  /**
-   * 최초 로드될때 호출된다.
-   */
-  void init();
+  private final ModuleContextManager moduleContextManager;
+  private final ModuleDetailsService moduleContextService;
 
-  /**
-   * 모듈이 변경되면 갱신하기 위해 호출된다.
-   * 변경된 모듈은 moduleName 모두가 갱신된다.
-   * @param moduleName
-   */
-  void getModule(String moduleName);
+  public ModuleContextService(ModuleContextManager moduleContextManager,
+      ModuleDetailsService moduleContextService) {
+    this.moduleContextManager = moduleContextManager;
+    this.moduleContextService = moduleContextService;
+  }
+
+  public synchronized void sync(String moduleId) {
+    if (moduleContextManager.isExists(moduleId)) {
+      logger.debug("{} : {}", moduleId, "the module is exists");
+    }
+    moduleContextManager.addModule(this.moduleContextService.getModule(moduleId));
+  }
 }

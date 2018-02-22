@@ -21,7 +21,6 @@ public class ModuleContextManager implements Serializable {
   private static final Map<String, Module> context = new ConcurrentHashMap<>();
 
   /**
-   * moduleId 가 같으면 moduleIdx 가 같은 것만 수정할 수 있다.
    * @param module
    */
   public void addModule(Module module) {
@@ -29,14 +28,23 @@ public class ModuleContextManager implements Serializable {
     Assert.hasText(module.getModuleId(), "moduleId must not be empty");
 
     synchronized (this.context) {
-      if (context.containsKey(module.getModuleId())) {
-        Module original = context.get(module.getModuleId());
-        if (!original.getModuleIdx().equals(module.getModuleIdx())) {
-          throw new IllegalArgumentException("the module is exists");
-        }
-      }
+      this.context.put(module.getModuleId(), module);
+    }
+  }
 
-      context.put(module.getModuleId(), module);
+  public void remove(String moduleId) {
+    Assert.hasText(moduleId, "moduleId must not be empty");
+
+    synchronized (this.context) {
+      this.context.remove(moduleId);
+    }
+  }
+
+  public boolean isExists(String moduleId) {
+    Assert.hasText(moduleId, "moduleId must not be empty");
+
+    synchronized (this.context) {
+      return context.containsKey(moduleId);
     }
   }
 

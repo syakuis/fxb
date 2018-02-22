@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2018. 2. 11.
  */
 @Transactional
-public class ModuleServiceTest extends ModuleTestConfiguration {
+public class ModuleDAOTest extends ModuleTestConfiguration {
   @Resource(name = "moduleDAO")
   private ModuleDAO moduleDAO;
 

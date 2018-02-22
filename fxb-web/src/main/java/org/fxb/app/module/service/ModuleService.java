@@ -2,7 +2,6 @@ package org.fxb.app.module.service;
 
 import java.util.List;
 import org.fxb.app.module.domain.Module;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 캐싱 전략을 구성하기 위해 데이터를 변경할때는 moduleIdx 필드로 조회한다.
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @site http://syaku.tistory.com
  * @since 2017. 11. 30.
  */
-@Transactional(readOnly = true)
 public interface ModuleService {
 
   List<Module> getModules();
@@ -21,7 +19,6 @@ public interface ModuleService {
 
   Module getModule(String moduleId);
 
-  @Transactional
   Module saveModule(Module module);
 
   /**
@@ -30,9 +27,7 @@ public interface ModuleService {
    * @param isOnlyNew 동일한 모듈정보가 존재여부와 상관없이 등록한다.
    * @return
    */
-  @Transactional
   Module saveModule(Module module, boolean isOnlyNew);
 
-  @Transactional
   void deleteModule(String moduleId);
 }

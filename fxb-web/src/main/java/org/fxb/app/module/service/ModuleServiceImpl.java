@@ -1,16 +1,19 @@
 package org.fxb.app.module.service;
 
+import java.util.List;
+import org.fxb.app.module.config.ModuleSync;
+import org.fxb.app.module.config.ModuleSyncType;
 import org.fxb.app.module.dao.ModuleDAO;
 import org.fxb.app.module.domain.Module;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 11. 27.
  */
+@Transactional(readOnly = true)
 public class ModuleServiceImpl implements ModuleService {
   private ModuleDAO moduleDAO;
 
@@ -37,11 +40,15 @@ public class ModuleServiceImpl implements ModuleService {
   }
 
   @Override
+  @Transactional
+  @ModuleSync("#{module.moduleId}")
   public Module saveModule(Module module) {
     return saveModule(module, true);
   }
 
   @Override
+  @Transactional
+  @ModuleSync("#{module.moduleId}")
   public Module saveModule(Module module, boolean isOnlyNew) {
     Assert.notNull(module, "the module must not be null");
 
@@ -58,6 +65,8 @@ public class ModuleServiceImpl implements ModuleService {
   }
 
   @Override
+  @Transactional
+  @ModuleSync(value = "#{module.moduleId}", type = ModuleSyncType.DELETE)
   public void deleteModule(String moduleId) {
     moduleDAO.deleteByModuleId(moduleId);
 
