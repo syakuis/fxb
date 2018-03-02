@@ -1,5 +1,11 @@
 package org.fxb.boot;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
+import javax.annotation.PostConstruct;
 import org.fxb.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,15 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.util.Assert;
-
-import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Date;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -24,11 +22,10 @@ import java.util.Date;
  */
 @Configuration
 @ComponentScan(
-		basePackages = {"org.fxb.config"},
+		basePackages = {"org.fxb.config.prepared", "org.fxb.config.context"},
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
-@Import(PropertiesConfiguration.class)
 public class Bootstrapping {
 	private final Logger logger = LoggerFactory.getLogger(Bootstrapping.class);
 

@@ -1,14 +1,14 @@
 package org.fxb.web.module;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.SerializationUtils;
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 /**
@@ -16,9 +16,10 @@ import org.springframework.util.Assert;
  * @site http://syaku.tistory.com
  * @since 2018. 1. 19.
  */
-public class ModuleContextManager implements Serializable {
-  private static final long serialVersionUID = -7851817699437417342L;
-  private static final Map<String, Module> context = new ConcurrentHashMap<>();
+public class ModuleContextManager {
+  private static final Logger logger = LoggerFactory.getLogger(ModuleContextManager.class);
+
+  private Map<String, Module> context = new HashMap<>();
 
   /**
    * @param module
@@ -26,32 +27,26 @@ public class ModuleContextManager implements Serializable {
   public void addModule(Module module) {
     if (module == null) throw new IllegalArgumentException("module must not be empty");
     Assert.hasText(module.getModuleId(), "moduleId must not be empty");
-
-    synchronized (this.context) {
-      this.context.put(module.getModuleId(), module);
-    }
+    this.context.put(module.getModuleId(), module);
   }
 
   public void remove(String moduleId) {
     Assert.hasText(moduleId, "moduleId must not be empty");
 
-    synchronized (this.context) {
-      this.context.remove(moduleId);
-    }
+    this.context.remove(moduleId);
+  }
+
+  public void destory() {
+    this.context = new HashMap<>();
   }
 
   public boolean isExists(String moduleId) {
     Assert.hasText(moduleId, "moduleId must not be empty");
-
-    synchronized (this.context) {
-      return context.containsKey(moduleId);
-    }
+    return context.containsKey(moduleId);
   }
 
   public Map<String, Module> getModule() {
-    synchronized(this.context) {
-      return new HashMap<>(this.context);
-    }
+    return new HashMap<>(this.context);
   }
 
   /**
@@ -60,25 +55,20 @@ public class ModuleContextManager implements Serializable {
    * @return
    */
   public List<Module> getModules() {
-    synchronized (context) {
-      return new ArrayList<>(context.values());
-    }
+    return new ArrayList<>(context.values());
   }
 
   public Module getModule(String moduleId) {
-    synchronized (this.context) {
-      if (!this.context.containsKey(moduleId)) {
-        throw new IllegalArgumentException("the module is not found.");
-      }
-      return SerializationUtils.clone((ModuleDetails) context.get(moduleId));
+    if (!this.context.containsKey(moduleId)) {
+      logger.debug("the module is not found.");
+      return null;
     }
+    return SerializationUtils.clone((ModuleDetails) context.get(moduleId));
   }
 
   @Override
   public int hashCode() {
-    synchronized (this.context) {
-      return this.context.hashCode();
-    }
+    return this.context.hashCode();
   }
 
   @Override
@@ -87,21 +77,17 @@ public class ModuleContextManager implements Serializable {
       return false;
     }
 
-    synchronized (this.context) {
-      if (obj == this.context) {
-        return true;
-      }
-
-      Map<String, Module> _obj = (Map<String, Module>) obj;
-
-      return _obj.equals(this.context);
+    if (obj == this.context) {
+      return true;
     }
+
+    Map<String, Module> _obj = (Map<String, Module>) obj;
+
+    return _obj.equals(this.context);
   }
 
   @Override
   public String toString() {
-    synchronized (this.context) {
-      return this.context.toString();
-    }
+    return this.context.toString();
   }
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
  * @site http://syaku.tistory.com
  * @since 2017. 8. 24.
  */
+@Deprecated
 public class ConfigBeanFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 	private final String beanName = "config";
 

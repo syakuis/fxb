@@ -1,25 +1,45 @@
 package org.fxb.boot;
 
+import java.util.Properties;
+import lombok.Setter;
 import org.fxb.config.Config;
 import org.springframework.beans.factory.FactoryBean;
-
-import java.util.Properties;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 9. 3.
  */
-public class ConfigFactoryBean implements FactoryBean<Config> {
+public class ConfigFactoryBean implements FactoryBean<Config>, InitializingBean {
 	private final Properties properties;
+	@Setter
+	private boolean singleton = true;
+	private Config singletonInstance;
 
 	public ConfigFactoryBean(Properties properties) {
+		Assert.notNull(properties, "The argument must not be null");
 		this.properties = properties;
+	}
+
+	private Config newInstance() {
+		return new Config(this.properties);
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		if (this.singleton) {
+			this.singletonInstance = this.newInstance();
+		}
 	}
 
 	@Override
 	public Config getObject() {
-		return new Config(this.properties);
+		if (this.singleton) {
+			return this.singletonInstance;
+		}
+		return this.newInstance();
 	}
 
 	@Override
@@ -29,6 +49,6 @@ public class ConfigFactoryBean implements FactoryBean<Config> {
 
 	@Override
 	public boolean isSingleton() {
-		return true;
+		return this.singleton;
 	}
 }

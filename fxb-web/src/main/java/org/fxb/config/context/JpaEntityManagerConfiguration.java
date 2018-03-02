@@ -1,5 +1,6 @@
-package org.fxb.config;
+package org.fxb.config.context;
 
+import org.fxb.config.Config;
 import org.fxb.context.jpa.bean.factory.JpaEntityManagerFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +29,6 @@ import javax.sql.DataSource;
 public class JpaEntityManagerConfiguration {
 
   @Autowired
-  @Qualifier("fxbDataSource")
   private DataSource dataSource;
 
   @Autowired

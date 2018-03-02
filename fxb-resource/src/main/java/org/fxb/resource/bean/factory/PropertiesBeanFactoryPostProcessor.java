@@ -13,6 +13,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
  * @site http://syaku.tistory.com
  * @since 2017. 8. 24.
  */
+@Deprecated
 public class PropertiesBeanFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 	private final String beanName;
 	private final String[] locations;

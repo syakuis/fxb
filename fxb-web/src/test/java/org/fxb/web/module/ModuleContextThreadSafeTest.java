@@ -9,6 +9,7 @@ import org.jmock.lib.concurrent.Blitzer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,7 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
   }
 
   @Test
+  @Ignore
   public void syncTest() throws Exception {
     blitzer.blitz(new Runnable() {
       @Override
@@ -81,6 +83,7 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
   }
 
   @Test(expected = IllegalArgumentException.class)
+  @Ignore
   public void test() {
     List<Module> modules = moduleContextManager.getModules();
 

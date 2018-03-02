@@ -2,6 +2,7 @@ package org.fxb.app.module.config;
 
 import org.fxb.app.module.dao.ModuleDAO;
 import org.fxb.app.module.dao.ModuleOptionDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("mybatis")
 @Configuration
 public class MyBatisModuleConfiguration extends ModuleConfiguration {
+  @Autowired
   public MyBatisModuleConfiguration(
     @Qualifier("moduleDAO")
     ModuleDAO moduleDAO,

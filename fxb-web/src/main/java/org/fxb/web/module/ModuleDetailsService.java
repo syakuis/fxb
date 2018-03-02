@@ -1,5 +1,6 @@
 package org.fxb.web.module;
 
+import java.util.List;
 import org.fxb.web.module.model.Module;
 
 /**
@@ -10,5 +11,6 @@ import org.fxb.web.module.model.Module;
  * @since 2017. 11. 30.
  */
 public interface ModuleDetailsService {
+  List<Module> getModules();
   Module getModule(String moduleId);
 }

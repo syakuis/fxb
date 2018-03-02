@@ -1,10 +1,12 @@
-package org.fxb.config;
+package org.fxb.config.context;
 
+import javax.sql.DataSource;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.fxb.commons.io.MultiplePathMatchingResourcePatternResolver;
+import org.fxb.config.Config;
 import org.fxb.config.support.Mapper;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,11 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import javax.sql.DataSource;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -31,11 +30,10 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Profile("mybatis")
-@EnableTransactionManagement
 @MapperScan(
-    basePackages = "org.fxb.app", annotationClass = Mapper.class,
-    sqlSessionFactoryRef = "fxbSqlSessionFactory",
-    sqlSessionTemplateRef = "fxbSqlSessionTemplate"
+    basePackages = "org.fxb.app",
+    annotationClass = Mapper.class,
+    sqlSessionFactoryRef = "sqlSessionFactory"
 )
 public class MyBatisConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(MyBatisConfiguration.class);
@@ -44,21 +42,19 @@ public class MyBatisConfiguration {
   private Config config;
 
   @Autowired
-  @Qualifier("fxbDataSource")
   private DataSource dataSource;
 
-  private SqlSessionFactory sqlSessionFactory;
-  private DatabaseIdProvider databaseIdProvider;
-
-  @Bean("fxbDatabaseIdProvider")
+  @Bean
   public DatabaseIdProvider databaseIdProvider() {
     return databaseIdProvider;
   }
 
-  @Bean("fxbSqlSessionFactory")
+  @Autowired
+  private DatabaseIdProvider databaseIdProvider;
+
+  @Bean
   public SqlSessionFactory sqlSessionFactory() throws Exception {
-    System.out.println("------------------ myBatis");
-    databaseIdProvider = new VendorDatabaseIdProvider();
+    DatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
     databaseIdProvider.setProperties(config.getProperties("myBatis.providers."));
 
     String configLocation = config.getString("default.myBatis.configLocation");
@@ -81,7 +77,7 @@ public class MyBatisConfiguration {
       sqlSessionFactoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource(configLocation));
     }
 
-    this.sqlSessionFactory = sqlSessionFactoryBean.getObject();
+    SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject();
 
     if (logger.isDebugEnabled()) {
       logger.debug("\ndatabaseIdProvider: {}\nmyBatis configLocation : {}\nmyBatis mapperLocations : {}",
@@ -90,10 +86,14 @@ public class MyBatisConfiguration {
         StringUtils.arrayToCommaDelimitedString(mapperLocations));
     }
 
-    return this.sqlSessionFactory;
+    return sqlSessionFactory;
   }
 
-  @Bean("fxbSqlSessionTemplate")
+
+  @Autowired
+  private SqlSessionFactory sqlSessionFactory;
+
+  @Bean
   public SqlSessionTemplate sqlSessionTemplate() {
     return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
   }

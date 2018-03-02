@@ -48,7 +48,7 @@ public class ModuleConfiguration {
     return moduleService;
   }
 
-  @Bean("moduleContextService")
+  @Bean(value = "moduleContextService")
   @DependsOn({"moduleService"})
   public ModuleContextService moduleContextService() {
     Assert.notNull(moduleContextManager, "it must not be null");

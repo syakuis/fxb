@@ -41,6 +41,9 @@ public abstract class AbstractPropertiesLoader {
    * @param locations
    */
   public AbstractPropertiesLoader(ServletContext servletContext, Environment environment, String[] locations) {
+    Assert.notNull(servletContext, "The servletContext argument must not be null");
+    Assert.notNull(environment, "The environment argument must not be null");
+    Assert.noNullElements(locations, "The locations argument array must contain non-null elements");
     this.servletContext = servletContext;
     this.environment = environment;
     this.locations = locations;

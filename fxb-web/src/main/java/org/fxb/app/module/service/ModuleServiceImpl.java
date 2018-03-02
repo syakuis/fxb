@@ -41,14 +41,14 @@ public class ModuleServiceImpl implements ModuleService {
 
   @Override
   @Transactional
-  @ModuleSync("#{module.moduleId}")
+  @ModuleSync("#{args[0].moduleId}")
   public Module saveModule(Module module) {
     return saveModule(module, true);
   }
 
   @Override
   @Transactional
-  @ModuleSync("#{module.moduleId}")
+  @ModuleSync("#{args[0].moduleId}")
   public Module saveModule(Module module, boolean isOnlyNew) {
     Assert.notNull(module, "the module must not be null");
 

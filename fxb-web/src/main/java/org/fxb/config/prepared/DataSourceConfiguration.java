@@ -1,19 +1,22 @@
-package org.fxb.config;
+package org.fxb.config.prepared;
 
+import java.util.Arrays;
+import java.util.List;
+import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.fxb.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -21,7 +24,8 @@ import java.util.List;
  * @since 2016. 9. 7.
  */
 @Configuration
-public class DataSourceConfiguration {
+@EnableTransactionManagement
+public class DataSourceConfiguration implements TransactionManagementConfigurer {
   private static final Logger logger = LoggerFactory.getLogger(DataSourceConfiguration.class);
 
   private final static String propertiesName = "dataSource.";
@@ -140,7 +144,8 @@ public class DataSourceConfiguration {
     return dataSource;
   }
 
-  @Bean(name = "fxbDataSource")
+  @Bean
+  @DependsOn("config")
   public DataSource dataSource() {
     if (dataSource == null) dataSource = this.getDataSource();
 
@@ -154,8 +159,14 @@ public class DataSourceConfiguration {
     return dataSource;
   }
 
-  @Bean("fxbTransactionManager")
+  @Bean
+  @DependsOn("dataSource")
   public PlatformTransactionManager transactionManager() {
     return new DataSourceTransactionManager(dataSource);
+  }
+
+  @Override
+  public PlatformTransactionManager annotationDrivenTransactionManager() {
+    return transactionManager();
   }
 }

@@ -1,6 +1,6 @@
 package org.fxb.boot.config;
 
-import org.fxb.boot.PropertiesConfiguration;
+import org.fxb.config.prepared.PropertiesConfiguration;
 import org.fxb.config.Config;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +33,6 @@ import static org.hamcrest.core.Is.is;
 @ActiveProfiles("test")
 @TestPropertySource("/config-test.properties")
 public class PropertiesConfigurationAndConfigTest {
-	private final Logger logger = LoggerFactory.getLogger(PropertiesConfigurationAndConfigTest.class);
 
 	@Autowired
 	Config config;

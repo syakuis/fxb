@@ -1,5 +1,7 @@
 package org.fxb.app.module.service;
 
+import java.util.LinkedList;
+import java.util.List;
 import org.fxb.web.module.ModuleDetailsService;
 import org.fxb.web.module.model.Module;
 import org.fxb.web.module.model.ModuleDetails;
@@ -18,10 +20,24 @@ public class ModuleDetailsServiceImpl implements ModuleDetailsService {
     this.moduleService = moduleService;
   }
 
+  private Module binding(org.fxb.app.module.domain.Module module) {
+    return new ModuleDetails(module.getModuleName(), module.getModuleId());
+  }
+
+  @Override
+  public List<Module> getModules() {
+    List<org.fxb.app.module.domain.Module> modules = moduleService.getModules();
+    List<Module> result = new LinkedList<>();
+    for (org.fxb.app.module.domain.Module module : modules) {
+      result.add(this.binding(module));
+    }
+    return result;
+  }
+
   @Override
   public Module getModule(String moduleId) {
     org.fxb.app.module.domain.Module module = moduleService.getModule(moduleId);
-    return new ModuleDetails(module.getModuleName(), module.getModuleId());
+    return this.binding(module);
   }
 }
 

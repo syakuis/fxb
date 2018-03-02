@@ -13,12 +13,28 @@ import java.util.Properties;
  */
 
 public class PropertiesFactoryBean extends AbstractPropertiesFactoryBean {
-	@Override
-	public Properties getObject() throws PropertiesException {
-		PropertiesLoader propertiesLoader = new PropertiesLoader(servletContext, environment, locations);
-		if (this.fileEncoding != null) {
-			propertiesLoader.setFileEncoding(this.fileEncoding);
-		}
-		return propertiesLoader.getProperties();
-	}
+  private Properties singletonInstance;
+
+  private Properties createObject() throws PropertiesException {
+    PropertiesLoader propertiesLoader = new PropertiesLoader(servletContext, environment, locations);
+    if (this.fileEncoding != null) {
+      propertiesLoader.setFileEncoding(this.fileEncoding);
+    }
+    return propertiesLoader.getProperties();
+  }
+
+  @Override
+  public Properties getObject() throws PropertiesException {
+    if (super.singleton) {
+      return this.singletonInstance;
+    }
+    return createObject();
+  }
+
+  @Override
+  public void afterPropertiesSet() throws PropertiesException {
+    if (super.singleton) {
+      this.singletonInstance = createObject();
+    }
+  }
 }

@@ -1,6 +1,9 @@
 package org.fxb.resource.properties;
 
 
+import java.io.IOException;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 import org.fxb.resource.exception.PropertiesException;
 import org.slf4j.Logger;
@@ -8,10 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-
-import javax.servlet.ServletContext;
-import java.io.IOException;
-import java.util.Properties;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

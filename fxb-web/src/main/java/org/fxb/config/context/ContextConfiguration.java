@@ -1,4 +1,4 @@
-package org.fxb.config;
+package org.fxb.config.context;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.fxb.web.module.ModuleContextManager;

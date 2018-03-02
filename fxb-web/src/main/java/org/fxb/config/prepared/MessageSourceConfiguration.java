@@ -1,5 +1,6 @@
-package org.fxb.config;
+package org.fxb.config.prepared;
 
+import org.fxb.config.Config;
 import org.fxb.resource.bean.factory.MessageSourceFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

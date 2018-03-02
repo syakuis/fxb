@@ -1,7 +1,9 @@
 package org.fxb.resource.bean.factory;
 
 
+import lombok.Setter;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.ServletContextAware;
@@ -15,7 +17,8 @@ import java.util.Properties;
  * @site http://syaku.tistory.com
  * @since 2017. 8. 26.
  */
-public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Properties>, EnvironmentAware, ServletContextAware {
+public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Properties>, EnvironmentAware, ServletContextAware,
+		InitializingBean {
 	/**
 	 * rootAbsolutePath 를 구한기 위함.
 	 */
@@ -30,6 +33,9 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
 	String fileEncoding = Charset.defaultCharset().name();
 
 	String[] locations;
+
+	@Setter
+	boolean singleton = true;
 
 	@Override
 	public void setEnvironment(Environment environment) {
@@ -59,12 +65,15 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
 	public abstract Properties getObject() throws Exception;
 
 	@Override
+	public abstract void afterPropertiesSet() throws Exception;
+
+	@Override
 	public Class<Properties> getObjectType() {
 		return Properties.class;
 	}
 
 	@Override
 	public boolean isSingleton() {
-		return true;
+		return this.singleton;
 	}
 }
