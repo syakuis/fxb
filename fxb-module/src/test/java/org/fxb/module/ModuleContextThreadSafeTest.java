@@ -1,26 +1,29 @@
-package org.fxb.web.module;
+package org.fxb.module;
 
 import java.util.List;
 import java.util.UUID;
-import org.fxb.app.module.ModuleTestConfiguration;
-import org.fxb.web.module.model.Module;
-import org.fxb.web.module.model.ModuleDetails;
+import org.fxb.module.model.Module;
+import org.fxb.module.model.ModuleDetails;
 import org.jmock.lib.concurrent.Blitzer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 11. 30.
  */
-public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class ModuleContextThreadSafeTest {
   private static final Logger logger = LoggerFactory.getLogger(ModuleContextThreadSafeTest.class);
 
   private Blitzer blitzer;
@@ -71,7 +74,6 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
   }
 
   @Test
-  @Ignore
   public void syncTest() throws Exception {
     blitzer.blitz(new Runnable() {
       @Override
@@ -83,7 +85,6 @@ public class ModuleContextThreadSafeTest extends ModuleTestConfiguration {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  @Ignore
   public void test() {
     List<Module> modules = moduleContextManager.getModules();
 

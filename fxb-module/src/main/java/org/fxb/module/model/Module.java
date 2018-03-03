@@ -1,4 +1,4 @@
-package org.fxb.web.module.model;
+package org.fxb.module.model;
 
 /**
  * 모든 모듈은 모듈 정보를 이용하여 작동된다.

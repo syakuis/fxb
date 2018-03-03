@@ -1,4 +1,4 @@
-package org.fxb.web.module.annotation;
+package org.fxb.module.data;
 
 import java.lang.annotation.*;
 

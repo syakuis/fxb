@@ -1,4 +1,4 @@
-package org.fxb.web.module.model;
+package org.fxb.module.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

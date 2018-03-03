@@ -1,12 +1,12 @@
-package org.fxb.web.module;
+package org.fxb.module;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.SerializationUtils;
-import org.fxb.web.module.model.Module;
-import org.fxb.web.module.model.ModuleDetails;
+import org.fxb.module.model.Module;
+import org.fxb.module.model.ModuleDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

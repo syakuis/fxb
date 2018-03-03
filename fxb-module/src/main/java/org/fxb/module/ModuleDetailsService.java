@@ -1,7 +1,7 @@
-package org.fxb.web.module;
+package org.fxb.module;
 
 import java.util.List;
-import org.fxb.web.module.model.Module;
+import org.fxb.module.model.Module;
 
 /**
  * DB 에서 모듈 정보를 읽어 온다. 즉 가변 모듈 정보를 관리한다.

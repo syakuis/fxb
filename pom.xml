@@ -16,6 +16,7 @@
         <module>fxb-web</module>
         <module>fxb-example</module>
         <module>fxb-security</module>
+        <module>fxb-module</module>
     </modules>
 
     <properties>

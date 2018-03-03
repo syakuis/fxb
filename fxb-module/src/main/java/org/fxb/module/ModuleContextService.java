@@ -1,7 +1,7 @@
-package org.fxb.web.module;
+package org.fxb.module;
 
 import java.util.List;
-import org.fxb.web.module.model.Module;
+import org.fxb.module.model.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -19,8 +19,8 @@ public class ModuleContextService {
 
   public ModuleContextService(ModuleContextManager moduleContextManager,
       ModuleDetailsService moduleContextService) {
-    Assert.notNull(moduleContextManager, "The class must not be null");
-    Assert.notNull(moduleContextService, "The class must not be null");
+    Assert.notNull(moduleContextManager, "The moduleContextManager must not be null");
+    Assert.notNull(moduleContextService, "The moduleContextService must not be null");
     this.moduleContextManager = moduleContextManager;
     this.moduleContextService = moduleContextService;
   }

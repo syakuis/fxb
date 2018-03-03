@@ -1,11 +1,12 @@
-package org.fxb.web.module.beans.factory;
+package org.fxb.module.config.bean.factory;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import org.fxb.web.module.ModuleInitialization;
-import org.fxb.web.module.ModuleContextManager;
-import org.fxb.web.module.annotation.ModuleInit;
-import org.fxb.web.module.model.ModuleDetails;
+import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleInitialization;
+import org.fxb.module.data.ModuleInit;
+import org.fxb.module.model.ModuleDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
@@ -39,6 +40,7 @@ public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextM
   @Override
   protected ModuleContextManager createInstance() {
     moduleContextManager = new ModuleContextManager();
+    if (this.basePackages == null) return moduleContextManager;
     provider = new ClassPathScanningCandidateComponentProvider(false);
     provider.addIncludeFilter(new AnnotationTypeFilter(ModuleInit.class));
 

@@ -1,4 +1,4 @@
-package org.fxb.web.module.model;
+package org.fxb.module.model;
 
 /**
  * 모듈에서 사용되는 부가 정보들을 담는 다.
