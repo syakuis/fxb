@@ -14,9 +14,8 @@
         <module>fxb-resource</module>
         <module>fxb-context</module>
         <module>fxb-web</module>
-        <module>fxb-example</module>
-        <module>fxb-security</module>
         <module>fxb-module</module>
+        <module>fxb-module-web</module>
     </modules>
 
     <properties>
@@ -28,7 +27,7 @@
         <fxb.commons.version>1.0.0</fxb.commons.version>
         <fxb.resource.version>1.0.0</fxb.resource.version>
         <fxb.context.version>1.0.0</fxb.context.version>
-        <fxb.security.version>1.0.0</fxb.security.version>
+        <fxb.module.version>1.0.0</fxb.module.version>
         <fxb.web.version>1.0.0</fxb.web.version>
 
         <slf4j.version>1.7.25</slf4j.version>
