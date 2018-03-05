@@ -1,6 +1,6 @@
 package org.fxb.boot.config;
 
-import org.fxb.config.prepared.PropertiesConfiguration;
+import org.fxb.context.config.ConfigConfiguration;
 import org.fxb.config.context.EhcacheConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { PropertiesConfiguration.class, EhcacheConfiguration.class })
+@ContextConfiguration(classes = { ConfigConfiguration.class, EhcacheConfiguration.class })
 @ActiveProfiles("test")
 public class EhcacheConfigurationTest {
 

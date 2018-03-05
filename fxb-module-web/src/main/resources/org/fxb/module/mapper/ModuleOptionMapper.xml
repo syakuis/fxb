@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.fxb.org.fxb.module.mapper.ModuleOptionMapper">
+<mapper namespace="org.fxb.module.mapper.ModuleOptionMapper">
 
-  <resultMap id="moduleOption" type="org.fxb.org.fxb.module.domain.ModuleOptionEntity">
+  <resultMap id="moduleOption" type="org.fxb.module.domain.ModuleOptionEntity">
     <result property="moduleId" column="module_id" />
     <result property="name" column="option_name" />
     <result property="value" column="option_value" />

@@ -1,8 +1,8 @@
 package org.fxb.module.service;
 
 import java.util.List;
-import org.fxb.module.config.ModuleSync;
-import org.fxb.module.config.ModuleSyncType;
+import org.fxb.module.annotation.ModuleSync;
+import org.fxb.module.enums.ModuleSyncType;
 import org.fxb.module.dao.ModuleDAO;
 import org.fxb.module.domain.ModuleEntity;
 import org.springframework.transaction.annotation.Transactional;

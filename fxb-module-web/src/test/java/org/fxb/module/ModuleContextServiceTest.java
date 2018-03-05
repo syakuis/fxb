@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2018. 2. 22.
  */
 @Transactional
-public class ModuleContextServiceTest {
+public class ModuleContextServiceTest extends TestConfiguration {
 
   @Autowired
   ModuleContextManager moduleContextManager;

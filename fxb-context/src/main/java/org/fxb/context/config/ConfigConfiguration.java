@@ -1,12 +1,10 @@
-package org.fxb.config.prepared;
+package org.fxb.context.config;
 
-import java.util.Properties;
 import javax.servlet.ServletContext;
-import org.fxb.boot.ConfigFactoryBean;
 import org.fxb.config.Config;
+import org.fxb.context.config.bean.factory.ConfigFactoryBean;
 import org.fxb.resource.bean.factory.PropertiesFactoryBean;
 import org.fxb.resource.exception.PropertiesException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +18,7 @@ import org.springframework.web.context.ServletContextAware;
  * @since 2017. 9. 19.
  */
 @Configuration
-public class PropertiesConfiguration implements EnvironmentAware, ServletContextAware {
+public class ConfigConfiguration implements EnvironmentAware, ServletContextAware {
 	private ServletContext servletContext;
 	private Environment environment;
 
@@ -38,7 +36,7 @@ public class PropertiesConfiguration implements EnvironmentAware, ServletContext
 	public Config config() throws PropertiesException {
 		String[] locations = new String[]{
 				"classpath:org/fxb/config/default.properties",
-				"classpath:org/fxb/config/config.properties",
+				"classpath:org/fxb/config/*.config.properties",
 				"config.properties",
 				"config-%s.properties"
 		};
@@ -48,8 +46,6 @@ public class PropertiesConfiguration implements EnvironmentAware, ServletContext
 		propertiesFactoryBean.setEnvironment(environment);
 		propertiesFactoryBean.setLocations(locations);
 		propertiesFactoryBean.afterPropertiesSet();
-
-		Properties properties = propertiesFactoryBean.getObject();
 
 		ConfigFactoryBean configFactoryBean = new ConfigFactoryBean(propertiesFactoryBean.getObject());
 		configFactoryBean.afterPropertiesSet();

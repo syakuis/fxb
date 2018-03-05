@@ -20,8 +20,8 @@ public class ModuleInitConfiguration {
     PopulatorDataSourceInitializer dataSourceInitializer = new PopulatorDataSourceInitializer();
     dataSourceInitializer.setDataSource(dataSource);
     dataSourceInitializer.setBeforeResources(
-      "org/fxb/app/module/schemas/module.table.h2.sql",
-      "org/fxb/app/module/schemas/moduleOption.table.h2.sql");
+      "org/fxb/module/schemas/module.table.h2.sql",
+      "org/fxb/module/schemas/moduleOption.table.h2.sql");
     dataSourceInitializer.afterPropertiesSet();
   }
 }

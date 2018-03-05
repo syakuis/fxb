@@ -1,4 +1,4 @@
-package org.fxb.config.context;
+package org.fxb.context.config;
 
 import javax.sql.DataSource;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
@@ -10,12 +10,16 @@ import org.fxb.config.Config;
 import org.fxb.context.mybatis.annotation.Mapper;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -28,12 +32,18 @@ import org.springframework.util.StringUtils;
  * @since 2016. 10. 31.
  */
 @Configuration
-@Profile("mybatis")
-@MapperScan(
-    basePackages = "org.fxb.app",
-    annotationClass = Mapper.class,
-    sqlSessionFactoryRef = "sqlSessionFactory"
+@ComponentScan(
+    basePackages = "org.fxb.context.config",
+    useDefaultFilters = false,
+    includeFilters = @Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = {
+            ConfigConfiguration.class,
+            DataSourceConfiguration.class,
+        }
+    )
 )
+@Profile("mybatis")
 public class MyBatisConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(MyBatisConfiguration.class);
 
@@ -52,11 +62,21 @@ public class MyBatisConfiguration {
   private DatabaseIdProvider databaseIdProvider;
 
   @Bean
+  @Autowired
+  public static MapperScannerConfigurer MapperScannerConfigurer(@Qualifier("config") Config config) throws Exception {
+    MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+    mapperScannerConfigurer.setAnnotationClass(Mapper.class);
+    mapperScannerConfigurer.setBasePackage(config.getString("default.myBatis.basePackage"));
+    mapperScannerConfigurer.afterPropertiesSet();
+
+    return mapperScannerConfigurer;
+  }
+
+  @Bean
   public SqlSessionFactory sqlSessionFactory() throws Exception {
     DatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
     databaseIdProvider.setProperties(config.getProperties("myBatis.providers."));
 
-    String configLocation = config.getString("default.myBatis.configLocation");
     String[] mapperLocations = StringUtils.tokenizeToStringArray(config.getString("default.myBatis.mapperLocations"), ",");
 
     Assert.notEmpty(mapperLocations, "[Assertion failed] - this array must not be empty: it must contain at least 1 element");
@@ -72,6 +92,7 @@ public class MyBatisConfiguration {
     sqlSessionFactoryBean.setTypeAliasesPackage(config.getString("default.myBatis.basePackage"));
     sqlSessionFactoryBean.setDatabaseIdProvider(databaseIdProvider);
 
+    String configLocation = config.getString("default.myBatis.configLocation");
     if (!"".equals(configLocation)) {
       sqlSessionFactoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource(configLocation));
     }

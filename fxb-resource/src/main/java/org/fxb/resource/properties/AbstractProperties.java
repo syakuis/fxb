@@ -24,7 +24,6 @@ public abstract class AbstractProperties {
   private String profile;
   private String[] profiles;
   private String charset;
-
   private String rootAbsolutePath;
 
   private int cacheSeconds;
@@ -175,5 +174,28 @@ public abstract class AbstractProperties {
   public <T> List<T> getList(String key, String delimiter, boolean trim) {
     T array[] = this.getArray(key, delimiter, trim);
     return Arrays.asList(array);
+  }
+
+  @Override
+  public boolean equals(Object target) {
+    if (properties == target) {
+      return true;
+    }
+
+    if (!(target instanceof Properties)) {
+      return false;
+    }
+    Properties object = (Properties) target;
+    return Objects.equals(properties, object);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(properties);
+  }
+
+  @Override
+  public String toString() {
+    return properties.toString();
   }
 }

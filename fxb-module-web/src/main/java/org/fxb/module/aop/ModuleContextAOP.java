@@ -1,12 +1,11 @@
-package org.fxb.module.config;
+package org.fxb.module.aop;
 
-import org.fxb.module.ModuleContextService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fxb.module.ModuleContextService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 
@@ -17,16 +16,15 @@ import org.springframework.util.Assert;
  */
 @Aspect
 public class ModuleContextAOP {
-  private final Logger logger = LoggerFactory.getLogger(ModuleContextAOP.class);
-
   private ModuleContextService moduleContextService;
 
+  @Autowired
   public ModuleContextAOP(@Qualifier("moduleContextService") ModuleContextService moduleContextService) {
     Assert.notNull(moduleContextService, "The class must not be null");
     this.moduleContextService = moduleContextService;
   }
 
-  @AfterReturning("@annotation(org.fxb.module.config.ModuleSync)")
+  @AfterReturning("@annotation(org.fxb.module.annotation.ModuleSync)")
   public void sync(JoinPoint joinPoint) {
     MethodSignature invocation = (MethodSignature) joinPoint.getSignature();
     invocation.getMethod().getDeclaredAnnotations();

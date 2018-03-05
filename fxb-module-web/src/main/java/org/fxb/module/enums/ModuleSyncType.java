@@ -1,4 +1,4 @@
-package org.fxb.module.config;
+package org.fxb.module.enums;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

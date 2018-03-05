@@ -19,8 +19,8 @@
     </dependency>
     <dependency>
       <groupId>org.fxb</groupId>
-      <artifactId>fxb-context</artifactId>
-      <version>${fxb.context.version}</version>
+      <artifactId>fxb-web</artifactId>
+      <version>${fxb.web.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

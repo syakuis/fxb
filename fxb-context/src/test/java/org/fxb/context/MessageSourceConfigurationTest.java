@@ -1,7 +1,7 @@
-package org.fxb.boot.config;
+package org.fxb.context;
 
-import org.fxb.config.prepared.PropertiesConfiguration;
-import org.fxb.config.prepared.MessageSourceConfiguration;
+import org.fxb.context.config.ConfigConfiguration;
+import org.fxb.context.config.MessageSourceConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * @since 2017. 9. 26.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { PropertiesConfiguration.class, MessageSourceConfiguration.class })
+@ContextConfiguration(classes = { ConfigConfiguration.class, MessageSourceConfiguration.class })
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class MessageSourceConfigurationTest {

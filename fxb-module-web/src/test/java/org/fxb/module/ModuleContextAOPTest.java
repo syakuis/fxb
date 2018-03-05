@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2018. 2. 23.
  */
 @Transactional
-public class ModuleContextAOPTest {
+public class ModuleContextAOPTest extends TestConfiguration {
   @Autowired
   private ModuleContextManager moduleContextManager;
   @Autowired
@@ -25,6 +25,9 @@ public class ModuleContextAOPTest {
 
   @Before
   public void before() {
+    Assert.assertNotNull(moduleContextManager);
+    Assert.assertNotNull(moduleContextService);
+    Assert.assertNotNull(moduleService);
     moduleContextService.init();
   }
 

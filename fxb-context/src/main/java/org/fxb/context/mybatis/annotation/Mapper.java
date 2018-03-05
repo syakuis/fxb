@@ -1,8 +1,11 @@
 package org.fxb.context.mybatis.annotation;
 
-import org.springframework.stereotype.Component;
-
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -12,7 +15,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Component
+@Repository
 public @interface Mapper {
   /**
    * The value may indicate a suggestion for a logical mapper name, to be turned into a Spring bean in case of an autodetected component.

@@ -1,4 +1,4 @@
-package org.fxb.boot;
+package org.fxb.context.config.bean.factory;
 
 import java.util.Properties;
 import lombok.Setter;

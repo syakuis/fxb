@@ -1,4 +1,4 @@
-package org.fxb.config.prepared;
+package org.fxb.context.config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,8 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,6 +27,11 @@ import org.springframework.util.StringUtils;
  * @since 2016. 9. 7.
  */
 @Configuration
+@ComponentScan(
+    basePackages = "org.fxb.context.config",
+    useDefaultFilters = false,
+    includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ConfigConfiguration.class)
+)
 @EnableTransactionManagement
 public class DataSourceConfiguration implements TransactionManagementConfigurer {
   private static final Logger logger = LoggerFactory.getLogger(DataSourceConfiguration.class);
@@ -145,7 +153,6 @@ public class DataSourceConfiguration implements TransactionManagementConfigurer 
   }
 
   @Bean
-  @DependsOn("config")
   public DataSource dataSource() {
     if (dataSource == null) dataSource = this.getDataSource();
 
@@ -162,6 +169,7 @@ public class DataSourceConfiguration implements TransactionManagementConfigurer 
   @Bean
   @DependsOn("dataSource")
   public PlatformTransactionManager transactionManager() {
+    Assert.notNull(dataSource, "The dataSource must not be null");
     return new DataSourceTransactionManager(dataSource);
   }
 

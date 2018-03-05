@@ -1,16 +1,24 @@
 package org.fxb.module.config;
 
+import javax.annotation.Resource;
+import org.aspectj.lang.annotation.Aspect;
+import org.fxb.context.mybatis.annotation.Mapper;
 import org.fxb.module.ModuleContextManager;
 import org.fxb.module.ModuleContextService;
 import org.fxb.module.ModuleDetailsService;
+import org.fxb.module.config.bean.factory.ModuleContextFactoryBean;
 import org.fxb.module.dao.ModuleDAO;
-import org.fxb.module.dao.ModuleOptionDAO;
 import org.fxb.module.service.ModuleDetailsServiceImpl;
 import org.fxb.module.service.ModuleService;
 import org.fxb.module.service.ModuleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.util.Assert;
 
 /**
@@ -18,25 +26,35 @@ import org.springframework.util.Assert;
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 1. 12.
+ *
+ * @see org.fxb.module.aop.ModuleContextAOP
+ * @see org.fxb.module.dao.ModuleDAO
+ * @see org.fxb.module.dao.ModuleOptionDAO
  */
+@Configuration
+@EnableAspectJAutoProxy
+@ComponentScan(
+    basePackages = "org.fxb.module",
+    useDefaultFilters = false,
+    includeFilters = {
+        @Filter(type = FilterType.ANNOTATION, classes = { Aspect.class, Mapper.class }),
+    }
+)
 public class ModuleConfiguration {
+  @Resource(name = "moduleDAO")
+  private ModuleDAO moduleDAO;
+
+  @Bean
+  public ModuleContextManager moduleContextManager() throws Exception {
+    ModuleContextFactoryBean moduleContextFactoryBean = new ModuleContextFactoryBean();
+    // todo config
+    moduleContextFactoryBean.setBasePackages("org.fxb");
+    moduleContextFactoryBean.afterPropertiesSet();
+    return moduleContextFactoryBean.getObject();
+  }
+
   @Autowired
   private ModuleContextManager moduleContextManager;
-  private final ModuleDAO moduleDAO;
-  private final ModuleOptionDAO moduleOptionDAO;
-
-  private ModuleService moduleService;
-
-  public ModuleConfiguration(ModuleDAO moduleDAO, ModuleOptionDAO moduleOptionDAO) {
-    Assert.notNull(moduleDAO, "this argument is required; it must not be null");
-    Assert.notNull(moduleOptionDAO, "this argument is required; it must not be null");
-    this.moduleDAO = moduleDAO;
-    this.moduleOptionDAO = moduleOptionDAO;
-  }
-
-  public void setModuleContextManager(ModuleContextManager moduleContextManager) {
-    this.moduleContextManager = moduleContextManager;
-  }
 
   @Bean
   @DependsOn({"moduleDAO"})
@@ -44,9 +62,11 @@ public class ModuleConfiguration {
     Assert.notNull(moduleDAO, "it must not be null");
     ModuleServiceImpl moduleService = new ModuleServiceImpl();
     moduleService.setModuleDAO(moduleDAO);
-    this.moduleService = moduleService;
     return moduleService;
   }
+
+  @Autowired
+  private ModuleService moduleService;
 
   @Bean(value = "moduleContextService")
   @DependsOn({"moduleService"})

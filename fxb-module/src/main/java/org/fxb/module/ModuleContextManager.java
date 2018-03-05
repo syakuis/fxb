@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.lang3.SerializationUtils;
 import org.fxb.module.model.Module;
 import org.fxb.module.model.ModuleDetails;
@@ -68,22 +69,22 @@ public class ModuleContextManager {
 
   @Override
   public int hashCode() {
-    return this.context.hashCode();
+    return Objects.hashCode(this.context);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof Map)) {
-      return false;
-    }
-
-    if (obj == this.context) {
+  public boolean equals(Object target) {
+    if (target == this.context) {
       return true;
     }
 
-    Map<String, Module> _obj = (Map<String, Module>) obj;
+    if (!(target instanceof Map)) {
+      return false;
+    }
 
-    return _obj.equals(this.context);
+    Map<String, Module> object = (Map<String, Module>) target;
+
+    return Objects.equals(object, this.context);
   }
 
   @Override
