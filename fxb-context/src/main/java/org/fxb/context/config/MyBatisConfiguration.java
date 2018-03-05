@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -32,17 +29,6 @@ import org.springframework.util.StringUtils;
  * @since 2016. 10. 31.
  */
 @Configuration
-@ComponentScan(
-    basePackages = "org.fxb.context.config",
-    useDefaultFilters = false,
-    includeFilters = @Filter(
-        type = FilterType.ASSIGNABLE_TYPE,
-        classes = {
-            ConfigConfiguration.class,
-            DataSourceConfiguration.class,
-        }
-    )
-)
 @Profile("mybatis")
 public class MyBatisConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(MyBatisConfiguration.class);

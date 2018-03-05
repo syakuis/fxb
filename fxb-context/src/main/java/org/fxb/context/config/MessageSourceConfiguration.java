@@ -1,5 +1,6 @@
 package org.fxb.context.config;
 
+import java.io.IOException;
 import org.fxb.config.Config;
 import org.fxb.resource.bean.factory.MessageSourceFactoryBean;
 import org.slf4j.Logger;
@@ -7,15 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.util.Assert;
-
-import java.io.IOException;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -23,11 +19,6 @@ import java.io.IOException;
  * @since 2017. 3. 31.
  */
 @Configuration
-@ComponentScan(
-    basePackages = "org.fxb.context.config",
-    useDefaultFilters = false,
-    includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ConfigConfiguration.class)
-)
 public class MessageSourceConfiguration {
   private static final Logger logger = LoggerFactory.getLogger(MessageSourceConfiguration.class);
 
