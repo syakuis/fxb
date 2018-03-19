@@ -6,6 +6,7 @@ import org.fxb.context.mybatis.annotation.Mapper;
 import org.fxb.module.ModuleContextManager;
 import org.fxb.module.ModuleContextService;
 import org.fxb.module.ModuleDetailsService;
+import org.fxb.module.aop.ModuleContextAOP;
 import org.fxb.module.config.bean.factory.ModuleContextFactoryBean;
 import org.fxb.module.dao.ModuleDAO;
 import org.fxb.module.service.ModuleDetailsServiceImpl;
@@ -19,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
@@ -31,16 +34,18 @@ import org.springframework.util.Assert;
  * @see org.fxb.module.dao.ModuleDAO
  * @see org.fxb.module.dao.ModuleOptionDAO
  */
-@Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(
     basePackages = "org.fxb.module",
     useDefaultFilters = false,
     includeFilters = {
-        @Filter(type = FilterType.ANNOTATION, classes = { Aspect.class, Mapper.class }),
+        @Filter(type = FilterType.ANNOTATION, classes = {Component.class, Aspect.class, Mapper.class }),
     }
 )
 public class ModuleConfiguration {
+  @Autowired
+  private ModuleContextAOP moduleContextAOP;
+
   @Resource(name = "moduleDAO")
   private ModuleDAO moduleDAO;
 

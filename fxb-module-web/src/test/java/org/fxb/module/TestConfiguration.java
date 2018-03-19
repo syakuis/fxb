@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -29,6 +30,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
     ModuleConfiguration.class
 })
 @ActiveProfiles({ "test", "mybatis" })
+@Transactional
 public class TestConfiguration {
 
   @Autowired

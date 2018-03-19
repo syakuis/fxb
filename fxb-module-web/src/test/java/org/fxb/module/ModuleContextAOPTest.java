@@ -7,14 +7,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 2. 23.
  */
-@Transactional
 public class ModuleContextAOPTest extends TestConfiguration {
   @Autowired
   private ModuleContextManager moduleContextManager;

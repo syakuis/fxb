@@ -7,6 +7,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.fxb.module.ModuleContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.util.Assert;
  * @since 2018. 2. 22.
  */
 @Aspect
+@Component
 public class ModuleContextAOP {
   private ModuleContextService moduleContextService;
 
