@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>fxb</artifactId>
-    <groupId>org.fxb</groupId>
-    <version>1.0.0</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.fxb</groupId>
+    <artifactId>fxb</artifactId>
+    <version>1.0.0.BUILD-SNAPSHOT</version>
+  </parent>
+
   <artifactId>fxb-web</artifactId>
-  <version>${fxb.web.version}</version>
+  <version>1.0.0.BUILD-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -22,6 +23,11 @@
       <groupId>org.fxb</groupId>
       <artifactId>fxb-context</artifactId>
       <version>${fxb.context.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
     </dependency>
   </dependencies>
 

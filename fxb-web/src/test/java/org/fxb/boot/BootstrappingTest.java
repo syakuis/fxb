@@ -1,6 +1,6 @@
 package org.fxb.boot;
 
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

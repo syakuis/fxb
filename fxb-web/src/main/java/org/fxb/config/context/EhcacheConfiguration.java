@@ -1,7 +1,7 @@
 package org.fxb.config.context;
 
 import org.apache.commons.lang3.StringUtils;
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.fxb.context.cache.bean.factory.EhcacheFactoryBean;
 import org.fxb.context.cache.bean.factory.support.EhcacheConfigurationException;
 import org.slf4j.Logger;

@@ -6,7 +6,7 @@ import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.fxb.commons.io.MultiplePathMatchingResourcePatternResolver;
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.fxb.context.mybatis.annotation.Mapper;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;

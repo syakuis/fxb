@@ -1,15 +1,14 @@
 package org.fxb.config.context;
 
+import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
-import java.util.Properties;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -39,7 +38,7 @@ public class FreeMarkerConfiguration {
 		configurer.setTemplateLoaderPaths(
 				StringUtils.split(builder.toString(), ",")
 		);
-		configurer.setDefaultEncoding(config.getCharset());
+		configurer.setDefaultEncoding(config.getString("charset"));
 
 		Properties properties = config.getProperties(prefix);
 		if (properties != null) {

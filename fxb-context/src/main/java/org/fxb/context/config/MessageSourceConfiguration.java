@@ -1,7 +1,7 @@
 package org.fxb.context.config;
 
 import java.io.IOException;
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.fxb.resource.bean.factory.MessageSourceFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,35 +28,36 @@ public class MessageSourceConfiguration {
   private Config config;
 
   @Bean
+  public MessageSourceFactoryBean parentMessageSourceFactoryBean() {
+    MessageSourceFactoryBean bean = new MessageSourceFactoryBean();
+    bean.setBasenames(config.getStringArray("default.messageSource.basenames"));
+    bean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
+    bean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
+
+    return bean;
+  }
+
+  @Bean
+  public MessageSourceFactoryBean messageSourceFactoryBean() throws IOException {
+    MessageSourceFactoryBean bean = new MessageSourceFactoryBean();
+    bean.setParentMessageSource(parentMessageSourceFactoryBean().getObject());
+    bean.setBasenames("messageSource.basenames");
+    bean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
+    bean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
+
+    return bean;
+  }
+
+  @Bean
   public MessageSource messageSource() throws IOException {
     Assert.notNull(config, "The class must not be null");
-
-    String[] defaultBasenames = config.getStringArray("default.messageSource.basenames");
-
-    MessageSourceFactoryBean parentFactoryBean = new MessageSourceFactoryBean();
-    parentFactoryBean.setFileEncoding(config.getCharset());
-    parentFactoryBean.setBasenames(defaultBasenames);
-    parentFactoryBean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
-    parentFactoryBean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
-
     // Config 에 의한 필요한 메세지 로드 : ParentMessageSource 를 Overwrite 할 수 있다.
     String[] basenames = config.getStringArray("messageSource.basenames");
     if (basenames != null && basenames.length > 0) {
-      MessageSourceFactoryBean factoryBean = new MessageSourceFactoryBean();
-      factoryBean.setParentMessageSource(parentFactoryBean.getObject());
-      factoryBean.setFileEncoding(config.getCharset());
-      factoryBean.setBasenames(basenames);
-      factoryBean.setCacheSeconds(config.getInt("messageSource.cacheSeconds"));
-      factoryBean.setConcurrentRefresh(config.getBoolean("messageSource.concurrentRefresh"));
-
-      this.messageSource = factoryBean.getObject();
-    } else {
-      this.messageSource = parentFactoryBean.getObject();
+      return messageSourceFactoryBean().getObject();
     }
 
-    logger.debug("><>< messageSource Loader : {}, {}", defaultBasenames, basenames);
-
-    return this.messageSource;
+    return parentMessageSourceFactoryBean().getObject();
   }
 
   @Bean

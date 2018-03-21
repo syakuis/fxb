@@ -1,27 +1,27 @@
 package org.fxb.config.context;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.fxb.config.Config;
+import javax.annotation.PostConstruct;
 import org.fxb.config.support.FreemarkerSupport;
+import org.fxb.context.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -74,8 +74,8 @@ public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter imp
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    String[] resourceHandlers = config.getResourceHandlers();
-    String[] resourceLocations = config.getResourceLocations();
+    String[] resourceHandlers = config.getStringArray("resourceHandlers");
+    String[] resourceLocations = config.getStringArray("resourceLocations");
     int size = resourceHandlers.length;
 
     for (int i = 0; i < size; i++) {
@@ -95,7 +95,7 @@ public class ApplicationContextConfiguration extends WebMvcConfigurerAdapter imp
     FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
     viewResolver.setExposeSpringMacroHelpers(true);
 
-    viewResolver.setContentType("text/html; charset=" + config.getCharset() +";");
+    viewResolver.setContentType("text/html; charset=" + config.getString("charset") +";");
     viewResolver.setCache(true);
     viewResolver.setPrefix("");
     viewResolver.setSuffix(".ftl");

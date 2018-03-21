@@ -1,14 +1,13 @@
 package org.fxb.context.jpa.bean.factory;
 
-import org.fxb.config.Config;
+import java.util.Properties;
+import javax.sql.DataSource;
+import org.fxb.context.Config;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.util.StringUtils;
-
-import javax.sql.DataSource;
-import java.util.Properties;
 
 /**
  * todo LocalContainerEntityManagerFactoryBean 상속하여 리팩토리하기

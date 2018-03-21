@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.fxb.config.Config;
+import org.fxb.context.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

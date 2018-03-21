@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Arrays;
 import java.util.List;
-import org.fxb.config.Config;
 import org.fxb.context.config.ConfigConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
