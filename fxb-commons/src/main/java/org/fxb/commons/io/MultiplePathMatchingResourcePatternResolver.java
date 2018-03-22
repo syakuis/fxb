@@ -19,38 +19,38 @@ import java.util.List;
  * @site http://syaku.tistory.com
  */
 public class MultiplePathMatchingResourcePatternResolver implements ResourcePatternResolver {
-	private final Logger logger = LoggerFactory.getLogger(MultiplePathMatchingResourcePatternResolver.class);
+  private final Logger logger = LoggerFactory.getLogger(MultiplePathMatchingResourcePatternResolver.class);
 
-	private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
+  private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
 
-	@Override
-	public ClassLoader getClassLoader() {
-		return pathMatchingResourcePatternResolver.getClassLoader();
-	}
+  @Override
+  public ClassLoader getClassLoader() {
+    return pathMatchingResourcePatternResolver.getClassLoader();
+  }
 
-	@Override
-	public Resource getResource(String location) {
-		return pathMatchingResourcePatternResolver.getResource(location);
-	}
+  @Override
+  public Resource getResource(String location) {
+    return pathMatchingResourcePatternResolver.getResource(location);
+  }
 
-	@Override
-	public Resource[] getResources(String locationPattern) throws IOException {
-		return getResources(new String[]{locationPattern});
-	}
+  @Override
+  public Resource[] getResources(String locationPattern) throws IOException {
+    return getResources(new String[]{locationPattern});
+  }
 
-	public Resource[] getResources(String[] locationPattern) throws IOException {
-		List<Resource> listResource = new ArrayList<>();
+  public Resource[] getResources(String[] locationPattern) throws IOException {
+    List<Resource> listResource = new ArrayList<>();
 
-		for (String path : locationPattern) {
-			Resource[] resources = pathMatchingResourcePatternResolver.getResources(path);
-			for (Resource resource : resources) {
-				if (resource.exists()) {
-					listResource.add(resource);
-					logger.debug("><>< add resource = {}", resource.getURL());
-				}
-			}
-		}
+    for (String path : locationPattern) {
+      Resource[] resources = pathMatchingResourcePatternResolver.getResources(path);
+      for (Resource resource : resources) {
+        if (resource.exists()) {
+          listResource.add(resource);
+          logger.debug("><>< add resource = {}", resource.getURL());
+        }
+      }
+    }
 
-		return listResource.toArray(new Resource[listResource.size()]);
-	}
+    return listResource.toArray(new Resource[listResource.size()]);
+  }
 }

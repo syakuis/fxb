@@ -25,9 +25,10 @@ public abstract class AbstractPropertiesLoader extends PropertiesLoaderSupport {
   }
 
   protected Resource[] getLocationResources() throws IOException {
-    Assert.notEmpty(this.locations, "The array must contain elements. (configLocations)");
+    Assert.notEmpty(this.locations, "The locations must contain elements.");
 
-    MultiplePathMatchingResourcePatternResolver matchingPattern = new MultiplePathMatchingResourcePatternResolver();
+    MultiplePathMatchingResourcePatternResolver matchingPattern =
+        new MultiplePathMatchingResourcePatternResolver();
     return matchingPattern.getResources(this.locations);
   }
 

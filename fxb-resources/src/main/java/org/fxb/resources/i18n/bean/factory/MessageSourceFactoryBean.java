@@ -1,4 +1,4 @@
-package org.fxb.resource.bean.factory;
+package org.fxb.resources.i18n.bean.factory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -13,16 +13,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.DefaultPropertiesPersister;
 import org.springframework.util.PropertiesPersister;
+import org.springframework.util.StringUtils;
 
 /**
- * todo ReloadableResourceBundleMessageSource 상속하여 리팩토리하기.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 9. 2.
  */
 public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
     EnvironmentAware, InitializingBean {
-  private final MessageSourcePathMatchingResource messageSourceMatchingPattern = new MessageSourcePathMatchingResource();
+  private final MessageSourcePathMatchingResource messageSourceMatchingPattern =
+      new MessageSourcePathMatchingResource();
   private PropertiesPersister propertiesPersister = new DefaultPropertiesPersister();
 
   private MessageSource instance;
@@ -30,7 +31,7 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
   private boolean singleton = true;
 
   private MessageSource parentMessageSource;
-  private String[] basenames;
+  private String[] baseNames;
   int cacheSeconds = -1;
   boolean concurrentRefresh = true;
   boolean alwaysUseMessageFormat = false;
@@ -54,8 +55,12 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
     this.parentMessageSource = parentMessageSource;
   }
 
-  public void setBasenames(String... basenames) {
-    this.basenames = basenames;
+  public void setBaseNames(String baseNames) {
+    this.setBaseNames(StringUtils.tokenizeToStringArray(baseNames, ","));
+  }
+
+  public void setBaseNames(String... baseNames) {
+    this.baseNames = baseNames;
   }
 
   public void setAlwaysUseMessageFormat(boolean alwaysUseMessageFormat) {
@@ -63,17 +68,14 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
   }
 
   /**
-   * 캐시 타임 설정.
-   * @param cacheSeconds
+   * The setCacheSeconds method of {@link ReloadableResourceBundleMessageSource}
+   * @param cacheSeconds int
+   * @see ReloadableResourceBundleMessageSource
    */
   public void setCacheSeconds(int cacheSeconds) {
     this.cacheSeconds = cacheSeconds;
   }
 
-  /**
-   * 새로고침 여부를 설정한다.
-   * @param concurrentRefresh
-   */
   public void setConcurrentRefresh(boolean concurrentRefresh) {
     this.concurrentRefresh = concurrentRefresh;
   }
@@ -106,20 +108,15 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
     this.useCodeAsDefaultMessage = useCodeAsDefaultMessage;
   }
 
-  protected String getDefaultEncoding() {
-    Assert.notNull(environment, "The class must not be null. (environment)");
-    return Env.defaultFileEncoding(environment.getProperty("file.encoding"), defaultEncoding);
-  }
-
   private MessageSource createObject() throws IOException {
-    Assert.notEmpty(basenames, "The array must contain elements : basenames");
-
-    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    ReloadableResourceBundleMessageSource messageSource =
+        new ReloadableResourceBundleMessageSource();
     messageSource.setCacheSeconds(this.cacheSeconds);
     messageSource.setConcurrentRefresh(this.concurrentRefresh);
     messageSource.setAlwaysUseMessageFormat(this.alwaysUseMessageFormat);
 
-    messageSource.setDefaultEncoding(this.getDefaultEncoding());
+    messageSource.setDefaultEncoding(Env.defaultFileEncoding(
+        environment.getProperty(Env.FILE_ENCODING_NAMING), defaultEncoding));
     messageSource.setCacheMillis(this.cacheMillis);
     messageSource.setFileEncodings(this.fileEncodings);
     messageSource.setPropertiesPersister(this.propertiesPersister);
@@ -131,28 +128,31 @@ public class MessageSourceFactoryBean implements FactoryBean<MessageSource>,
       messageSource.setParentMessageSource(parentMessageSource);
     }
 
-    String[] basenames = messageSourceMatchingPattern.getResources(this.basenames);
+    String[] baseNames = messageSourceMatchingPattern.getResources(this.baseNames);
 
-    if (basenames == null) {
+    if (baseNames == null) {
       return messageSource;
     }
 
-    messageSource.setBasenames(basenames);
-
+    messageSource.setBasenames(baseNames);
     return messageSource;
   }
 
 
   @Override
-  public void afterPropertiesSet() throws IOException {
+  public void afterPropertiesSet() throws Exception {
+    Assert.notNull(environment, "The environment must not be null.");
+    Assert.noNullElements(baseNames, "The baseNames array must contain non-null elements.");
+
     if (this.isSingleton()) {
       this.instance = this.createObject();
     }
   }
 
   @Override
-  public MessageSource getObject() throws IOException {
+  public MessageSource getObject() throws Exception {
     if (this.isSingleton()) {
+      Assert.notNull(this.instance, "The environment must not be null. Run afterPropertiesSet().");
       return this.instance;
     }
 

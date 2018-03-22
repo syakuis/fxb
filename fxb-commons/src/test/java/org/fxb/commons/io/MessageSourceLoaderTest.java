@@ -1,29 +1,18 @@
-package org.fxb.resource;
-
-import org.fxb.commons.io.MessageSourcePathMatchingResource;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+package org.fxb.commons.io;
 
 import java.io.IOException;
-import java.util.Arrays;
+import org.junit.Assert;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 8. 31.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ActiveProfiles("test")
 public class MessageSourceLoaderTest {
   private final Logger logger = LoggerFactory.getLogger(MessageSourceLoaderTest.class);
 
@@ -33,11 +22,6 @@ public class MessageSourceLoaderTest {
       "classpath*:org/hibernate/validator/message.properties," +
       "classpath*:message.properties," +
       "classpath*:org/fxb/**/message.properties";
-
-  @Configuration
-  static class MessageSourceConfiguration {
-
-  }
 
   @Test
   public void loader() throws IOException {
@@ -59,9 +43,9 @@ public class MessageSourceLoaderTest {
 
     MessageSourceAccessor messageSource = new MessageSourceAccessor(messageSourceLoader);
 
-    String basenames = basenamesPattern.replace("\\.properties", "");
+    String baseNames = basenamesPattern.replace("\\.properties", "");
 
-    String[] resources2 = messageSourceMatchingPattern.getResources(basenames);
+    String[] resources2 = messageSourceMatchingPattern.getResources(baseNames);
     ReloadableResourceBundleMessageSource messageSourceLoader2 = new ReloadableResourceBundleMessageSource();
     // 먼저 로드된 프로퍼티가 나중에 로드된 프로퍼티와 동일한 키인 경우 나중에 로드된 프로퍼티는 무시된다.
     messageSourceLoader.setBasenames(resources2);

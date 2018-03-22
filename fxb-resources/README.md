@@ -62,7 +62,7 @@ public class PropertiesConfiguration {
 }
 ```
 
-## Spring DI
+### Spring DI
 
 ```java
 public class PropertiesFactoryBeanTest {
@@ -76,3 +76,66 @@ public class PropertiesFactoryBeanTest {
 ```
 
 ## MessageSource Loader
+
+
+### Configuration
+
+```java
+@Configuration
+class MessageSourceConfiguration {
+
+  @Bean
+  public MessageSourceFactoryBean messageSourceFactoryBean() {
+    MessageSourceFactoryBean bean = new MessageSourceFactoryBean();
+    bean.setBaseNames(
+        "classpath:org/fxb/resources/i18n/message.properties",
+        "classpath:org/fxb/resources/i18n/*/message.properties",
+        "classpath:org/fxb/resources/i18n/*/*.test.properties"
+    );
+
+    return bean;
+  }
+
+  @Bean
+  public MessageSource messageSource() throws Exception {
+    return messageSourceFactoryBean().getObject();
+  }
+}
+```
+
+### Test
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = MessageSourceConfiguration.class)
+@WebAppConfiguration
+public class MessageSourceTest {
+  @Autowired
+  private MessageSource messageSource;
+
+  @Before
+  public void setup() {
+    Locale.setDefault(Locale.US);
+  }
+
+  @Test
+  public void test() {
+    Assert.assertEquals(Locale.getDefault(), Locale.US);
+    MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
+    Assert.assertEquals(messageSourceAccessor.getMessage("name"), "Seokkyun Choi");
+    Assert.assertEquals(messageSourceAccessor.getMessage("title"), "good");
+    Assert.assertEquals(messageSourceAccessor.getMessage("locale"), "us");
+    // 같은 속성이 2개이지만 먼저 설정된 것에 나중에 설정된 값이 덮어쓸 수 없다.
+    // 먼저 속성을 지정하려면 setParentMessageSource 이용하거나 setBaseNames 에서 먼저 프러퍼티를 우선수위에 두어야 한다.
+    Assert.assertEquals(messageSourceAccessor.getMessage("test"), "test");
+    Assert.assertEquals(messageSourceAccessor.getMessage("nickname"), "syaku");
+    Assert.assertEquals(messageSourceAccessor.getMessage("commons"), "공통");
+
+    messageSourceAccessor = new MessageSourceAccessor(messageSource, Locale.KOREA);
+    Assert.assertEquals(messageSourceAccessor.getMessage("name"), "최석균");
+    Assert.assertEquals(messageSourceAccessor.getMessage("title"), "좋음");
+    Assert.assertEquals(messageSourceAccessor.getMessage("locale"), "ko");
+    Assert.assertEquals(messageSourceAccessor.getMessage("test"), "테스트");
+  }
+}
+```

@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,5 +53,55 @@ public class PropertiesFactoryBeanTest {
     // profile 사용하여 프로퍼티를 잘 읽어오는 지 판단한다.
     Assert.assertEquals(profileConfig.getProperty("name"), "test");
     Assert.assertEquals(profileConfig.getProperty("i18n"), environment.getProperty("i18n"));
+  }
+}
+
+@Configuration
+class PropertiesConfiguration {
+
+  @Bean
+  public PropertiesFactoryBean propertiesFactoryBean() {
+    PropertiesFactoryBean bean = new PropertiesFactoryBean();
+    bean.setLocations(
+        "classpath:org/fxb/resources/**/first.properties",
+        "classpath:org/fxb/resources/*/second.properties"
+    );
+
+    return bean;
+  }
+
+  @Bean
+  public Properties config() throws Exception {
+    return propertiesFactoryBean().getObject();
+  }
+
+  @Bean
+  public PropertiesFactoryBean stringLocationsPropertiesFactoryBean() {
+    PropertiesFactoryBean bean = new PropertiesFactoryBean();
+    bean.setLocations("classpath:org/fxb/resources/**/first.properties, classpath:org/fxb/resources/*/second.properties");
+
+    return bean;
+  }
+
+  @Bean
+  public Properties stringPathConfig() throws Exception {
+    return stringLocationsPropertiesFactoryBean().getObject();
+  }
+
+  @Bean
+  public PropertiesFactoryBean profilePropertiesFactoryBean() {
+    PropertiesFactoryBean bean = new PropertiesFactoryBean();
+    bean.setLocations(
+        "classpath:org/fxb/resources/**/first.properties",
+        "classpath:org/fxb/resources/*/second.properties",
+        "classpath:org/fxb/resources/properties/first-[profile].properties"
+    );
+
+    return bean;
+  }
+
+  @Bean
+  public Properties profileConfig() throws Exception {
+    return profilePropertiesFactoryBean().getObject();
   }
 }

@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
  * @since 2018. 3. 21.
  */
 public class Env {
-
+  public static final String FILE_ENCODING_NAMING = "file.encoding";
   public static final String FILE_ENCODING = StringUtils.defaultString(
       new String(Charset.defaultCharset().name()), "UTF-8");
 

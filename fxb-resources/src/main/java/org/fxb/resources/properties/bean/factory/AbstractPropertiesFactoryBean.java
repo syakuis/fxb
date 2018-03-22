@@ -136,6 +136,7 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
   @Override
   public Properties getObject() throws Exception {
     if (this.isSingleton()) {
+      Assert.notNull(this.singletonInstance, "The instance has not been initialized. Run afterPropertiesSet().");
       return this.singletonInstance;
     }
     return createObject();
@@ -153,7 +154,8 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
       }
     }
 
-    this.fileEncoding = Env.defaultFileEncoding(environment.getProperty("file.encoding"), fileEncoding);
+    this.fileEncoding = Env.defaultFileEncoding(
+        environment.getProperty(Env.FILE_ENCODING_NAMING), fileEncoding);
 
     if (this.isSingleton()) {
       this.singletonInstance = createObject();
