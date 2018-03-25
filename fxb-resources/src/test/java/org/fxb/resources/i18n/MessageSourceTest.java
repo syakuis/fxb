@@ -43,7 +43,6 @@ public class MessageSourceTest {
     // 먼저 속성을 지정하려면 setParentMessageSource 이용하거나 setBaseNames 에서 먼저 프러퍼티를 우선수위에 두어야 한다.
     Assert.assertEquals(messageSourceAccessor.getMessage("test"), "test");
     Assert.assertEquals(messageSourceAccessor.getMessage("nickname"), "syaku");
-    Assert.assertEquals(messageSourceAccessor.getMessage("commons"), "공통");
 
     messageSourceAccessor = new MessageSourceAccessor(messageSource, Locale.KOREA);
     Assert.assertEquals(messageSourceAccessor.getMessage("name"), "최석균");

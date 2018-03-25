@@ -9,6 +9,16 @@
   <version>1.0.0.BUILD-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <url>https://github.com/syakuis/fxb</url>
+
+  <developers>
+    <developer>
+      <id>syaku</id>
+      <name>Seokkyun. Choi.</name>
+      <email>syaku@naver.com</email>
+    </developer>
+  </developers>
+
   <modules>
     <module>fxb-commons</module>
     <module>fxb-resources</module>
@@ -37,18 +47,6 @@
   </properties>
 
   <dependencies>
-    <!-- Spring -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-
     <!-- logger -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -76,6 +74,18 @@
       </exclusions>
       <scope>runtime</scope>
     </dependency>
+
+    <!-- Spring -->
+    <!--<dependency>-->
+      <!--<groupId>org.springframework</groupId>-->
+      <!--<artifactId>spring-context</artifactId>-->
+      <!--<version>${spring.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.springframework</groupId>-->
+      <!--<artifactId>spring-context-support</artifactId>-->
+      <!--<version>${spring.version}</version>-->
+    <!--</dependency>-->
 
     <!-- test -->
     <dependency>
@@ -115,27 +125,27 @@
     </dependency>
 
     <!-- jackson -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-core</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-databind</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-annotations</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
 
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.5</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.apache.commons</groupId>-->
+      <!--<artifactId>commons-lang3</artifactId>-->
+      <!--<version>3.5</version>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -143,29 +153,43 @@
       <version>1.16.12</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>3.22.0-GA</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.javassist</groupId>-->
+      <!--<artifactId>javassist</artifactId>-->
+      <!--<version>3.22.0-GA</version>-->
+    <!--</dependency>-->
 
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>3.2.6</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>cglib</groupId>-->
+      <!--<artifactId>cglib</artifactId>-->
+      <!--<version>3.2.6</version>-->
+    <!--</dependency>-->
 
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>javax.el-api</artifactId>
-      <version>2.2.4</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>javax.servlet</groupId>-->
+      <!--<artifactId>javax.servlet-api</artifactId>-->
+      <!--<version>3.0.1</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>javax.el</groupId>-->
+      <!--<artifactId>javax.el-api</artifactId>-->
+      <!--<version>2.2.4</version>-->
+    <!--</dependency>-->
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>bintray-syaku-maven</id>
+      <name>syaku-maven</name>
+      <url>https://api.bintray.com/maven/syaku/maven/fxb-resources/;publish=1</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>aintop-snapshots</id>
+      <name>aintop</name>
+      <url>http://git.aintop.co.kr:8881/repository/secon-maven-snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <repositories>
     <repository>
@@ -187,6 +211,16 @@
       <id>spring-maven-release-remote</id>
       <name>Spring Framework Maven Release Remote Repository</name>
       <url>http://repo.spring.io/libs-release-remote/</url>
+    </repository>
+
+    <repository>
+      <id>jcenter</id>
+      <url>http://jcenter.bintray.com</url>
+    </repository>
+
+    <repository>
+      <id>aintop</id>
+      <url>http://git.aintop.co.kr:8881/repository/maven2/</url>
     </repository>
   </repositories>
 

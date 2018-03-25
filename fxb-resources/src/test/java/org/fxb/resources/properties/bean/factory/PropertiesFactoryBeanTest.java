@@ -53,6 +53,9 @@ public class PropertiesFactoryBeanTest {
     // profile 사용하여 프로퍼티를 잘 읽어오는 지 판단한다.
     Assert.assertEquals(profileConfig.getProperty("name"), "test");
     Assert.assertEquals(profileConfig.getProperty("i18n"), environment.getProperty("i18n"));
+
+    Assert.assertTrue(config.containsKey("module.commons.module"));
+    Assert.assertTrue(config.containsKey("module.module.module"));
   }
 }
 
@@ -64,7 +67,8 @@ class PropertiesConfiguration {
     PropertiesFactoryBean bean = new PropertiesFactoryBean();
     bean.setLocations(
         "classpath:org/fxb/resources/**/first.properties",
-        "classpath:org/fxb/resources/*/second.properties"
+        "classpath:org/fxb/resources/*/second.properties",
+        "classpath:org/fxb/resources/properties/app/*/module.properties"
     );
 
     return bean;
@@ -78,7 +82,11 @@ class PropertiesConfiguration {
   @Bean
   public PropertiesFactoryBean stringLocationsPropertiesFactoryBean() {
     PropertiesFactoryBean bean = new PropertiesFactoryBean();
-    bean.setLocations("classpath:org/fxb/resources/**/first.properties, classpath:org/fxb/resources/*/second.properties");
+    bean.setLocations(
+        "classpath:org/fxb/resources/**/first.properties,"
+            + "classpath:org/fxb/resources/*/second.properties,"
+            + "classpath:org/fxb/resources/properties/app/*/module.properties"
+    );
 
     return bean;
   }

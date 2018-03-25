@@ -4,6 +4,14 @@
 
 
 ```xml
+<repository>
+	<id>jCenter</id>
+	<name>jCenter</name>
+	<url>http://jcenter.bintray.com</url>
+</repository>
+
+...
+
 <dependency>
 	<groupId>org.fxb</groupId>
 	<artifactId>fxb-resources</artifactId>
