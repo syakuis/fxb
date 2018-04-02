@@ -1,7 +1,5 @@
 package org.fxb.module;
 
-import java.util.List;
-import org.fxb.module.model.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -14,10 +12,10 @@ import org.springframework.util.Assert;
 public class ModuleContextService {
   private final Logger logger = LoggerFactory.getLogger(ModuleContextService.class);
 
-  private final ModuleContextManager moduleContextManager;
+  private final ModuleContextManager2 moduleContextManager;
   private final ModuleDetailsService moduleContextService;
 
-  public ModuleContextService(ModuleContextManager moduleContextManager,
+  public ModuleContextService(ModuleContextManager2 moduleContextManager,
       ModuleDetailsService moduleContextService) {
     Assert.notNull(moduleContextManager, "The moduleContextManager must not be null");
     Assert.notNull(moduleContextService, "The moduleContextService must not be null");
@@ -31,10 +29,8 @@ public class ModuleContextService {
 
   public void sync() {
     moduleContextManager.destory();
-    List<Module> modules = moduleContextService.getModules();
-    for (Module module : modules) {
-      moduleContextManager.addModule(module);
-    }
+    moduleContextService.getModules()
+        .stream().forEach(module -> moduleContextManager.addModule(module));
   }
 
   public void sync(String moduleId) {

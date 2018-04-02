@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class ModuleContextAOPTest extends TestConfiguration {
   @Autowired
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
   @Autowired
   private ModuleContextService moduleContextService;
   @Autowired

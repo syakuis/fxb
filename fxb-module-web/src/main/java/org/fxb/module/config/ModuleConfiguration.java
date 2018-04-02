@@ -3,7 +3,7 @@ package org.fxb.module.config;
 import javax.annotation.Resource;
 import org.aspectj.lang.annotation.Aspect;
 import org.fxb.context.mybatis.annotation.Mapper;
-import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleContextManager2;
 import org.fxb.module.ModuleContextService;
 import org.fxb.module.ModuleDetailsService;
 import org.fxb.module.aop.ModuleContextAOP;
@@ -16,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -50,7 +48,7 @@ public class ModuleConfiguration {
   private ModuleDAO moduleDAO;
 
   @Bean
-  public ModuleContextManager moduleContextManager() throws Exception {
+  public ModuleContextManager2 moduleContextManager() throws Exception {
     ModuleContextFactoryBean moduleContextFactoryBean = new ModuleContextFactoryBean();
     // todo config
     moduleContextFactoryBean.setBasePackages("org.fxb");
@@ -59,7 +57,7 @@ public class ModuleConfiguration {
   }
 
   @Autowired
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
 
   @Bean
   @DependsOn({"moduleDAO"})

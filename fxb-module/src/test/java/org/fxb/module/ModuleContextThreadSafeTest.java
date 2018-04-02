@@ -29,7 +29,7 @@ public class ModuleContextThreadSafeTest {
   private Blitzer blitzer;
 
   @Autowired
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
 
   @Before
   public void prepared() {

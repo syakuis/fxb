@@ -1,6 +1,6 @@
 package org.fxb.module.init;
 
-import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleContextManager2;
 import org.fxb.module.TestConfiguration;
 import org.fxb.module.model.Module;
 import org.junit.Assert;
@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = { TestConfiguration.class })
 public class ModuleContextManagerInitTest {
   @Autowired
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
 
   /**
    * {@link ModuleInfoTest} load test

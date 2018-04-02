@@ -9,7 +9,7 @@ import org.fxb.module.model.Module;
  * @ModuleInit 주석이 있는 Module 구현체 클래스를 찾아 ModuleContextManager 에 담는 다.
  *
  * @see ModuleContextFactoryBean
- * @see ModuleContextManager
+ * @see ModuleContextManager2
  * @see org.fxb.module.data.ModuleInit
  * @see org.fxb.module.model.ModuleDetails
  * @see org.fxb.module.model.Module

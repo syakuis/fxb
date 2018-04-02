@@ -289,34 +289,6 @@
             </includes>
           </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.7</version>
-        <configuration>
-          <linkXRef>true</linkXRef>
-          <sourceEncoding>${encoding}</sourceEncoding>
-          <targetJdk>${java.version}</targetJdk>
-          <rulesets>
-            <ruleset>file:///${project.basedir}/../pmd.rule.xml</ruleset>
-          </rulesets>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <outputDirectory>${project.build.directory}/reports/pmd</outputDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.7</version>
-        <configuration>
-          <skipEmptyReport>false</skipEmptyReport>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>

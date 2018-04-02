@@ -3,7 +3,7 @@ package org.fxb.module.config.bean.factory;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleContextManager2;
 import org.fxb.module.ModuleInitialization;
 import org.fxb.module.data.ModuleInit;
 import org.fxb.module.model.ModuleDetails;
@@ -16,16 +16,16 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
- * basePackages 경로를 스캔하여 {@link ModuleInit} 를 찾아 {@link ModuleContextManager} 추가한다.
+ * basePackages 경로를 스캔하여 {@link ModuleInit} 를 찾아 {@link ModuleContextManager2} 추가한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2018. 1. 19.
  */
-public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextManager> {
+public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextManager2> {
   private final Logger logger = LoggerFactory.getLogger(ModuleContextFactoryBean.class);
   private ClassPathScanningCandidateComponentProvider provider;
 
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
   private String[] basePackages;
 
   public void setBasePackages(String basePackages) {
@@ -33,13 +33,13 @@ public class ModuleContextFactoryBean extends AbstractFactoryBean<ModuleContextM
   }
 
   @Override
-  public Class<ModuleContextManager> getObjectType() {
-    return ModuleContextManager.class;
+  public Class<ModuleContextManager2> getObjectType() {
+    return ModuleContextManager2.class;
   }
 
   @Override
-  protected ModuleContextManager createInstance() {
-    moduleContextManager = new ModuleContextManager();
+  protected ModuleContextManager2 createInstance() {
+    moduleContextManager = new ModuleContextManager2();
     if (this.basePackages == null) return moduleContextManager;
     provider = new ClassPathScanningCandidateComponentProvider(false);
     provider.addIncludeFilter(new AnnotationTypeFilter(ModuleInit.class));

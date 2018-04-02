@@ -1,10 +1,8 @@
 package org.fxb.module;
 
-import org.fxb.module.config.bean.factory.ModuleContextFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.fxb.module.bean.factory.ModuleContextManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -13,14 +11,15 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 public class TestConfiguration {
-  @Autowired
-  private Environment environment;
+  @Bean
+  public ModuleContextManagerFactoryBean moduleContextManagerFactoryBean() {
+    ModuleContextManagerFactoryBean bean = new ModuleContextManagerFactoryBean();
+    bean.setBasePackages("org.fxb.module.test");
+    return bean;
+  }
 
   @Bean
   public ModuleContextManager moduleContextManager() throws Exception {
-    ModuleContextFactoryBean moduleContextFactoryBean = new ModuleContextFactoryBean();
-    moduleContextFactoryBean.setBasePackages(environment.getProperty("moduleContext.basePackages"));
-    moduleContextFactoryBean.afterPropertiesSet();
-    return moduleContextFactoryBean.getObject();
+    return moduleContextManagerFactoryBean().getObject();
   }
 }

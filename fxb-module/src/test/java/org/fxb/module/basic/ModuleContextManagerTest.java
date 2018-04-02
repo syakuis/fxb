@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleContextManager2;
 import org.fxb.module.TestConfiguration;
 import org.fxb.module.model.Module;
 import org.fxb.module.model.ModuleDetails;
@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = TestConfiguration.class)
 public class ModuleContextManagerTest {
   @Autowired
-  private ModuleContextManager moduleContextManager;
+  private ModuleContextManager2 moduleContextManager;
 
   int data = 1000;
   Map<String, Module> moduleMap = new HashMap<>();
