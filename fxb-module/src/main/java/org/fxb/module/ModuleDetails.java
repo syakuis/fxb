@@ -6,24 +6,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 모듈 정보를 담는 다.
+ * {@link Module}의 구현 클래스이며 가변으로 설정된다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @since 2017. 11. 21.
  */
 @Getter
 @ToString
 public class ModuleDetails extends AbstractModule {
-  private String moduleId;
-  private String moduleName;
-
   @Setter
   private Object details;
 
   public ModuleDetails(String moduleName, String moduleId) {
-    super(moduleName, moduleId);
-
-    this.moduleName = moduleName;
-    this.moduleId = moduleId;
+    super(moduleName, moduleId, false);
   }
 
   public <T> T getDetails(Class<T> type) {
@@ -40,7 +34,7 @@ public class ModuleDetails extends AbstractModule {
 
   @Override
   public int hashCode() {
-    return Objects.hash(moduleName, moduleId, details);
+    return Objects.hash(super.getModuleName(), super.getModuleId(), super.isImmutable(), details);
   }
 
   @Override
@@ -55,8 +49,9 @@ public class ModuleDetails extends AbstractModule {
 
     ModuleDetails newObject = (ModuleDetails) obj;
 
-    if (Objects.equals(newObject.getModuleName(), moduleName) &&
-        Objects.equals(newObject.getModuleId(), moduleId) &&
+    if (Objects.equals(newObject.getModuleName(), super.getModuleName()) &&
+        Objects.equals(newObject.getModuleId(), super.getModuleId()) &&
+        Objects.equals(newObject.isImmutable(), super.isImmutable()) &&
         Objects.deepEquals(newObject.getDetails(), details)) {
       return true;
     }

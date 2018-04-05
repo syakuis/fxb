@@ -26,6 +26,7 @@
     <module>fxb-web</module>
     <module>fxb-module</module>
     <module>fxb-module-web</module>
+    <module>fxb-module-data-jpa</module>
   </modules>
 
   <properties>

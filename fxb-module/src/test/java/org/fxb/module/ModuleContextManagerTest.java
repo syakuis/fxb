@@ -38,10 +38,10 @@ public class ModuleContextManagerTest {
 
     ModuleDetails module = new ModuleDetails(test, test);
     module.setDetails(options);
-    manager.addModule(module);
+    manager.add(module);
 
     ModuleEntity moduleEntity = moduleEntityInit(test2);
-    manager.addModule(moduleEntity);
+    manager.add(moduleEntity);
   }
 
   private ModuleEntity moduleEntityInit(String name) {
@@ -57,13 +57,13 @@ public class ModuleContextManagerTest {
 
   @Test
   public void moduleDetails() {
-    Module moduleContext = manager.getModule(test);
+    Module moduleContext = manager.get(test);
     Assert.assertNotNull(moduleContext);
   }
 
   @Test
   public void getModuleTest() {
-    Module moduleContext = manager.getModule(test2);
+    Module moduleContext = manager.get(test2);
     Assert.assertNotNull(moduleContext);
     ModuleEntity entity = moduleContext.getObject(ModuleEntity.class);
 
@@ -78,25 +78,28 @@ public class ModuleContextManagerTest {
   public void addModuleByNonModuleIdExceptionTest() {
     ModuleDetails module = new ModuleDetails(name, "");
     module.setDetails(Arrays.asList("a", "b"));
-    manager.addModule(module);
+    manager.add(module);
   }
 
   @Test
   public void addModuleTest() {
     ModuleDetails moduleContext = new ModuleDetails(name, id);
     moduleContext.setDetails(Arrays.asList("a", "b"));
-    manager.addModule(moduleContext);
+    manager.add(moduleContext);
 
-    Module newModuleContext = manager.getModule(id);
+    Module newModuleContext = manager.get(id);
     Assert.assertEquals(moduleContext, newModuleContext);
   }
 
+  // addModuleTest 모듈을 하나 추가하여 총 3개가 됨.
   @Test(expected = UnsupportedOperationException.class)
   public void toListTest() {
     List<Module> moduleContexts = manager.toList();
-    Assert.assertTrue(moduleContexts.size() == 1);
-    Module moduleContext = manager.getModule(test);
-    Assert.assertEquals(moduleContext, moduleContexts.get(0));
+    Module moduleContext = manager.get(test);
+    Assert.assertEquals(moduleContext,
+        moduleContexts.stream()
+            .filter(module -> module.getModuleId().equals(test))
+            .findFirst().get());
 
     // UnsupportedOperationException
     moduleContexts.add(new ModuleDetails("test2", "test2"));

@@ -1,6 +1,7 @@
 package org.fxb.module;
 
 import org.fxb.module.bean.factory.ModuleContextManagerFactoryBean;
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

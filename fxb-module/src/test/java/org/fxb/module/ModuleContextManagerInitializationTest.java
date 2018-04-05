@@ -24,7 +24,7 @@ public class ModuleContextManagerInitializationTest {
     Assert.assertTrue(moduleContextManager.toList().size() > 0);
 
     Module newModule = new ModuleBean();
-    Module contextModule = moduleContextManager.getModule(newModule.getModuleId());
+    Module contextModule = moduleContextManager.get(newModule.getModuleId());
     Assert.assertEquals(newModule, contextModule);
 
     ModuleBean moduleBean = contextModule.getObject(ModuleBean.class);
