@@ -1,62 +1,67 @@
 package org.fxb.module;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 /**
- * {@link Module} 정의를 컨텍스트에 관리한다.
+ * 생성된 {@link Module} 을 컨텍스트에서 관리한다.
  * todo thread safe coding
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @since 2018. 1. 19.
  */
 public class ModuleContextManager {
   private final Logger logger = LoggerFactory.getLogger(ModuleContextManager.class);
-  private Map<String, Module> context = new HashMap<>();
+  private Map<String, Module> context = new ConcurrentHashMap<>();
 
   public void remove(String moduleId) {
-    this.context = this.context.entrySet().stream()
-        .filter(map -> !map.getKey().equals(moduleId))
-        .collect(Collectors.toMap(o -> o.getKey(), o -> o.getValue()));
+    if (logger.isDebugEnabled()) {
+      if (this.context.containsKey(moduleId)) {
+        logger.debug("remove - {} remove moduleContext.", moduleId);
+      } else {
+        logger.warn("remove - {} moduleId not found.", moduleId);
+      }
+    }
+
+    this.context.remove(moduleId);
   }
 
-  public void remove(List<String> moduleId) {
-    this.context = this.context.entrySet().stream()
-        .filter(map -> moduleId.indexOf(map.getKey()) == -1)
-        .collect(Collectors.toMap(o -> o.getKey(), o -> o.getValue()));
+  public void remove(List<String> moduleIds) {
+    for (String moduleId : moduleIds) {
+      this.remove(moduleId);
+    }
   }
 
   public void add(Module module) {
-    Assert.notNull(module, "module must not be empty");
-    Assert.hasText(module.getModuleName(), "moduleName must not be empty");
-    Assert.hasText(module.getModuleId(), "moduleId must not be empty");
+    Assert.notNull(module, "add - module must not be empty");
+    Assert.hasText(module.getModuleName(), "add - moduleName must not be empty");
+    Assert.hasText(module.getModuleId(), "add - moduleId must not be empty");
 
     String moduleId = module.getModuleId();
-    Module currentModule = this.get(moduleId);
+    Module currentModule = this.context.get(moduleId);
 
     if (currentModule == null) {
      this.context.put(moduleId, module);
-     logger.debug("{} add moduleContext.", moduleId);
+     logger.debug("add - {} add moduleContext.", moduleId);
     } else if (!currentModule.isImmutable()) {
      this.context.put(moduleId, module);
-     logger.debug("{} overflow moduleContext.", moduleId);
+     logger.debug("add - {} overwrite moduleContext.", moduleId);
     } else {
-      logger.warn("Can not add. {} module Immutable or unknown", moduleId);
+      logger.warn("add - Can not add. {} module Immutable or unknown", moduleId);
     }
   }
 
   public Module get(String moduleId) {
     if (!this.context.containsKey(moduleId)) {
-      logger.debug("the moduleId={} is not found.", moduleId);
+      logger.warn("get - {} moduleId not found.", moduleId);
       return null;
     }
 
@@ -65,7 +70,7 @@ public class ModuleContextManager {
 
   public <T extends Module> T get(String moduleId, Class<T> type) {
     if (!this.context.containsKey(moduleId)) {
-      logger.debug("the moduleId={} is not found.", moduleId);
+      logger.warn("get - {} moduleId not found.", moduleId);
       return null;
     }
 

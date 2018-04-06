@@ -15,9 +15,14 @@ import org.fxb.module.ModuleRedefinition.Mode;
 import org.fxb.module.ModuleRedefinition.Scope;
 import org.fxb.module.TestConfiguration;
 import org.fxb.module.bean.factory.ModuleRedefinitionAspectFactoryBean;
+import org.jmock.lib.concurrent.Blitzer;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +39,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AspectConfiguration.class})
 public class ModuleContextAspectFactoryBeanTest {
+  private final Logger logger = LoggerFactory.getLogger(ModuleContextAspectFactoryBeanTest.class);
+
+  private Blitzer blitzer;
 
   @Autowired
   private BoardService boardService;
@@ -41,24 +49,73 @@ public class ModuleContextAspectFactoryBeanTest {
   @Autowired
   private ModuleContextManager moduleContextManager;
 
+  @Before
+  public void setup() {
+    blitzer = new Blitzer(100, 100);
+  }
+
+  @After
+  public void close() {
+    blitzer.shutdown();
+  }
+
   @Test
   public void test() {
+    flow();
+  }
+
+  @Test
+  public void sync() throws Exception {
+    moduleContextManager.toList().stream().forEach(System.out::println);
+
+    blitzer.blitz(() -> {
+      try {
+        Thread thread = Thread.currentThread();
+        logger.debug("#{} - {}", thread.getName(), thread.getId());
+        flow(thread);
+        Thread.sleep(5000);
+        flow2(thread);
+      } catch (Exception e) {
+
+      }
+    });
+
+    moduleContextManager.toList().stream()
+        .forEach(module -> logger.debug("{}, {}", module.getModuleId(), module.getModuleName()));
+  }
+
+  private void flow() {
     Board board = new Board();
 
     boardService.insert(board);
 
-    Assert.assertEquals(moduleContextManager.get(board.getModuleId()).getModuleId(),
-        board.getModuleId());
+//    Assert.assertEquals(moduleContextManager.get(board.getModuleId()).getModuleId(), board.getModuleId());
 
     boardService.update(board);
 
-    Assert.assertEquals(moduleContextManager.get(board.getModuleId()).getModuleId(),
-        board.getModuleId());
+//    Assert.assertEquals(moduleContextManager.get(board.getModuleId()).getModuleId(), board.getModuleId());
 
     boardService.del(board.getModuleId());
 
-    Assert.assertEquals(moduleContextManager.get(board.getModuleId()),
-        null);
+//    Assert.assertEquals(moduleContextManager.get(board.getModuleId()), null);
+  }
+
+  private void flow(Thread thread) {
+    Board board = new Board();
+    board.setModuleName(thread.getName());
+    board.setModuleId("module_" + thread.getId());
+
+    boardService.insert(board);
+    boardService.update(board);
+    boardService.del(board.getModuleId());
+  }
+
+  private void flow2(Thread thread) {
+    Board board = new Board();
+    board.setModuleName(thread.getName());
+    board.setModuleId("module_" + thread.getId());
+
+    boardService.insert(board);
   }
 }
 
@@ -72,10 +129,12 @@ class BoardService {
 
   @ModuleRedefinition(expression = "args[0].moduleId", scope = Scope.THIS)
   public void insert(Board board) {
-    String moduleId = "board_" + new Random().nextInt(100);
 
-    board.setModuleId(moduleId);
-    board.setModuleName(moduleId);
+    if (board.getModuleId() == null) {
+      String moduleId = "board_" + new Random().nextInt(100);
+      board.setModuleId(moduleId);
+      board.setModuleName(moduleId);
+    }
 
     database.add(board);
   }

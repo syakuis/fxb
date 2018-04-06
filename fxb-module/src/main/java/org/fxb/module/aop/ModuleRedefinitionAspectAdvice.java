@@ -10,6 +10,8 @@ import org.fxb.module.ModuleRedefinition;
 import org.fxb.module.ModuleRedefinition.Mode;
 import org.fxb.module.ModuleRedefinition.Scope;
 import org.fxb.module.bean.factory.ModuleRedefinitionAspectFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.context.expression.MapAccessor;
 import org.springframework.expression.ExpressionParser;
@@ -29,6 +31,8 @@ import org.springframework.util.Assert;
  * @see ModuleContextService
  */
 public class ModuleRedefinitionAspectAdvice implements AfterReturningAdvice {
+  private final Logger logger = LoggerFactory.getLogger(ModuleRedefinitionAspectAdvice.class);
+
   private final ModuleContextManager moduleContextManager;
   private final ModuleContextService moduleContextService;
 
@@ -55,10 +59,14 @@ public class ModuleRedefinitionAspectAdvice implements AfterReturningAdvice {
     evaluationContext.addPropertyAccessor(new MapAccessor());
 
     ExpressionParser parser = new SpelExpressionParser();
-    // todo spel injection
+    // todo spel injection attach!!!
     String moduleId = parser.parseExpression(expression).getValue(evaluationContext, String.class);
 
-    Assert.hasText(moduleId, "moduleId must not be empty");
+    if (logger.isDebugEnabled()) {
+      logger.debug("afterReturning - mode: {}, moduleId: {}", mode, moduleId);
+    }
+
+    Assert.hasText(moduleId, "afterReturning - moduleId must not be empty");
 
     if (mode.equals(Mode.REFRESH)) {
       moduleContextManager.add(moduleContextService.getModule(moduleId));
