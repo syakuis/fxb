@@ -71,7 +71,7 @@ class Config extends AbstractProperties {
 @Configuration
 class TestConfiguration {
     @Bean
-    public PropertiesFactoryBean propertiesFactoryBean() {
+    public PropertiesFactoryBean properties() {
       PropertiesFactoryBean bean = new PropertiesFactoryBean();
       bean.setLocations(
           "classpath:org/fxb/resources/**/first.properties",
@@ -83,7 +83,7 @@ class TestConfiguration {
 
     @Bean
     public Config config() throws Exception {
-      return new Config(propertiesFactoryBean().getObject());
+      return new Config(properties().getObject());
     }
 
 }

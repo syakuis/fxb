@@ -63,7 +63,7 @@ public class PropertiesFactoryBeanTest {
 class PropertiesConfiguration {
 
   @Bean
-  public PropertiesFactoryBean propertiesFactoryBean() {
+  public PropertiesFactoryBean config() {
     PropertiesFactoryBean bean = new PropertiesFactoryBean();
     bean.setLocations(
         "classpath:org/fxb/resources/**/first.properties",
@@ -75,12 +75,7 @@ class PropertiesConfiguration {
   }
 
   @Bean
-  public Properties config() throws Exception {
-    return propertiesFactoryBean().getObject();
-  }
-
-  @Bean
-  public PropertiesFactoryBean stringLocationsPropertiesFactoryBean() {
+  public PropertiesFactoryBean stringPathConfig() {
     PropertiesFactoryBean bean = new PropertiesFactoryBean();
     bean.setLocations(
         "classpath:org/fxb/resources/**/first.properties,"
@@ -92,12 +87,7 @@ class PropertiesConfiguration {
   }
 
   @Bean
-  public Properties stringPathConfig() throws Exception {
-    return stringLocationsPropertiesFactoryBean().getObject();
-  }
-
-  @Bean
-  public PropertiesFactoryBean profilePropertiesFactoryBean() {
+  public PropertiesFactoryBean profileConfig() {
     PropertiesFactoryBean bean = new PropertiesFactoryBean();
     bean.setLocations(
         "classpath:org/fxb/resources/**/first.properties",
@@ -106,10 +96,5 @@ class PropertiesConfiguration {
     );
 
     return bean;
-  }
-
-  @Bean
-  public Properties profileConfig() throws Exception {
-    return profilePropertiesFactoryBean().getObject();
   }
 }

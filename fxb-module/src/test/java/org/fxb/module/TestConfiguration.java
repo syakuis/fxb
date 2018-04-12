@@ -1,7 +1,6 @@
 package org.fxb.module;
 
 import org.fxb.module.bean.factory.ModuleContextManagerFactoryBean;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,14 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TestConfiguration {
   @Bean
-  public ModuleContextManagerFactoryBean moduleContextManagerFactoryBean() {
+  public ModuleContextManagerFactoryBean moduleContextManager() {
     ModuleContextManagerFactoryBean bean = new ModuleContextManagerFactoryBean();
     bean.setBasePackages("org.fxb.module.test");
     return bean;
-  }
-
-  @Bean
-  public ModuleContextManager moduleContextManager() throws Exception {
-    return moduleContextManagerFactoryBean().getObject();
   }
 }

@@ -220,11 +220,11 @@ class AspectConfiguration {
   }
 
   @Bean
-  public Advisor moduleContextAspect() {
+  public ModuleRedefinitionAspectFactoryBean moduleContextAspect() {
     ModuleRedefinitionAspectFactoryBean bean = new ModuleRedefinitionAspectFactoryBean(
         moduleContextManager, moduleContextService()
     );
 
-    return bean.getObject();
+    return bean;
   }
 }

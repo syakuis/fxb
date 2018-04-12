@@ -3,10 +3,11 @@ package org.fxb.module.bean.factory;
 import java.lang.annotation.Annotation;
 import java.util.function.Function;
 import org.fxb.module.Module;
-import org.fxb.module.ModuleDefinition;
 import org.fxb.module.ModuleContextManager;
+import org.fxb.module.ModuleDefinition;
 import org.fxb.module.ModuleDefinitionScanner;
-import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,7 +21,9 @@ import org.springframework.util.StringUtils;
  * @see ModuleDefinitionScanner
  * @see ModuleDefinition
  */
-public class ModuleContextManagerFactoryBean extends AbstractFactoryBean<ModuleContextManager> {
+public class ModuleContextManagerFactoryBean implements FactoryBean<ModuleContextManager>,
+    InitializingBean {
+  private ModuleContextManager moduleContextManager;
   private String[] basePackages;
   private Class<? extends Annotation> annotationTypeFilter = ModuleDefinition.class;
 
@@ -43,13 +46,27 @@ public class ModuleContextManagerFactoryBean extends AbstractFactoryBean<ModuleC
   }
 
   @Override
-  protected ModuleContextManager createInstance() {
+  public ModuleContextManager getObject() {
+    return this.moduleContextManager;
+  }
+
+  @Override
+  public boolean isSingleton() {
+    return true;
+  }
+
+  @Override
+  public void afterPropertiesSet() {
+    this.createInstance();
+  }
+
+  private void createInstance() {
     if (this.basePackages == null) {
-      return new ModuleContextManager();
+      this.moduleContextManager = new ModuleContextManager();
     }
 
     ModuleDefinitionScanner scanner = new ModuleDefinitionScanner(basePackages, annotationTypeFilter);
-    return scanner.getModules().stream()
+    this.moduleContextManager = scanner.getModules().stream()
         .collect(
             ModuleContextManager::new,
             ModuleContextManager::add,

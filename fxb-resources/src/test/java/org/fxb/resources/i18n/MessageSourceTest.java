@@ -57,7 +57,7 @@ public class MessageSourceTest {
 class MessageSourceConfiguration {
 
   @Bean
-  public MessageSourceFactoryBean messageSourceFactoryBean() {
+  public MessageSourceFactoryBean messageSource() {
     MessageSourceFactoryBean bean = new MessageSourceFactoryBean();
     bean.setBaseNames(
         "classpath:org/fxb/resources/i18n/message.properties",
@@ -66,10 +66,5 @@ class MessageSourceConfiguration {
     );
 
     return bean;
-  }
-
-  @Bean
-  public MessageSource messageSource() throws Exception {
-    return messageSourceFactoryBean().getObject();
   }
 }

@@ -27,6 +27,8 @@
     <module>fxb-module</module>
     <module>fxb-module-web</module>
     <module>fxb-module-data-jpa</module>
+    <module>fxb-module-data</module>
+    <module>fxb-data</module>
   </modules>
 
   <properties>
@@ -45,6 +47,7 @@
     <junit.version>4.12</junit.version>
     <jackson.version>2.8.7</jackson.version>
     <spring.version>4.3.7.RELEASE</spring.version>
+    <spring.boot.version>1.5.11.RELEASE</spring.boot.version>
   </properties>
 
   <dependencies>

@@ -30,7 +30,7 @@ public class DataSourceConfiguration implements TransactionManagementConfigurer 
 
   private final static String propertiesName = "dataSource.";
 
-  private DataSource dataSource;
+    private DataSource dataSource;
 
   @Autowired
   private Config config;

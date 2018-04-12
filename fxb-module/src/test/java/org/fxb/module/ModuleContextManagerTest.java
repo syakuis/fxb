@@ -115,7 +115,7 @@ class ModuleEntity extends AbstractModule {
   private Map<String, ModuleOption> moduleOptions;
 
   public ModuleEntity(String moduleName, String moduleId) {
-    super(moduleName, moduleId);
+    super(moduleName, moduleId, false);
   }
 
   public static Map<String, ModuleOption> listModuleOptions(ModuleOption... options) {
