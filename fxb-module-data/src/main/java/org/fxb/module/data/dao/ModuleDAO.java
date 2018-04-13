@@ -1,6 +1,6 @@
-package data.dao;
+package org.fxb.module.data.dao;
 
-import data.domain.ModuleEntity;
+import org.fxb.module.data.domain.ModuleEntity;
 import java.util.List;
 
 /**

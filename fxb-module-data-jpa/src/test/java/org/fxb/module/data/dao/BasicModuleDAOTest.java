@@ -1,30 +1,20 @@
 package org.fxb.module.data.dao;
 
-import data.domain.ModuleEntity;
+import org.fxb.module.data.domain.ModuleEntity;
 import java.util.List;
-import java.util.Properties;
-import javax.sql.DataSource;
 import org.fxb.module.data.JPAConfiguration;
 import org.fxb.module.data.domain.JPAModuleEntity;
-import org.fxb.module.data.mybatis.dao.DemoEntityDAO;
-import org.fxb.module.data.mybatis.domain.DemoEntity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BasicModuleDAOTest {
   @Autowired
-  JPAModuleDAO moduleDAO;
+  ModuleDAO moduleDAO;
+
+  @Autowired
+  ModuleOptionDAO moduleOptionDAO;
 
 //  @Autowired
 //  DemoEntityDAO demoEntityDAO;
@@ -92,7 +85,7 @@ public class BasicModuleDAOTest {
     List<ModuleEntity> moduleEntities = moduleDAO.findAll();
 
     moduleEntities.stream().forEach(moduleEntity -> {
-      ModuleEntity newModuleEntity = moduleDAO.findOne(moduleEntity.getId());
+      ModuleEntity newModuleEntity = moduleDAO.findOne(moduleEntity.getModuleId());
       Assert.assertEquals(moduleEntity, newModuleEntity);
     });
 
@@ -105,6 +98,12 @@ public class BasicModuleDAOTest {
     Assert.assertNull(moduleDAO.findOne("board"));
 
     Assert.assertTrue(moduleDAO.findAll().size() == moduleEntities.size());
+
+    ModuleEntity moduleEntity = moduleDAO.findOne("test");
+
+    moduleEntity.getModuleOptionEntities().stream().forEach(System.out::println);
+
+//    moduleOptionDAO.deleteByModuleId("test");
   }
 }
 

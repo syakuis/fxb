@@ -1,7 +1,6 @@
 package org.fxb.module.data.dao;
 
-import data.dao.ModuleDAO;
-import data.domain.ModuleEntity;
+import org.fxb.module.data.domain.ModuleEntity;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

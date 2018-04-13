@@ -13,8 +13,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DemoEntityDAO {
 
-//  @PersistenceContext(unitName = "entityManagerFactoryBean")
+  @PersistenceContext
   private EntityManager entityManager;
+
+  public void setEntityManager(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
   public void save(DemoEntity demoEntity) {
     this.entityManager.persist(demoEntity);

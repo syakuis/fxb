@@ -1,6 +1,6 @@
 package org.fxb.module.data;
 
-import data.dao.ModuleDAO;
+import org.fxb.module.data.dao.ModuleDAO;
 import org.fxb.module.data.domain.JPAModuleEntity;
 import org.fxb.module.data.mybatis.dao.DemoDAO;
 import org.fxb.module.data.mybatis.domain.Demo;

@@ -1,4 +1,4 @@
-package data.domain;
+package org.fxb.module.data.domain;
 
 import java.io.Serializable;
 
@@ -7,9 +7,9 @@ import java.io.Serializable;
  * @since 2018. 4. 6.
  */
 public interface ModuleOptionEntity extends Serializable {
-  String getId();
-  String getName();
-  String getValue();
-  String getTitle();
-  int getOrder();
+  String getModuleId();
+  String getOptionName();
+  String getOptionValue();
+  String getOptionTitle();
+  int getOptionOrder();
 }

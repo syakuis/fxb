@@ -1,6 +1,7 @@
 package org.fxb.module.data.domain;
 
-import data.domain.ModuleOptionEntity;
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,15 +23,32 @@ import lombok.ToString;
 @ToString
 public class JPAModuleOptionEntity implements ModuleOptionEntity {
   @Id
-  @Column(name = "MODULE_ID")
-  private String id;
+  @Column(name = "MODULE_ID", unique = true, nullable = false)
+  private String moduleId;
+
   @Id
-  @Column(name = "OPTION_NAME")
-  private String name;
+  @Column(name = "OPTION_NAME", nullable = false)
+  private String optionName;
+
   @Column(name = "OPTION_VALUE")
-  private String value;
+  private String optionValue;
+
   @Column(name = "OPTION_TITLE")
-  private String title;
+  private String optionTitle;
+
   @Column(name = "OPTION_ORDER")
-  private int order;
+  private int optionOrder;
+
+  public JPAModuleOptionEntity(String moduleId, String optionName, String optionValue,
+      String optionTitle, int optionOrder) {
+    this.moduleId = moduleId;
+    this.optionName = optionName;
+    this.optionValue = optionValue;
+    this.optionTitle = optionTitle;
+    this.optionOrder = optionOrder;
+  }
+
+  public static List<? extends ModuleOptionEntity> createList(JPAModuleOptionEntity... moduleOptions) {
+    return Arrays.asList(moduleOptions);
+  }
 }

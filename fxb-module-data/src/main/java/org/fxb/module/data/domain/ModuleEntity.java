@@ -1,15 +1,18 @@
-package data.domain;
+package org.fxb.module.data.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @since 2018. 4. 6.
  */
 public interface ModuleEntity extends Serializable {
-  String getId();
-  String getName();
+  String getModuleId();
+  String getModuleName();
   String getBrowserTitle();
   Date getRegistryDate();
+  List<? extends ModuleOptionEntity> getModuleOptionEntities();
 }
