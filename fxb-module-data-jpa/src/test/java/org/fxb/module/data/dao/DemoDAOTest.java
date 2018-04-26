@@ -1,11 +1,9 @@
 package org.fxb.module.data.dao;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.fxb.module.data.mybatis.dao.DemoEntityDAO;
@@ -31,7 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import sun.dc.pr.PRError;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -59,7 +56,10 @@ public class DemoDAOTest {
     this.entityManager.persist(member);
 
     this.entityManager.createQuery("FROM Member", Member.class).getResultList()
-        .stream().forEach(System.out::println);
+        .stream().forEach(m -> {
+          System.out.println(m);
+          m.getUsers().stream().forEach(System.out::println);
+    });
   }
 
   @Test

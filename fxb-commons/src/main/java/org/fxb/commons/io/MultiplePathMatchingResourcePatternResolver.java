@@ -13,24 +13,24 @@ import java.util.List;
 /**
  * PathMatchingResourcePatternResolver 를 이용하여 여러개의 패턴을 처리한다.
  *
- * @see PathMatchingResourcePatternResolver
  * @date 2015. 10. 1.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
+ * @see PathMatchingResourcePatternResolver
  */
 public class MultiplePathMatchingResourcePatternResolver implements ResourcePatternResolver {
   private final Logger logger = LoggerFactory.getLogger(MultiplePathMatchingResourcePatternResolver.class);
 
-  private final PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
+  private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
   @Override
   public ClassLoader getClassLoader() {
-    return pathMatchingResourcePatternResolver.getClassLoader();
+    return resolver.getClassLoader();
   }
 
   @Override
   public Resource getResource(String location) {
-    return pathMatchingResourcePatternResolver.getResource(location);
+    return resolver.getResource(location);
   }
 
   @Override
@@ -42,11 +42,15 @@ public class MultiplePathMatchingResourcePatternResolver implements ResourcePatt
     List<Resource> listResource = new ArrayList<>();
 
     for (String path : locationPattern) {
-      Resource[] resources = pathMatchingResourcePatternResolver.getResources(path);
+      Resource[] resources = resolver.getResources(path);
       for (Resource resource : resources) {
         if (resource.exists()) {
           listResource.add(resource);
-          logger.debug("><>< add resource = {}", resource.getURL());
+          logger.debug("#getResources - {} can be found. {}",
+              resource.getFilename(), resource.getURL());
+        } else {
+          logger.debug("#getResources - {} can not be found. {}",
+              resource.getFilename(), resource);
         }
       }
     }

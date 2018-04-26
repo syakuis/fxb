@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import org.fxb.resources.properties.bean.factory.PropertiesFactoryBean;
@@ -45,6 +46,13 @@ public class AbstractPropertiesTest {
 
   @Test
   public void test() {
+
+    Iterator iterator = config.getProperties().entrySet().iterator();
+
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
+    }
+
     String[] stringArray = config.getArray("test.list");
     List<String> stringList = config.getList("test.stringArray");
 

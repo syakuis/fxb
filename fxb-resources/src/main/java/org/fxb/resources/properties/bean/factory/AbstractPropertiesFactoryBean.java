@@ -138,26 +138,27 @@ public abstract class AbstractPropertiesFactoryBean implements FactoryBean<Prope
     if (this.isSingleton()) {
       Assert.notNull(this.singletonInstance, "The instance has not been initialized. Run afterPropertiesSet().");
       return this.singletonInstance;
+    } else {
+     return createObject();
     }
-    return createObject();
   }
 
   @Override
   public void afterPropertiesSet() throws Exception {
-    Assert.notNull(environment, "The environment must not be null.");
-
-    this.locations = this.getLocationProfileReplace(locations, this.getProfile(environment));
-
-    if (logger.isDebugEnabled()) {
-      for (String location : this.locations) {
-        logger.debug("locations : {} added", location);
-      }
-    }
-
-    this.fileEncoding = Env.defaultFileEncoding(
-        environment.getProperty(Env.FILE_ENCODING_NAMING), fileEncoding);
-
     if (this.isSingleton()) {
+      Assert.notNull(environment, "The environment must not be null.");
+
+      this.locations = this.getLocationProfileReplace(locations, this.getProfile(environment));
+
+      if (logger.isDebugEnabled()) {
+        for (String location : this.locations) {
+          logger.debug("locations : {} added", location);
+        }
+      }
+
+      this.fileEncoding = Env.defaultFileEncoding(
+          environment.getProperty(Env.FILE_ENCODING_NAMING), fileEncoding);
+
       this.singletonInstance = createObject();
     }
   }

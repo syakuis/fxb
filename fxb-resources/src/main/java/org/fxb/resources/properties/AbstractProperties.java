@@ -50,22 +50,27 @@ public abstract class AbstractProperties {
   }
 
   public Properties getProperties(String prefix) {
+    return getProperties(prefix, false);
+  }
+
+  public Properties getProperties(String prefix, boolean prefixUse) {
     List<String> keys = getKeys(prefix);
-    if (keys.size() > 0) {
-      Properties properties = new Properties();
 
-      for (String key : keys) {
-        String name = StringUtils.replace(key, prefix, "");
-        properties.setProperty(
-            name,
-            getString(key)
-        );
-      }
-
-      return properties;
+    if (keys.size() == 0) {
+      return null;
     }
 
-    return null;
+    Properties properties = new Properties();
+
+    for (String key : keys) {
+      String name = prefixUse ? key : StringUtils.replace(key, prefix, "");
+      properties.setProperty(
+          name,
+          getString(key)
+      );
+    }
+
+    return properties;
   }
 
   public String getString(String key) {
@@ -147,9 +152,11 @@ public abstract class AbstractProperties {
   public <T> T getArray(String key) {
     return this.getArray(key, delimiter, true);
   }
+
   public <T> T getArray(String key, String delimiter, boolean trim) {
     if (trim) {
-      return (T) StringUtils.trimArrayElements(StringUtils.delimitedListToStringArray(this.getString(key), delimiter));
+      return (T) StringUtils.trimArrayElements(
+          StringUtils.delimitedListToStringArray(this.getString(key), delimiter));
     }
 
     return (T) StringUtils.delimitedListToStringArray(this.getString(key), delimiter);

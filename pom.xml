@@ -29,6 +29,7 @@
     <module>fxb-module-data-jpa</module>
     <module>fxb-module-data</module>
     <module>fxb-data</module>
+    <module>fxb-configure</module>
   </modules>
 
   <properties>
